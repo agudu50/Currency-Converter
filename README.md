@@ -4,7 +4,7 @@ A React + Tailwind CSS project
 
 📌 Project Overview
 
-The Currency Converter App allows users to convert amounts between different currencies using real-time exchange rates from a public currency API. The application is built with React (Vite) and styled using Tailwind CSS, with a focus on clean UI, responsiveness, and accurate conversions.
+The Currency Converter App allows users to convert amounts between different currencies using real-time exchange rates from a public currency API. Users can also save favorite currency pairs for quick access. The app is built with React (Vite) and styled using Tailwind CSS, focusing on a clean UI, responsiveness, and accurate conversions.
 
 🛠️ Tech Stack
 
@@ -20,22 +20,25 @@ Netlify / Vercel (Deployment)
 
 📂 Project Status
 
-This README is used as a task tracker.
-Tasks will be checked off ([x]) as they are completed.
+This README is used as a task tracker. Tasks will be checked off ([x]) as they are completed.
 
 ✅ Setup & Configuration
 
-- [x] Create React project with Vite
+ Create React project with Vite
 
-- [x] Install and configure Tailwind CSS
+ Install and configure Tailwind CSS
 
-- [x] Project folder structure setup
+ Project folder structure setup
 
-- [x] Environment variables setup (.env)
+ Environment variables setup (.env)
 
 🎨 UI & Components
 
- Navbar / App Header
+ Header / Navbar
+
+ Footer
+
+ Multi-page routing (Home, Market, News, Alerts, Settings, About)
 
  Currency Input Field
 
@@ -55,7 +58,7 @@ Tasks will be checked off ([x]) as they are completed.
 
 ⚙️ Core Functionality
 
- Fetch exchange rates from API
+ Fetch exchange rates from API (mocked for now)
 
  Store exchange rates in state
 
@@ -65,13 +68,15 @@ Tasks will be checked off ([x]) as they are completed.
 
  Handle API errors gracefully
 
+ Manage favorite currency pairs
+
+ Add / remove favorites
+
 ✨ Extra Features (Optional)
 
  Light / Dark Mode
 
  Conversion History
-
- Favorite Currency Pairs
 
  Auto-refresh exchange rates
 
@@ -113,9 +118,9 @@ Duration: 5 weeks
 
 Week 1: Setup & UI planning ✔️
 
-Week 2: UI components
+Week 2: UI components ✔️
 
-Week 3: API integration
+Week 3: API integration (in progress)
 
 Week 4: Testing & enhancements
 
