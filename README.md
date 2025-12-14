@@ -1,16 +1,131 @@
-# React + Vite
+🌍 Currency Converter App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + Tailwind CSS project
 
-Currently, two official plugins are available:
+📌 Project Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The Currency Converter App allows users to convert amounts between different currencies using real-time exchange rates from a public currency API. The application is built with React (Vite) and styled using Tailwind CSS, with a focus on clean UI, responsiveness, and accurate conversions.
 
-## React Compiler
+🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React.js (Vite)
 
-## Expanding the ESLint configuration
+Tailwind CSS
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Currency Exchange API (ExchangeRate-API / Frankfurter API)
+
+Axios / Fetch API
+
+Netlify / Vercel (Deployment)
+
+📂 Project Status
+
+This README is used as a task tracker.
+Tasks will be checked off ([x]) as they are completed.
+
+✅ Setup & Configuration
+
+- [x] Create React project with Vite
+
+- [x] Install and configure Tailwind CSS
+
+- [x] Project folder structure setup
+
+- [x] Environment variables setup (.env)
+
+🎨 UI & Components
+
+ Navbar / App Header
+
+ Currency Input Field
+
+ From Currency Dropdown
+
+ To Currency Dropdown
+
+ Swap Currency Button
+
+ Convert Button
+
+ Result Display Component
+
+ Loading Indicator
+
+ Error Message Component
+
+⚙️ Core Functionality
+
+ Fetch exchange rates from API
+
+ Store exchange rates in state
+
+ Convert currency based on user input
+
+ Handle invalid input (empty / negative values)
+
+ Handle API errors gracefully
+
+✨ Extra Features (Optional)
+
+ Light / Dark Mode
+
+ Conversion History
+
+ Favorite Currency Pairs
+
+ Auto-refresh exchange rates
+
+ Exchange rate trend display
+
+📱 Responsiveness & UX
+
+ Mobile responsiveness
+
+ Tablet responsiveness
+
+ Desktop responsiveness
+
+ UI polish and animations
+
+🚀 Deployment
+
+ Build production version
+
+ Deploy frontend to Netlify or Vercel
+
+ Test deployed app
+
+ Update README with live link
+
+📖 Documentation
+
+ Initial project documentation
+
+ Weekly reflection document
+
+ Final project report
+
+ Demo video / screenshots
+
+🗓️ Development Timeline
+
+Duration: 5 weeks
+
+Week 1: Setup & UI planning ✔️
+
+Week 2: UI components
+
+Week 3: API integration
+
+Week 4: Testing & enhancements
+
+Week 5: Deployment & final documentation
+
+🔗 Live Demo
+
+🚧 Coming soon
+
+👤 Author
+
+Anthony Gudu
+Frontend Developer | Open Source Contributor
