@@ -24,21 +24,21 @@ This README is used as a task tracker. Tasks will be checked off ([x]) as they a
 
 ✅ Setup & Configuration
 
- Create React project with Vite
+- [x] Create React project with Vite
 
- Install and configure Tailwind CSS
+- [x] Install and configure Tailwind CSS
 
- Project folder structure setup
+- [x]  Project folder structure setup
 
- Environment variables setup (.env)
+- [x]  Environment variables setup (.env)
 
 🎨 UI & Components
 
- Header / Navbar
+- [x] Header / Navbar
 
- Footer
+- [x] Footer
 
- Multi-page routing (Home, Market, News, Alerts, Settings, About)
+- []  Multi-page routing (Home, Market, News, Alerts, Settings, About)
 
  Currency Input Field
 
