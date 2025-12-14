@@ -1,36 +1,81 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
+import { Router, useRouter } from "./components/Router";
+import { HomePage } from "./pages/HomePage";
+import { MarketPage } from "./pages/MarketPage";
+import { NewsPage } from "./pages/NewsPage";
+import { AlertsPage } from "./pages/AlertsPage";
+import { SettingsPage } from "./pages/SettingsPage";
+import { AboutPage } from "./pages/AboutPage";
 
-function App() {
-  const [count, setCount] = useState(0)
+function AppContent() {
+  const { currentPage } = useRouter();
+  const [favorites, setFavorites] = useState([
+    { from: "USD", to: "EUR" },
+    { from: "GBP", to: "USD" },
+  ]);
+
+  const addToFavorites = (pair) => {
+    const exists = favorites.some(
+      (fav) => fav.from === pair.from && fav.to === pair.to
+    );
+    
+    if (!exists) {
+      setFavorites([...favorites, pair]);
+    }
+  };
+
+  const removeFavorite = (index) => {
+    setFavorites(favorites.filter((_, i) => i !== index));
+  };
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'home':
+        return (
+          <HomePage 
+            favorites={favorites}
+            onFavoriteAdd={addToFavorites}
+            onRemoveFavorite={removeFavorite}
+          />
+        );
+      case 'market':
+        return <MarketPage />;
+      case 'news':
+        return <NewsPage />;
+      case 'alerts':
+        return <AlertsPage />;
+      case 'settings':
+        return <SettingsPage />;
+      case 'about':
+        return <AboutPage />;
+      default:
+        return (
+          <HomePage 
+            favorites={favorites}
+            onFavoriteAdd={addToFavorites}
+            onRemoveFavorite={removeFavorite}
+          />
+        );
+    }
+  };
 
   return (
-    <>
-      <div >
-
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1 className=''>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main className="container mx-auto px-4 py-8">
+        {renderPage()}
+      </main>
+      <Footer />
+    </div>
+  );
 }
 
-export default App
+export default function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}
