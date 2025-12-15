@@ -17,7 +17,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { currencies, generateHistoricalData } from "../utils/currencyData";
-import { useRouter } from "./components/Router"
+import { useRouter } from "./components/Router";
 
 
 

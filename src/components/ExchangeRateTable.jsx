@@ -14,7 +14,7 @@ import {
   convertCurrency,
   formatCurrency,
 } from "../utils/currencyData";
-import { useRouter } from "./components/Router"
+
 
 export default function ExchangeRateTable() {
   const baseCurrency = "USD";

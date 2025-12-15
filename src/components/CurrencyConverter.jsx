@@ -16,7 +16,7 @@ import {
   convertCurrency,
   formatCurrency,
 } from "../utils/currencyData";
-import { useRouter } from "./components/Router"
+
 
 export default function CurrencyConverter({ onFavoriteAdd }) {
   const [amount, setAmount] = useState("1");
