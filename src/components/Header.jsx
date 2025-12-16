@@ -24,13 +24,14 @@ export default function Header() {
 
   return (
     <header className="border-b bg-card/80 backdrop-blur-md sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="w-full px-3 sm:px-4 py-3 sm:py-4 flex items-center justify-between">
         <button
           onClick={() => navigateTo('home')}
           className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
-          <TrendingUp className="h-6 w-6 text-primary" />
-          <h1 className="text-xl font-semibold">CurrencyExchange</h1>
+          <TrendingUp className="h-5 sm:h-6 w-5 sm:w-6 text-primary" />
+          <h1 className="text-base sm:text-xl font-semibold hidden sm:block">CurrencyExchange</h1>
+          <h1 className="text-sm font-semibold sm:hidden">Currency</h1>
         </button>
         
         {/* Desktop Navigation */}
@@ -39,7 +40,7 @@ export default function Header() {
             <button
               key={item.id}
               onClick={() => navigateTo(item.page)}
-              className={`hover:text-primary transition-colors relative ${
+              className={`hover:text-primary transition-colors relative text-sm ${
                 currentPage === item.page ? 'text-primary' : ''
               }`}
             >
@@ -51,12 +52,12 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
           <Button
             variant="ghost"
             size="icon"
             onClick={toggleDarkMode}
-            className="rounded-full"
+            className="rounded-full h-9 w-9 sm:h-10 sm:w-10"
           >
             {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </Button>
@@ -66,7 +67,7 @@ export default function Header() {
             variant="ghost"
             size="icon"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden rounded-full"
+            className="md:hidden rounded-full h-9 w-9 sm:h-10 sm:w-10"
           >
             {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </Button>
@@ -76,7 +77,7 @@ export default function Header() {
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t bg-card/95 backdrop-blur-md">
-          <nav className="container mx-auto px-4 py-4 space-y-2">
+          <nav className="w-full px-3 sm:px-4 py-3 space-y-2">
             {navItems.map((item) => (
               <button
                 key={item.id}
@@ -84,7 +85,7 @@ export default function Header() {
                   navigateTo(item.page);
                   setMobileMenuOpen(false);
                 }}
-                className={`block w-full text-left px-4 py-2 rounded-lg hover:bg-muted transition-colors ${
+                className={`block w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted transition-colors ${
                   currentPage === item.page ? 'bg-muted text-primary' : ''
                 }`}
               >

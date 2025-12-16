@@ -50,7 +50,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle className="flex items-center justify-between">
+        <CardTitle className="flex items-center justify-between text-lg sm:text-2xl">
           Currency Converter
           <Button
             variant="ghost"
@@ -63,27 +63,27 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4 sm:space-y-6">
         {/* Amount Input */}
         <div className="space-y-2">
-          <Label htmlFor="amount">Amount</Label>
+          <Label htmlFor="amount" className="text-sm">Amount</Label>
           <Input
             id="amount"
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Enter amount"
-            className="text-xl h-14 text-center"
+            className="text-lg sm:text-xl h-11 sm:h-14 text-center"
           />
         </div>
 
         {/* Currency Selectors */}
-        <div className="flex items-end gap-4">
+        <div className="flex flex-col sm:flex-row items-end gap-3 sm:gap-4">
           {/* From */}
-          <div className="flex-1 space-y-2">
-            <Label>From</Label>
+          <div className="flex-1 space-y-2 w-full">
+            <Label className="text-sm">From</Label>
             <Select value={fromCurrency} onValueChange={setFromCurrency}>
-              <SelectTrigger className="text-lg h-12">
+              <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -92,7 +92,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
                     <div className="flex items-center gap-2">
                       <span>{currency.flag}</span>
                       <span>{currency.code}</span>
-                      <span className="text-muted-foreground">
+                      <span className="text-muted-foreground text-xs sm:text-sm">
                         - {currency.name}
                       </span>
                     </div>
@@ -107,16 +107,16 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
             variant="outline"
             size="icon"
             onClick={swapCurrencies}
-            className="rounded-full h-12 w-12 flex-shrink-0 border-2 hover:bg-primary hover:text-primary-foreground transition-colors"
+            className="rounded-full h-11 w-11 sm:h-12 sm:w-12 flex-shrink-0 border-2 hover:bg-primary hover:text-primary-foreground transition-colors"
           >
             <ArrowUpDown className="h-5 w-5" />
           </Button>
 
           {/* To */}
-          <div className="flex-1 space-y-2">
-            <Label>To</Label>
+          <div className="flex-1 space-y-2 w-full">
+            <Label className="text-sm">To</Label>
             <Select value={toCurrency} onValueChange={setToCurrency}>
-              <SelectTrigger className="text-lg h-12">
+              <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -125,7 +125,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
                     <div className="flex items-center gap-2">
                       <span>{currency.flag}</span>
                       <span>{currency.code}</span>
-                      <span className="text-muted-foreground">
+                      <span className="text-muted-foreground text-xs sm:text-sm">
                         - {currency.name}
                       </span>
                     </div>
@@ -137,14 +137,14 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
         </div>
 
         {/* Result */}
-        <div className="bg-muted/50 rounded-lg p-6 text-center">
-          <div className="text-sm text-muted-foreground mb-1">
+        <div className="bg-muted/50 rounded-lg p-4 sm:p-6 text-center">
+          <div className="text-xs sm:text-sm text-muted-foreground mb-1">
             {amount} {fromCurrency} equals
           </div>
-          <div className="text-3xl font-bold text-primary">
+          <div className="text-2xl sm:text-3xl font-bold text-primary">
             {formatCurrency(result, toCurrency)}
           </div>
-          <div className="text-sm text-muted-foreground mt-2">
+          <div className="text-xs sm:text-sm text-muted-foreground mt-2">
             1 {fromCurrency} ={" "}
             {formatCurrency(
               convertCurrency(1, fromCurrency, toCurrency),

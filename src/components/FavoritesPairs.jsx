@@ -44,8 +44,8 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle>Favorite Currency Pairs</CardTitle>
+        <div className="flex items-center justify-between flex-col sm:flex-row gap-2">
+          <CardTitle className="text-lg sm:text-2xl">Favorite Currency Pairs</CardTitle>
           <Button
             variant="ghost"
             size="icon"
@@ -59,28 +59,28 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
       </CardHeader>
 
       <CardContent>
-        <div className="grid gap-3">
+        <div className="grid gap-2 sm:gap-3">
           {favorites.map((pair, index) => {
             const rate = convertCurrency(1, pair.from, pair.to);
             return (
               <div
                 key={`${pair.from}-${pair.to}-${index}`}
-                className="flex items-center justify-between p-3 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors"
+                className="flex items-center justify-between p-2 sm:p-3 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors flex-col sm:flex-row gap-2"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <div className="flex items-center gap-1">
-                    <span className="text-lg">{getCurrencyFlag(pair.from)}</span>
-                    <span className="font-medium">{pair.from}</span>
+                    <span className="text-base sm:text-lg">{getCurrencyFlag(pair.from)}</span>
+                    <span className="font-medium text-sm sm:text-base">{pair.from}</span>
                   </div>
-                  <span className="text-muted-foreground">→</span>
+                  <span className="text-muted-foreground text-sm">→</span>
                   <div className="flex items-center gap-1">
-                    <span className="text-lg">{getCurrencyFlag(pair.to)}</span>
-                    <span className="font-medium">{pair.to}</span>
+                    <span className="text-base sm:text-lg">{getCurrencyFlag(pair.to)}</span>
+                    <span className="font-medium text-sm sm:text-base">{pair.to}</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <Badge variant="secondary" className="font-mono">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <Badge variant="secondary" className="font-mono text-xs sm:text-sm">
                     {formatCurrency(rate, pair.to)}
                   </Badge>
                   <Button

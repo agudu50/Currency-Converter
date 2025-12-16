@@ -14,7 +14,7 @@ import {
   Mail,
 } from "lucide-react";
 
-export function AboutPage() {
+export function AlertsPage() {
   const features = [
     {
       icon: <Zap className="h-6 w-6" />,

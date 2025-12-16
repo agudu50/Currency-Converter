@@ -1,5 +1,5 @@
 import { Heart, Globe, TrendingUp, Zap, BarChart3, Star } from "lucide-react";
-import { useRouter } from "./components/Router";
+import { useRouter } from "./Router";
 
 export default function Footer() {
   return (

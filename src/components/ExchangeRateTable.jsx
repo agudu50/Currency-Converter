@@ -41,72 +41,74 @@ export default function ExchangeRateTable() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Live Exchange Rates</CardTitle>
-        <p className="text-sm text-muted-foreground">
+        <CardTitle className="text-lg sm:text-2xl">Live Exchange Rates</CardTitle>
+        <p className="text-xs sm:text-sm text-muted-foreground">
           Base currency: {baseCurrency} • Updated every minute
         </p>
       </CardHeader>
 
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Currency</TableHead>
-              <TableHead>Rate</TableHead>
-              <TableHead>24h Change</TableHead>
-              <TableHead>Trend</TableHead>
-            </TableRow>
-          </TableHeader>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="text-xs sm:text-sm">Currency</TableHead>
+                <TableHead className="text-xs sm:text-sm">Rate</TableHead>
+                <TableHead className="text-xs sm:text-sm">24h Change</TableHead>
+                <TableHead className="text-xs sm:text-sm">Trend</TableHead>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {rateData.map((currency) => (
-              <TableRow key={currency.code}>
-                <TableCell>
-                  <div className="flex items-center gap-3">
-                    <span className="text-lg">{currency.flag}</span>
-                    <div>
-                      <div className="font-medium">{currency.code}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {currency.name}
+            <TableBody>
+              {rateData.map((currency) => (
+                <TableRow key={currency.code}>
+                  <TableCell>
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <span className="text-base sm:text-lg">{currency.flag}</span>
+                      <div>
+                        <div className="font-medium text-xs sm:text-sm">{currency.code}</div>
+                        <div className="text-xs text-muted-foreground hidden sm:block">
+                          {currency.name}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </TableCell>
+                  </TableCell>
 
-                <TableCell className="font-mono">{currency.formattedRate}</TableCell>
+                  <TableCell className="font-mono text-xs sm:text-sm">{currency.formattedRate}</TableCell>
 
-                <TableCell>
-                  <div
-                    className={`flex items-center gap-1 ${
-                      currency.change >= 0 ? "text-green-600" : "text-red-600"
-                    }`}
-                  >
-                    {currency.change >= 0 ? "+" : ""}
-                    {currency.change}%
-                  </div>
-                </TableCell>
+                  <TableCell>
+                    <div
+                      className={`flex items-center gap-1 text-xs sm:text-sm ${
+                        currency.change >= 0 ? "text-green-600" : "text-red-600"
+                      }`}
+                    >
+                      {currency.change >= 0 ? "+" : ""}
+                      {currency.change}%
+                    </div>
+                  </TableCell>
 
-                <TableCell>
-                  <Badge
-                    variant={currency.trend === "up" ? "default" : "secondary"}
-                    className={
-                      currency.trend === "up"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                    }
-                  >
-                    {currency.trend === "up" ? (
-                      <TrendingUp className="h-3 w-3 mr-1" />
-                    ) : (
-                      <TrendingDown className="h-3 w-3 mr-1" />
-                    )}
-                    {currency.trend}
-                  </Badge>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                  <TableCell>
+                    <Badge
+                      variant={currency.trend === "up" ? "default" : "secondary"}
+                      className={`text-xs sm:text-sm ${
+                        currency.trend === "up"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {currency.trend === "up" ? (
+                        <TrendingUp className="h-3 w-3 mr-1" />
+                      ) : (
+                        <TrendingDown className="h-3 w-3 mr-1" />
+                      )}
+                      <span className="hidden sm:inline">{currency.trend}</span>
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   );
