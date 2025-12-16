@@ -1,33 +1,88 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
-import { TrendingUp, TrendingDown, Activity, DollarSign, Euro } from "lucide-react";
+import { TrendingUp, TrendingDown, Activity, DollarSign, Euro, RefreshCw } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { generateHistoricalData } from "../utils/currencyData";
+import { generateHistoricalData, fetchExchangeRates, convertCurrency } from "../utils/currencyData";
 
 export function MarketPage() {
   const [selectedTimeframe, setSelectedTimeframe] = useState("1D");
   const [selectedMarket, setSelectedMarket] = useState("major");
+  const [majorPairs, setMajorPairs] = useState([]);
+  const [cryptoPairs, setCryptoPairs] = useState([]);
+  const [exoticPairs, setExoticPairs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState(null);
 
-  // Mock market data
-  const majorPairs = [
-    { pair: "EUR/USD", price: "1.0892", change: "+0.0023", changePercent: "+0.21%", trend: "up", volume: "2.1B" },
-    { pair: "GBP/USD", price: "1.2734", change: "-0.0056", changePercent: "-0.44%", trend: "down", volume: "1.8B" },
-    { pair: "USD/JPY", price: "110.25", change: "+0.85", changePercent: "+0.78%", trend: "up", volume: "1.9B" },
-    { pair: "USD/CHF", price: "0.9187", change: "-0.0012", changePercent: "-0.13%", trend: "down", volume: "980M" },
-  ];
+  // Load exchange rates
+  const loadMarketData = async () => {
+    setLoading(true);
+    try {
+      await fetchExchangeRates('USD');
+      
+      // Major pairs
+      const majorData = [
+        { pair: "EUR/USD", from: "EUR", to: "USD" },
+        { pair: "GBP/USD", from: "GBP", to: "USD" },
+        { pair: "USD/JPY", from: "USD", to: "JPY" },
+        { pair: "USD/CHF", from: "USD", to: "CHF" },
+      ].map(item => {
+        const rate = convertCurrency(1, item.from, item.to);
+        const prevRate = rate * (1 + (Math.random() - 0.5) * 0.01); // Simulate previous rate
+        const change = rate - prevRate;
+        const changePercent = ((change / prevRate) * 100).toFixed(2);
+        return {
+          pair: item.pair,
+          price: rate.toFixed(4),
+          change: change >= 0 ? `+${change.toFixed(4)}` : change.toFixed(4),
+          changePercent: change >= 0 ? `+${changePercent}%` : `${changePercent}%`,
+          trend: change >= 0 ? "up" : "down",
+          volume: `${(Math.random() * 2 + 0.5).toFixed(1)}B`
+        };
+      });
+      setMajorPairs(majorData);
 
-  const cryptoPairs = [
-    { pair: "BTC/USD", price: "43,250", change: "+1,250", changePercent: "+2.98%", trend: "up", volume: "15.2B" },
-    { pair: "ETH/USD", price: "2,680", change: "-45.20", changePercent: "-1.66%", trend: "down", volume: "8.9B" },
-  ];
+      // Crypto pairs (using mock data as API doesn't support crypto)
+      setCryptoPairs([
+        { pair: "BTC/USD", price: "43,250", change: "+1,250", changePercent: "+2.98%", trend: "up", volume: "15.2B" },
+        { pair: "ETH/USD", price: "2,680", change: "-45.20", changePercent: "-1.66%", trend: "down", volume: "8.9B" },
+      ]);
 
-  const exoticPairs = [
-    { pair: "USD/TRY", price: "8.4523", change: "+0.1234", changePercent: "+1.48%", trend: "up", volume: "456M" },
-    { pair: "USD/ZAR", price: "14.7823", change: "-0.0456", changePercent: "-0.31%", trend: "down", volume: "234M" },
-  ];
+      // Exotic pairs
+      const exoticData = [
+        { pair: "USD/TRY", from: "USD", to: "TRY" },
+        { pair: "USD/ZAR", from: "USD", to: "ZAR" },
+        { pair: "USD/MXN", from: "USD", to: "MXN" },
+        { pair: "USD/BRL", from: "USD", to: "BRL" },
+      ].map(item => {
+        const rate = convertCurrency(1, item.from, item.to);
+        const prevRate = rate * (1 + (Math.random() - 0.5) * 0.01);
+        const change = rate - prevRate;
+        const changePercent = ((change / prevRate) * 100).toFixed(2);
+        return {
+          pair: item.pair,
+          price: rate.toFixed(4),
+          change: change >= 0 ? `+${change.toFixed(4)}` : change.toFixed(4),
+          changePercent: change >= 0 ? `+${changePercent}%` : `${changePercent}%`,
+          trend: change >= 0 ? "up" : "down",
+          volume: `${(Math.random() * 500 + 100).toFixed(0)}M`
+        };
+      });
+      setExoticPairs(exoticData);
+
+      setLastUpdated(new Date());
+    } catch (error) {
+      console.error('Error loading market data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadMarketData();
+  }, []);
 
   const getMarketData = () => {
     switch (selectedMarket) {
@@ -141,44 +196,67 @@ export function MarketPage() {
       {/* Currency Pairs Table */}
       <Card>
         <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <CardTitle>Live Currency Pairs</CardTitle>
-          <Select value={selectedMarket} onValueChange={setSelectedMarket}>
-            <SelectTrigger className="w-48">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="major">Major Pairs</SelectItem>
-              <SelectItem value="crypto">Crypto Pairs</SelectItem>
-              <SelectItem value="exotic">Exotic Pairs</SelectItem>
-            </SelectContent>
-          </Select>
+          <div>
+            <CardTitle>Live Currency Pairs</CardTitle>
+            {lastUpdated && (
+              <p className="text-sm text-muted-foreground mt-1">
+                Last updated: {lastUpdated.toLocaleTimeString()}
+              </p>
+            )}
+          </div>
+          <div className="flex gap-2 items-center">
+            <Select value={selectedMarket} onValueChange={setSelectedMarket}>
+              <SelectTrigger className="w-48">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="major">Major Pairs</SelectItem>
+                <SelectItem value="crypto">Crypto Pairs</SelectItem>
+                <SelectItem value="exotic">Exotic Pairs</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={loadMarketData}
+              disabled={loading}
+            >
+              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {getMarketData().map((item, index) => (
-              <div key={index} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                    <span className="font-semibold text-primary text-sm">{item.pair.split('/')[0]}</span>
+          {loading && !lastUpdated ? (
+            <div className="flex items-center justify-center py-12">
+              <RefreshCw className="h-8 w-8 animate-spin text-muted-foreground" />
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {getMarketData().map((item, index) => (
+                <div key={index} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="font-semibold text-primary text-sm">{item.pair.split('/')[0]}</span>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">{item.pair}</h3>
+                      <p className="text-sm text-muted-foreground">Volume: {item.volume}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold">{item.pair}</h3>
-                    <p className="text-sm text-muted-foreground">Volume: {item.volume}</p>
+                  <div className="text-right">
+                    <div className="font-mono text-lg font-semibold">{item.price}</div>
+                    <div className={`flex items-center gap-1 text-sm ${item.trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
+                      {item.trend === 'up' ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
+                      <span>{item.change}</span>
+                      <Badge variant={item.trend === 'up' ? 'default' : 'destructive'}>
+                        {item.changePercent}
+                      </Badge>
+                    </div>
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="font-mono text-lg font-semibold">{item.price}</div>
-                  <div className={`flex items-center gap-1 text-sm ${item.trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
-                    {item.trend === 'up' ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
-                    <span>{item.change}</span>
-                    <Badge variant={item.trend === 'up' ? 'default' : 'destructive'}>
-                      {item.changePercent}
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
 

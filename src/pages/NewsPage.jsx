@@ -128,9 +128,9 @@ export function NewsPage() {
   return (
     <div className="space-y-8">
       {/* Page Header */}
-      <div className="space-y-4">
-        <h1 className="text-3xl md:text-4xl font-bold">Currency News & Analysis</h1>
-        <p className="text-lg text-muted-foreground">
+      <div className="space-y-2 sm:space-y-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">Currency News & Analysis</h1>
+        <p className="text-sm sm:text-base md:text-lg text-muted-foreground">
           Stay updated with the latest market-moving news and expert analysis
         </p>
       </div>
@@ -146,12 +146,12 @@ export function NewsPage() {
           <div className="space-y-3">
             {marketAlerts.map((alert, index) => (
               <div key={index} className={`p-3 rounded-lg border ${getAlertColor(alert.type)}`}>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                  <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                     <Badge variant="outline" className="uppercase text-xs">{alert.type}</Badge>
-                    <span className="font-medium">{alert.title}</span>
+                    <span className="font-medium text-sm sm:text-base">{alert.title}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
                     <Clock className="h-3 w-3" /> {alert.time}
                   </div>
                 </div>
@@ -163,57 +163,59 @@ export function NewsPage() {
 
       {/* News Categories */}
       <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
-        <TabsList className="grid w-full grid-cols-3 md:grid-cols-7">
-          <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="central-banks">Central Banks</TabsTrigger>
-          <TabsTrigger value="politics">Politics</TabsTrigger>
-          <TabsTrigger value="markets">Markets</TabsTrigger>
-          <TabsTrigger value="commodities">Commodities</TabsTrigger>
-          <TabsTrigger value="crypto">Crypto</TabsTrigger>
-          <TabsTrigger value="emerging">Emerging</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto pb-2">
+          <TabsList className="inline-flex w-auto min-w-full">
+            <TabsTrigger value="all" className="flex-shrink-0">All</TabsTrigger>
+            <TabsTrigger value="central-banks" className="flex-shrink-0">Central Banks</TabsTrigger>
+            <TabsTrigger value="politics" className="flex-shrink-0">Politics</TabsTrigger>
+            <TabsTrigger value="markets" className="flex-shrink-0">Markets</TabsTrigger>
+            <TabsTrigger value="commodities" className="flex-shrink-0">Commodities</TabsTrigger>
+            <TabsTrigger value="crypto" className="flex-shrink-0">Crypto</TabsTrigger>
+            <TabsTrigger value="emerging" className="flex-shrink-0">Emerging</TabsTrigger>
+          </TabsList>
+        </div>
 
-        <TabsContent value={selectedCategory} className="mt-8">
-          <div className="grid gap-6">
+        <TabsContent value={selectedCategory} className="mt-6 sm:mt-8">
+          <div className="grid gap-4 sm:gap-6">
             {filteredNews.map((article) => (
               <Card key={article.id} className="hover:shadow-lg transition-all duration-200">
-                <CardContent className="p-6">
-                  <div className="flex gap-6">
-                    <div className="flex-shrink-0">
-                      <div className="w-16 h-16 bg-muted rounded-lg flex items-center justify-center text-2xl">
+                <CardContent className="p-4 sm:p-6">
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                    <div className="flex-shrink-0 self-start">
+                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-muted rounded-lg flex items-center justify-center text-xl sm:text-2xl">
                         {article.image}
                       </div>
                     </div>
                     
-                    <div className="flex-1 space-y-3">
-                      <div className="flex items-start justify-between gap-4">
-                        <h2 className="text-xl font-semibold leading-tight hover:text-primary cursor-pointer">
+                    <div className="flex-1 space-y-2 sm:space-y-3">
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                        <h2 className="text-base sm:text-lg md:text-xl font-semibold leading-tight hover:text-primary cursor-pointer">
                           {article.title}
                         </h2>
-                        <Badge className={getImpactColor(article.impact)}>
+                        <Badge className={`${getImpactColor(article.impact)} flex-shrink-0 w-fit text-xs`}>
                           {article.impact} impact
                         </Badge>
                       </div>
                       
-                      <p className="text-muted-foreground leading-relaxed">{article.summary}</p>
+                      <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{article.summary}</p>
                       
-                      <div className="flex items-center justify-between pt-2">
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Globe className="h-4 w-4" /> {article.source}
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">
+                        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+                          <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                            <Globe className="h-3 w-3 sm:h-4 sm:w-4" /> {article.source}
                           </div>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Clock className="h-4 w-4" /> {article.time}
+                          <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                            <Clock className="h-3 w-3 sm:h-4 sm:w-4" /> {article.time}
                           </div>
                         </div>
                         
                         <div className="flex items-center gap-2">
-                          <div className="flex gap-1">
+                          <div className="flex gap-1 flex-wrap">
                             {article.currencies.map((currency) => (
                               <Badge key={currency} variant="secondary" className="text-xs">{currency}</Badge>
                             ))}
                           </div>
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                             <ExternalLink className="h-4 w-4" />
                           </Button>
                         </div>
@@ -235,25 +237,25 @@ export function NewsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {[
               { time: "09:30 GMT", event: "US CPI", currency: "USD", impact: "high", forecast: "3.2%", previous: "3.1%" },
               { time: "14:00 GMT", event: "ECB Interest Rate Decision", currency: "EUR", impact: "high", forecast: "4.25%", previous: "4.25%" },
               { time: "Tomorrow 12:30 GMT", event: "UK Employment Data", currency: "GBP", impact: "medium", forecast: "4.0%", previous: "3.9%" }
             ].map((event, index) => (
-              <div key={index} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
-                <div className="flex items-center gap-4">
-                  <div className="text-sm text-muted-foreground min-w-24">{event.time}</div>
+              <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 sm:p-4 bg-muted/30 rounded-lg">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                  <div className="text-xs sm:text-sm text-muted-foreground sm:min-w-24">{event.time}</div>
                   <div>
-                    <div className="font-medium">{event.event}</div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="font-medium text-sm sm:text-base">{event.event}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">
                       Forecast: {event.forecast} | Previous: {event.previous}
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge variant="secondary">{event.currency}</Badge>
-                  <Badge className={getImpactColor(event.impact)}>{event.impact}</Badge>
+                  <Badge variant="secondary" className="text-xs">{event.currency}</Badge>
+                  <Badge className={`${getImpactColor(event.impact)} text-xs`}>{event.impact}</Badge>
                 </div>
               </div>
             ))}
