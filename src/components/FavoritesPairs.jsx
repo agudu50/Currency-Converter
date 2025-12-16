@@ -7,16 +7,24 @@ import {
   currencies,
   convertCurrency,
   formatCurrency,
+  fetchExchangeRates,
 } from "../utils/currencyData";
 
 export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
   const [refreshing, setRefreshing] = useState(false);
+  const [, forceUpdate] = useState(0);
 
   const refreshRates = async () => {
     setRefreshing(true);
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setRefreshing(false);
+    try {
+      await fetchExchangeRates('USD');
+      // Force component re-render to show new rates
+      forceUpdate(prev => prev + 1);
+    } catch (error) {
+      console.error('Failed to refresh rates:', error);
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   const getCurrencyFlag = (code) => {

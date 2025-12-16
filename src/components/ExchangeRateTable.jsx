@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import {
   Table,
@@ -8,43 +9,79 @@ import {
   TableRow,
 } from "./ui/table";
 import { Badge } from "./ui/badge";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { TrendingUp, TrendingDown, RefreshCw } from "lucide-react";
+import { Button } from "./ui/button";
 import {
   currencies,
   convertCurrency,
   formatCurrency,
+  fetchExchangeRates,
 } from "../utils/currencyData";
 
 
 export default function ExchangeRateTable() {
   const baseCurrency = "USD";
+  const [rateData, setRateData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(null);
 
-  // Generate rate data with mock trend information
-  const rateData = currencies
-    .filter((currency) => currency.code !== baseCurrency)
-    .map((currency) => {
-      const rate = convertCurrency(1, baseCurrency, currency.code);
-      // Mock trend data - in a real app this would come from historical data
-      const trend = Math.random() > 0.5 ? "up" : "down";
-      const change = (Math.random() * 2 - 1).toFixed(2); // Random change between -1 and 1
+  useEffect(() => {
+    loadRates();
+  }, []);
 
-      return {
-        ...currency,
-        rate,
-        trend,
-        change: parseFloat(change),
-        formattedRate: formatCurrency(rate, currency.code),
-      };
-    })
-    .slice(0, 12); // Show top 12 currencies
+  const loadRates = async () => {
+    setLoading(true);
+    try {
+      await fetchExchangeRates(baseCurrency);
+      
+      // Generate rate data with mock trend information
+      const data = currencies
+        .filter((currency) => currency.code !== baseCurrency)
+        .map((currency) => {
+          const rate = convertCurrency(1, baseCurrency, currency.code);
+          // Mock trend data - in a real app this would come from historical data
+          const trend = Math.random() > 0.5 ? "up" : "down";
+          const change = (Math.random() * 2 - 1).toFixed(2);
+
+          return {
+            ...currency,
+            rate,
+            trend,
+            change: parseFloat(change),
+            formattedRate: formatCurrency(rate, currency.code),
+          };
+        })
+        .slice(0, 12); // Show top 12 currencies
+      
+      setRateData(data);
+      setLastUpdated(new Date());
+    } catch (error) {
+      console.error('Failed to load rates:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg sm:text-2xl">Live Exchange Rates</CardTitle>
-        <p className="text-xs sm:text-sm text-muted-foreground">
-          Base currency: {baseCurrency} • Updated every minute
-        </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="text-lg sm:text-2xl">Live Exchange Rates</CardTitle>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Base currency: {baseCurrency} {lastUpdated && `• Updated: ${lastUpdated.toLocaleTimeString()}`}
+            </p>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={loadRates}
+            disabled={loading}
+            className={`${loading ? 'animate-spin' : ''}`}
+          >
+            <RefreshCw className="h-4 w-4" />
+          </Button>
+        </div>
       </CardHeader>
 
       <CardContent>

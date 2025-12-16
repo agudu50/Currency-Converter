@@ -140,23 +140,110 @@ export const currencies = [
   { code: 'MNT', name: 'Mongolian Tugrik', symbol: '₮', flag: '🇲🇳' },
 ];
 
-// Mock exchange rates
-export const mockExchangeRates = {
-  'USD': 1.0000,
-  'EUR': 0.8500,
-  'GBP': 0.7300,
-  'JPY': 110.2500,
-  'CHF': 0.9200,
-  'CAD': 1.2500,
-  'AUD': 1.3500,
-  'CNY': 6.4500,
-  // ... add the rest similarly
+// API Configuration
+const API_KEY = import.meta.env.VITE_EXCHANGE_RATE_API_KEY || 'd3cce14a3fd7350176ecac8b';
+const BASE_URL = 'https://v6.exchangerate-api.com/v6';
+
+// Cache for exchange rates
+let ratesCache = {
+  rates: null,
+  timestamp: null,
+  baseCurrency: 'USD'
 };
 
-// Convert currency
+const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+
+// Fetch exchange rates from API
+export async function fetchExchangeRates(baseCurrency = 'USD') {
+  const now = Date.now();
+  
+  // Return cached data if still valid and same base currency
+  if (
+    ratesCache.rates &&
+    ratesCache.timestamp &&
+    ratesCache.baseCurrency === baseCurrency &&
+    now - ratesCache.timestamp < CACHE_DURATION
+  ) {
+    return ratesCache.rates;
+  }
+
+  try {
+    const response = await fetch(`${BASE_URL}/${API_KEY}/latest/${baseCurrency}`);
+    
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    if (data.result === 'success') {
+      ratesCache = {
+        rates: data.conversion_rates,
+        timestamp: now,
+        baseCurrency: baseCurrency
+      };
+      return data.conversion_rates;
+    } else {
+      throw new Error('API request failed');
+    }
+  } catch (error) {
+    console.error('Error fetching exchange rates:', error);
+    // Return mock rates as fallback
+    return getMockExchangeRates();
+  }
+}
+
+// Mock exchange rates (fallback)
+function getMockExchangeRates() {
+  return {
+    'USD': 1.0000,
+    'EUR': 0.8500,
+    'GBP': 0.7300,
+    'JPY': 110.2500,
+    'CHF': 0.9200,
+    'CAD': 1.2500,
+    'AUD': 1.3500,
+    'CNY': 6.4500,
+    'INR': 74.5000,
+    'KRW': 1180.0000,
+    'SGD': 1.3500,
+    'HKD': 7.7500,
+    'TWD': 28.0000,
+    'PHP': 50.5000,
+    'MYR': 4.1500,
+    'THB': 33.2500,
+    'IDR': 14250.0000,
+    'VND': 23000.0000,
+    'PKR': 175.0000,
+    'BDT': 85.0000,
+    'BRL': 5.2500,
+    'MXN': 20.0000,
+    'ARS': 98.5000,
+    'ZAR': 15.0000,
+    'NGN': 410.0000,
+    'EGP': 15.7500,
+    'RUB': 73.5000,
+    'TRY': 8.5000,
+    'AED': 3.6700,
+    'SAR': 3.7500,
+  };
+}
+
+// Convert currency (synchronous - for backward compatibility)
 export function convertCurrency(amount, fromCurrency, toCurrency) {
-  const fromRate = mockExchangeRates[fromCurrency] || 1;
-  const toRate = mockExchangeRates[toCurrency] || 1;
+  // This uses cached rates if available, otherwise returns mock calculation
+  const rates = ratesCache.rates || getMockExchangeRates();
+  const fromRate = rates[fromCurrency] || 1;
+  const toRate = rates[toCurrency] || 1;
+  const usdAmount = amount / fromRate;
+  return usdAmount * toRate;
+}
+
+// Convert currency (async - recommended)
+export async function convertCurrencyAsync(amount, fromCurrency, toCurrency) {
+  const rates = await fetchExchangeRates('USD');
+  const fromRate = rates[fromCurrency] || 1;
+  const toRate = rates[toCurrency] || 1;
   const usdAmount = amount / fromRate;
   return usdAmount * toRate;
 }
