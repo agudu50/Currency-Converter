@@ -1,125 +1,132 @@
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Badge } from "../components/ui/badge";
+import { Card } from "../components/ui/card";
 import { Button } from "../components/ui/button";
-import {
-  TrendingUp,
-  Users,
-  Award,
-  Globe,
-  Shield,
-  Zap,
-  ExternalLink,
-  Github,
-  Twitter,
-  Mail,
-} from "lucide-react";
+import { Bell, TrendingUp, TrendingDown, AlertTriangle } from "lucide-react";
 
 export function AlertsPage() {
-  const features = [
+  const alerts = [
     {
-      icon: <Zap className="h-6 w-6" />,
-      title: "Real-Time Data",
-      description:
-        "Live exchange rates updated every minute from major financial markets worldwide.",
+      id: 1,
+      type: "price",
+      currency: "EUR/USD",
+      condition: "above",
+      value: 1.10,
+      current: 1.0932,
+      active: true,
+      icon: TrendingUp,
+      color: "text-emerald-500"
     },
     {
-      icon: <Globe className="h-6 w-6" />,
-      title: "Global Coverage",
-      description:
-        "Support for 20+ major currencies including exotic pairs and emerging markets.",
+      id: 2,
+      type: "price",
+      currency: "GBP/USD",
+      condition: "below",
+      value: 1.25,
+      current: 1.2654,
+      active: true,
+      icon: TrendingDown,
+      color: "text-rose-500"
     },
     {
-      icon: <Shield className="h-6 w-6" />,
-      title: "Bank-Grade Security",
-      description:
-        "Enterprise-level security with encrypted connections and secure data handling.",
-    },
-    {
-      icon: <Award className="h-6 w-6" />,
-      title: "99.9% Uptime",
-      description:
-        "Reliable service with guaranteed uptime and redundant infrastructure.",
-    },
-  ];
-
-  const team = [
-    {
-      name: "Sarah Chen",
-      role: "Founder & CEO",
-      bio: "Former Goldman Sachs trader with 15+ years in FX markets",
-      image: "👩‍💼",
-    },
-    {
-      name: "Michael Rodriguez",
-      role: "CTO",
-      bio: "Ex-Google engineer specializing in high-frequency trading systems",
-      image: "👨‍💻",
-    },
-    {
-      name: "Emily Johnson",
-      role: "Head of Product",
-      bio: "Financial technology expert with background in user experience",
-      image: "👩‍🎨",
-    },
-    {
-      name: "David Kim",
-      role: "Lead Data Scientist",
-      bio: "PhD in Economics, specialist in currency forecasting models",
-      image: "👨‍🔬",
-    },
-  ];
-
-  const stats = [
-    { label: "Active Users", value: "1M+", icon: Users },
-    { label: "Daily Conversions", value: "10M+", icon: TrendingUp },
-    { label: "Countries Served", value: "150+", icon: Globe },
-    { label: "API Calls/Day", value: "100M+", icon: Zap },
+      id: 3,
+      type: "volatility",
+      currency: "USD/JPY",
+      condition: "high volatility",
+      value: 5,
+      current: 3.2,
+      active: true,
+      icon: AlertTriangle,
+      color: "text-amber-500"
+    }
   ];
 
   return (
-    <div className="space-y-12">
-      {/* Hero Section */}
-      <section className="text-center space-y-6 py-12 bg-gradient-to-br from-primary/5 via-chart-1/5 to-chart-2/5 rounded-2xl">
-        <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary via-chart-1 to-chart-2 bg-clip-text text-transparent">
-          About CurrencyExchange
-        </h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-          We're on a mission to make currency exchange transparent, accessible,
-          and reliable for everyone worldwide.
+    <div className="container mx-auto px-4 py-8 space-y-8">
+      {/* Header Section */}
+      <div className="text-center space-y-4">
+        <div className="flex items-center justify-center gap-3">
+          <Bell className="h-10 w-10 text-primary" />
+          <h1 className="text-4xl md:text-5xl font-bold">Price Alerts</h1>
+        </div>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Set up custom alerts to stay informed about important currency movements and market conditions.
         </p>
+      </div>
 
-        <div className="flex gap-4 justify-center">
-          <Button size="lg">Start Converting</Button>
-          <Button variant="outline" size="lg">
-            Contact Us <ExternalLink className="ml-2 h-4 w-4" />
-          </Button>
+      {/* Create Alert Button */}
+      <div className="flex justify-center">
+        <Button size="lg" className="gap-2">
+          <Bell className="h-5 w-5" />
+          Create New Alert
+        </Button>
+      </div>
+
+      {/* Active Alerts */}
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold">Active Alerts</h2>
+        <div className="grid gap-4">
+          {alerts.map((alert) => {
+            const Icon = alert.icon;
+            return (
+              <Card key={alert.id} className="p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-start gap-4 flex-1">
+                    <div className={`p-3 rounded-lg bg-muted ${alert.color}`}>
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <div className="space-y-2 flex-1">
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-xl font-semibold">{alert.currency}</h3>
+                        <span className="px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
+                          Active
+                        </span>
+                      </div>
+                      <p className="text-muted-foreground">
+                        Alert when price is <span className="font-semibold">{alert.condition}</span> {alert.value}
+                      </p>
+                      <div className="flex items-center gap-4 text-sm">
+                        <span className="text-muted-foreground">
+                          Current: <span className="font-semibold text-foreground">{alert.current}</span>
+                        </span>
+                        <span className="text-muted-foreground">
+                          Target: <span className="font-semibold text-foreground">{alert.value}</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm">Edit</Button>
+                    <Button variant="destructive" size="sm">Delete</Button>
+                  </div>
+                </div>
+              </Card>
+            );
+          })}
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {stats.map((stat, index) => (
-          <Card key={index} className="text-center p-6">
-            <CardContent>
-              <stat.icon className="h-6 w-6 mx-auto text-primary mb-2" />
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <div className="text-sm text-muted-foreground">
-                {stat.label}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </section>
-
-      {/* CTA */}
-      <section className="text-center py-12 bg-gradient-to-r from-primary/10 via-chart-1/10 to-chart-2/10 rounded-2xl">
-        <h2 className="text-3xl font-bold">Ready to Get Started?</h2>
-        <p className="text-muted-foreground max-w-2xl mx-auto mt-2">
-          Join millions of users who trust CurrencyExchange.
-        </p>
-        <Button size="lg" className="mt-4">
-          Start Converting Now
-        </Button>
+      {/* Alert Types Info */}
+      <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+        <Card className="p-6 text-center">
+          <TrendingUp className="h-12 w-12 mx-auto mb-4 text-emerald-500" />
+          <h3 className="text-xl font-semibold mb-2">Price Alerts</h3>
+          <p className="text-sm text-muted-foreground">
+            Get notified when a currency reaches your target price
+          </p>
+        </Card>
+        <Card className="p-6 text-center">
+          <TrendingDown className="h-12 w-12 mx-auto mb-4 text-rose-500" />
+          <h3 className="text-xl font-semibold mb-2">Trend Alerts</h3>
+          <p className="text-sm text-muted-foreground">
+            Track significant price movements and trend changes
+          </p>
+        </Card>
+        <Card className="p-6 text-center">
+          <AlertTriangle className="h-12 w-12 mx-auto mb-4 text-amber-500" />
+          <h3 className="text-xl font-semibold mb-2">Volatility Alerts</h3>
+          <p className="text-sm text-muted-foreground">
+            Monitor unusual market volatility and rapid price changes
+          </p>
+        </Card>
       </section>
     </div>
   );
