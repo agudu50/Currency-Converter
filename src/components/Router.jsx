@@ -3,7 +3,7 @@ import { useState, createContext, useContext } from 'react';
 const RouterContext = createContext(null);
 
 export function Router({ children }) {
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState('landing');
 
   const navigateTo = (page) => {
     setCurrentPage(page);

@@ -16,8 +16,8 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { TrendingUp } from "lucide-react";
 import { currencies, generateHistoricalData } from "../utils/currencyData";
-import { useRouter } from "./Router";
 
 
 
@@ -37,11 +37,13 @@ export default function CurrencyChart() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Historical Exchange Rates</CardTitle>
+    <Card className="bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-100 overflow-hidden">
+      <CardHeader className="p-6 border-b border-slate-100 bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50">
+        <CardTitle className="text-xl font-bold text-slate-800 flex items-center gap-2">
+          <TrendingUp className="w-5 h-5 text-indigo-500" /> Historical Exchange Rates
+        </CardTitle>
 
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 mt-4">
           {/* From currency */}
           <div className="flex items-center gap-2">
             <span className="text-sm">From:</span>
@@ -100,7 +102,7 @@ export default function CurrencyChart() {
         </div>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="p-6">
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>
@@ -139,7 +141,7 @@ export default function CurrencyChart() {
         </div>
 
         {/* Stats */}
-        <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div>
             <div className="text-sm text-muted-foreground">Current Rate</div>
             <div className="font-semibold">

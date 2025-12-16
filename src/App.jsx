@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Router, useRouter } from "./components/Router";
+import { LandingPage } from "./pages/LandingPage";
 import { HomePage } from "./pages/HomePage";
 import { MarketPage } from "./pages/MarketPage";
 import { NewsPage } from "./pages/NewsPage";
@@ -32,6 +33,8 @@ function AppContent() {
 
   const renderPage = () => {
     switch (currentPage) {
+      case 'landing':
+        return <LandingPage />;
       case 'home':
         return (
           <HomePage 
@@ -51,13 +54,7 @@ function AppContent() {
       case 'about':
         return <AboutPage />;
       default:
-        return (
-          <HomePage 
-            favorites={favorites}
-            onFavoriteAdd={addToFavorites}
-            onRemoveFavorite={removeFavorite}
-          />
-        );
+        return <LandingPage />;
     }
   };
 

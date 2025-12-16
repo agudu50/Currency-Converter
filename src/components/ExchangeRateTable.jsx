@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "./ui/table";
 import { Badge } from "./ui/badge";
-import { TrendingUp, TrendingDown, RefreshCw } from "lucide-react";
+import { TrendingUp, TrendingDown, RefreshCw, BarChart3 } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   currencies,
@@ -63,12 +63,14 @@ export default function ExchangeRateTable() {
   };
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-100 overflow-hidden">
+      <CardHeader className="p-6 border-b border-slate-100 bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-lg sm:text-2xl">Live Exchange Rates</CardTitle>
-            <p className="text-xs sm:text-sm text-muted-foreground">
+            <CardTitle className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <BarChart3 className="w-5 h-5 text-indigo-500" /> Live Exchange Rates
+            </CardTitle>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
               Base currency: {baseCurrency} {lastUpdated && `• Updated: ${lastUpdated.toLocaleTimeString()}`}
             </p>
           </div>
@@ -78,13 +80,14 @@ export default function ExchangeRateTable() {
             onClick={loadRates}
             disabled={loading}
             className={`${loading ? 'animate-spin' : ''}`}
+            aria-label="Refresh rates"
           >
             <RefreshCw className="h-4 w-4" />
           </Button>
         </div>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="p-6">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
