@@ -3,8 +3,20 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { Router, useRouter } from "./components/Router";
-const LandingPage = lazy(() => import('./pages/LandingPage').then(m => ({ default: m.LandingPage })));
-const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
+
+console.log('App.jsx loading...');
+
+const LandingPage = lazy(() => {
+  console.log('Lazy loading LandingPage');
+  return import('./pages/LandingPage').then(m => {
+    console.log('LandingPage module loaded');
+    return { default: m.LandingPage };
+  }).catch(err => {
+    console.error('LandingPage load error:', err);
+    throw err;
+  });
+});
+const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })).catch(err => { console.error('HomePage load error:', err); throw err; }));
 const MarketPage = lazy(() => import('./pages/MarketPage').then(m => ({ default: m.MarketPage })));
 const NewsPage = lazy(() => import('./pages/NewsPage').then(m => ({ default: m.NewsPage })));
 const AlertsPage = lazy(() => import('./pages/AlertsPage').then(m => ({ default: m.AlertsPage })));
