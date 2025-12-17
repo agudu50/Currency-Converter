@@ -39,22 +39,30 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
 
       {/* Quick Stats */}
       <section className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-        <Card className="p-3 sm:p-6 text-center bg-gradient-to-br from-chart-1/10 to-chart-1/5 border-chart-1/20">
-          <div className="text-lg sm:text-2xl font-bold text-chart-1">20+</div>
-          <div className="text-xs sm:text-sm text-muted-foreground">Currencies Supported</div>
-        </Card>
-        <Card className="p-3 sm:p-6 text-center bg-gradient-to-br from-chart-2/10 to-chart-2/5 border-chart-2/20">
-          <div className="text-lg sm:text-2xl font-bold text-chart-2">24/7</div>
-          <div className="text-xs sm:text-sm text-muted-foreground">Live Updates</div>
-        </Card>
-        <Card className="p-3 sm:p-6 text-center bg-gradient-to-br from-chart-3/10 to-chart-3/5 border-chart-3/20">
-          <div className="text-lg sm:text-2xl font-bold text-chart-3">99.9%</div>
-          <div className="text-xs sm:text-sm text-muted-foreground">Uptime</div>
-        </Card>
-        <Card className="p-3 sm:p-6 text-center bg-gradient-to-br from-chart-4/10 to-chart-4/5 border-chart-4/20">
-          <div className="text-lg sm:text-2xl font-bold text-chart-4">1M+</div>
-          <div className="text-xs sm:text-sm text-muted-foreground">Conversions Daily</div>
-        </Card>
+        {[ 
+          { value: "20+", label: "Currencies Supported", from: "from-indigo-500", to: "to-blue-500", text: "text-indigo-50", icon: "🌐" },
+          { value: "24/7", label: "Live Updates", from: "from-emerald-500", to: "to-teal-400", text: "text-emerald-50", icon: "⚡" },
+          { value: "99.9%", label: "Uptime", from: "from-amber-500", to: "to-orange-400", text: "text-amber-50", icon: "🛡️" },
+          { value: "1M+", label: "Conversions Daily", from: "from-purple-500", to: "to-pink-500", text: "text-purple-50", icon: "📈" },
+        ].map((stat, idx) => (
+          <Card
+            key={idx}
+            className="relative overflow-hidden p-4 sm:p-6 text-center border-0 shadow-lg shadow-slate-900/5"
+          >
+            <div className={`absolute inset-0 bg-gradient-to-br ${stat.from} ${stat.to} opacity-90`} />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.25),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.15),transparent_30%)]" />
+            <div className="relative space-y-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm text-xs font-semibold text-white shadow-sm">
+                <span>{stat.icon}</span>
+                <span>{stat.label}</span>
+              </div>
+              <div className={`text-2xl sm:text-3xl font-extrabold drop-shadow-sm text-white`}>
+                {stat.value}
+              </div>
+              <div className="text-xs sm:text-sm text-white/90">{stat.label}</div>
+            </div>
+          </Card>
+        ))}
       </section>
 
       {/* Currency Converter */}
@@ -80,77 +88,44 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
         </section>
       </div>
 
-      {/* Features Section */}
+      {/* Why Choose Section - Gradient Glass Card */}
       <section className="py-12">
-        <div className="text-center space-y-8">
-          <div className="space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold">Why Choose Our Platform?</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Built for professionals and everyday users who need reliable, accurate currency data.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
-            <Card className="p-4 sm:p-8 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-              <div className="w-12 sm:w-16 h-12 sm:h-16 mx-auto mb-4 bg-chart-1/10 rounded-2xl flex items-center justify-center">
-                <Zap className="h-6 sm:h-8 w-6 sm:w-8 text-chart-1" />
-              </div>
-              <h3 className="text-base sm:text-xl font-semibold mb-2">Real-Time Rates</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Get live exchange rates updated every minute from global financial markets and major banks.
-              </p>
-            </Card>
-            
-            <Card className="p-4 sm:p-8 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-              <div className="w-12 sm:w-16 h-12 sm:h-16 mx-auto mb-4 bg-chart-2/10 rounded-2xl flex items-center justify-center">
-                <BarChart3 className="h-6 sm:h-8 w-6 sm:w-8 text-chart-2" />
-              </div>
-              <h3 className="text-base sm:text-xl font-semibold mb-2">Advanced Analytics</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Analyze currency trends with interactive charts, historical data, and technical indicators.
-              </p>
-            </Card>
-            
-            <Card className="p-4 sm:p-8 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-              <div className="w-12 sm:w-16 h-12 sm:h-16 mx-auto mb-4 bg-chart-3/10 rounded-2xl flex items-center justify-center">
-                <Star className="h-6 sm:h-8 w-6 sm:w-8 text-chart-3" />
-              </div>
-              <h3 className="text-base sm:text-xl font-semibold mb-2">Smart Favorites</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Save your most used currency pairs for quick access and get personalized insights.
-              </p>
-            </Card>
+        <div className="max-w-6xl mx-auto">
+          <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-amber-400 opacity-90" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
 
-            <Card className="p-4 sm:p-8 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-              <div className="w-12 sm:w-16 h-12 sm:h-16 mx-auto mb-4 bg-chart-4/10 rounded-2xl flex items-center justify-center">
-                <Globe className="h-6 sm:h-8 w-6 sm:w-8 text-chart-4" />
-              </div>
-              <h3 className="text-base sm:text-xl font-semibold mb-2">Global Coverage</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Access rates for major world currencies including exotic pairs and emerging markets.
+            <div className="relative z-10 p-8 sm:p-10 border-b border-white/15">
+              <h2 className="text-3xl md:text-4xl font-bold text-white">Why Choose Our Platform?</h2>
+              <p className="text-white/80 text-lg mt-3 max-w-3xl">
+                Built for professionals and everyday users who need reliable, accurate currency data.
               </p>
-            </Card>
+            </div>
 
-            <Card className="p-4 sm:p-8 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-              <div className="w-12 sm:w-16 h-12 sm:h-16 mx-auto mb-4 bg-chart-5/10 rounded-2xl flex items-center justify-center">
-                <Shield className="h-6 sm:h-8 w-6 sm:w-8 text-chart-5" />
-              </div>
-              <h3 className="text-base sm:text-xl font-semibold mb-2">Bank-Grade Security</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Enterprise-level security with encrypted connections and secure data handling.
-              </p>
-            </Card>
-
-            <Card className="p-4 sm:p-8 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-              <div className="w-12 sm:w-16 h-12 sm:h-16 mx-auto mb-4 bg-primary/10 rounded-2xl flex items-center justify-center">
-                <Clock className="h-6 sm:h-8 w-6 sm:w-8 text-primary" />
-              </div>
-              <h3 className="text-base sm:text-xl font-semibold mb-2">24/7 Availability</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Round-the-clock access to currency data with 99.9% uptime guarantee.
-              </p>
-            </Card>
-          </div>
+            <div className="relative z-10 grid md:grid-cols-2 gap-4 sm:gap-6 p-8 sm:p-10 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0">
+              {[ 
+                { icon: Zap, title: "Real-Time Rates", desc: "Get live exchange rates updated every minute from global financial markets and major banks." },
+                { icon: BarChart3, title: "Advanced Analytics", desc: "Analyze currency trends with interactive charts, historical data, and technical indicators." },
+                { icon: Star, title: "Smart Favorites", desc: "Save your most used currency pairs for quick access and get personalized insights." },
+                { icon: Globe, title: "Global Coverage", desc: "Access rates for major world currencies including exotic pairs and emerging markets." },
+                { icon: Shield, title: "Bank-Grade Security", desc: "Enterprise-level security with encrypted connections and secure data handling." },
+                { icon: Clock, title: "24/7 Availability", desc: "Round-the-clock access to currency data with 99.9% uptime guarantee." },
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="group flex gap-4 p-4 sm:p-5 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors"
+                >
+                  <div className="h-12 w-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center text-white">
+                    <item.icon className="h-6 w-6" />
+                  </div>
+                  <div className="space-y-1">
+                    <div className="font-semibold text-lg text-white">{item.title}</div>
+                    <p className="text-sm text-white/80 leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
         </div>
       </section>
     </div>

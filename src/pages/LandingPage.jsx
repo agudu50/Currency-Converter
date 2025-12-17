@@ -258,34 +258,44 @@ export function LandingPage() {
             </div>
           </div>
 
-          {/* Features Grid - Bento Style */}
+          {/* Why Choose Section - Gradient Glass Card */}
           <section className="py-12">
-            <div className="text-center mb-12 space-y-4">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Why the world chooses us</h2>
-              <p className="text-slate-500 text-lg">Powerful features wrapped in a simple interface.</p>
-            </div>
-            
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                { icon: Zap, title: "Instant Rates", desc: "Live exchange rates updated every second via WebSocket.", color: "blue" },
-                { icon: BarChart3, title: "Pro Charts", desc: "Deep dive with candles, moving averages and indicators.", color: "indigo" },
-                { icon: Globe, title: "Global Reach", desc: "Direct access to 150+ currencies and exotic pairs.", color: "violet" },
-                { icon: Shield, title: "Bank Security", desc: "AES-256 encryption keeps your financial data safe.", color: "emerald" },
-                { icon: Star, title: "Watchlists", desc: "Pin your favorite pairs for one-tap access.", color: "amber" },
-                { icon: Clock, title: "Always On", desc: "The market never sleeps, and neither does our support.", color: "rose" },
-              ].map((feature, i) => (
-                <Card key={i} className="group p-8 border border-slate-100 bg-white hover:border-indigo-100 hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 rounded-2xl">
-                  <div className={`w-12 h-12 rounded-xl bg-${feature.color}-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                    <feature.icon className={`w-6 h-6 text-${feature.color}-600`} />
-                  </div>
-                  <h3 className="font-bold text-lg text-slate-800 mb-2 group-hover:text-indigo-600 transition-colors">
-                    {feature.title}
-                  </h3>
-                  <p className="text-slate-500 leading-relaxed">
-                    {feature.desc}
+            <div className="max-w-6xl mx-auto">
+              <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-amber-400 opacity-90" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+
+                <div className="relative z-10 p-8 sm:p-10 border-b border-white/15">
+                  <h2 className="text-3xl md:text-4xl font-bold text-white">Why Choose Our Platform?</h2>
+                  <p className="text-white/80 text-lg mt-3 max-w-3xl">
+                    Built for professionals and everyday users who need reliable, accurate currency data.
                   </p>
-                </Card>
-              ))}
+                </div>
+
+                <div className="relative z-10 grid md:grid-cols-2 gap-4 sm:gap-6 p-8 sm:p-10 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0">
+                  {[ 
+                    { icon: Zap, title: "Real-Time Rates", desc: "Get live exchange rates updated every minute from global financial markets and major banks." },
+                    { icon: BarChart3, title: "Advanced Analytics", desc: "Analyze currency trends with interactive charts, historical data, and technical indicators." },
+                    { icon: Star, title: "Smart Favorites", desc: "Save your most used currency pairs for quick access and get personalized insights." },
+                    { icon: Globe, title: "Global Coverage", desc: "Access rates for major world currencies including exotic pairs and emerging markets." },
+                    { icon: Shield, title: "Bank-Grade Security", desc: "Enterprise-level security with encrypted connections and secure data handling." },
+                    { icon: Clock, title: "24/7 Availability", desc: "Round-the-clock access to currency data with 99.9% uptime guarantee." },
+                  ].map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="group flex gap-4 p-4 sm:p-5 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors"
+                    >
+                      <div className="h-12 w-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center text-white">
+                        <item.icon className="h-6 w-6" />
+                      </div>
+                      <div className="space-y-1">
+                        <div className="font-semibold text-lg text-white">{item.title}</div>
+                        <p className="text-sm text-white/80 leading-relaxed">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card>
             </div>
           </section>
 

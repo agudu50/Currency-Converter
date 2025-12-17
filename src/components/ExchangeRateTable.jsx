@@ -63,14 +63,20 @@ export default function ExchangeRateTable() {
   };
 
   return (
-    <Card className="bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-100 overflow-hidden">
-      <CardHeader className="p-6 border-b border-slate-100 bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50">
+    <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-blue-600 to-emerald-400 opacity-90" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+
+      <CardHeader className="relative z-10 p-6 border-b border-white/15">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-xl font-bold text-slate-800 flex items-center gap-2">
-              <BarChart3 className="w-5 h-5 text-indigo-500" /> Live Exchange Rates
+            <CardTitle className="text-xl font-semibold text-white flex items-center gap-2">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm text-sm font-semibold">
+                <BarChart3 className="w-4 h-4" />
+              </span>
+              Live Exchange Rates
             </CardTitle>
-            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+            <p className="text-xs sm:text-sm text-white/70 mt-1">
               Base currency: {baseCurrency} {lastUpdated && `• Updated: ${lastUpdated.toLocaleTimeString()}`}
             </p>
           </div>
@@ -79,47 +85,48 @@ export default function ExchangeRateTable() {
             size="icon"
             onClick={loadRates}
             disabled={loading}
-            className={`${loading ? 'animate-spin' : ''}`}
+            className={`text-white/80 hover:text-white bg-white/10 hover:bg-white/20 ${loading ? 'animate-spin' : ''}`}
             aria-label="Refresh rates"
+            title="Refresh rates"
           >
             <RefreshCw className="h-4 w-4" />
           </Button>
         </div>
       </CardHeader>
 
-      <CardContent className="p-6">
+      <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead className="text-xs sm:text-sm">Currency</TableHead>
-                <TableHead className="text-xs sm:text-sm">Rate</TableHead>
-                <TableHead className="text-xs sm:text-sm">24h Change</TableHead>
-                <TableHead className="text-xs sm:text-sm">Trend</TableHead>
+              <TableRow className="border-white/10">
+                <TableHead className="text-xs sm:text-sm text-white/70">Currency</TableHead>
+                <TableHead className="text-xs sm:text-sm text-white/70">Rate</TableHead>
+                <TableHead className="text-xs sm:text-sm text-white/70">24h Change</TableHead>
+                <TableHead className="text-xs sm:text-sm text-white/70">Trend</TableHead>
               </TableRow>
             </TableHeader>
 
             <TableBody>
               {rateData.map((currency) => (
-                <TableRow key={currency.code}>
-                  <TableCell>
+                <TableRow key={currency.code} className="border-white/10 hover:bg-white/10">
+                  <TableCell className="text-white">
                     <div className="flex items-center gap-2 sm:gap-3">
                       <span className="text-base sm:text-lg">{currency.flag}</span>
                       <div>
-                        <div className="font-medium text-xs sm:text-sm">{currency.code}</div>
-                        <div className="text-xs text-muted-foreground hidden sm:block">
+                        <div className="font-semibold text-xs sm:text-sm text-white">{currency.code}</div>
+                        <div className="text-xs text-white/70 hidden sm:block">
                           {currency.name}
                         </div>
                       </div>
                     </div>
                   </TableCell>
 
-                  <TableCell className="font-mono text-xs sm:text-sm">{currency.formattedRate}</TableCell>
+                  <TableCell className="font-mono text-xs sm:text-sm text-white/90">{currency.formattedRate}</TableCell>
 
                   <TableCell>
                     <div
-                      className={`flex items-center gap-1 text-xs sm:text-sm ${
-                        currency.change >= 0 ? "text-green-600" : "text-red-600"
+                      className={`flex items-center gap-1 text-xs sm:text-sm font-semibold ${
+                        currency.change >= 0 ? "text-emerald-200" : "text-rose-200"
                       }`}
                     >
                       {currency.change >= 0 ? "+" : ""}
@@ -129,11 +136,9 @@ export default function ExchangeRateTable() {
 
                   <TableCell>
                     <Badge
-                      variant={currency.trend === "up" ? "default" : "secondary"}
-                      className={`text-xs sm:text-sm ${
-                        currency.trend === "up"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
+                      variant="secondary"
+                      className={`text-xs sm:text-sm border border-white/25 bg-white/15 text-white inline-flex items-center ${
+                        currency.trend === "up" ? "" : ""
                       }`}
                     >
                       {currency.trend === "up" ? (
@@ -141,7 +146,7 @@ export default function ExchangeRateTable() {
                       ) : (
                         <TrendingDown className="h-3 w-3 mr-1" />
                       )}
-                      <span className="hidden sm:inline">{currency.trend}</span>
+                      <span className="hidden sm:inline capitalize">{currency.trend}</span>
                     </Badge>
                   </TableCell>
                 </TableRow>

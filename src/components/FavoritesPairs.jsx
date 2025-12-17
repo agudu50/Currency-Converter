@@ -38,71 +38,82 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
 
   if (!favorites || favorites.length === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Favorite Currency Pairs</CardTitle>
+      <Card className="relative overflow-hidden border-0 shadow-xl bg-slate-950 text-white">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-fuchsia-500 to-amber-400 opacity-90" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.2),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.15),transparent_32%)]" />
+        <CardHeader className="relative z-10 pb-3 border-b border-white/15">
+          <CardTitle className="text-lg sm:text-2xl text-white flex items-center gap-2">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm text-sm font-semibold">★</span>
+            Favorite Currency Pairs
+          </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="text-center py-8 text-muted-foreground">
-            <p>No favorite pairs yet.</p>
-            <p className="text-sm mt-1">
-              Click the star icon in the converter to add favorites.
-            </p>
-          </div>
+        <CardContent className="relative z-10 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0 p-6 text-center">
+          <p className="text-white/80">No favorite pairs yet.</p>
+          <p className="text-sm mt-1 text-white/70">
+            Click the star icon in the converter to add favorites.
+          </p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="relative overflow-hidden border-0 shadow-xl bg-slate-950 text-white">
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-fuchsia-500 to-amber-400 opacity-90" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.2),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.15),transparent_32%)]" />
+
+      <CardHeader className="relative z-10 border-b border-white/15 pb-4">
         <div className="flex items-center justify-between flex-col sm:flex-row gap-2">
-          <CardTitle className="text-lg sm:text-2xl">Favorite Currency Pairs</CardTitle>
+          <CardTitle className="text-lg sm:text-2xl text-white flex items-center gap-2">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm text-sm font-semibold">★</span>
+            Favorite Currency Pairs
+          </CardTitle>
           <Button
             variant="ghost"
             size="icon"
             onClick={refreshRates}
             disabled={refreshing}
-            className={refreshing ? "animate-spin" : ""}
+            className={`text-white/80 hover:text-white bg-white/10 hover:bg-white/20 ${refreshing ? "animate-spin" : ""}`}
+            title="Refresh rates"
           >
             <RefreshCw className="h-4 w-4" />
           </Button>
         </div>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="relative z-10 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0">
         <div className="grid gap-2 sm:gap-3">
           {favorites.map((pair, index) => {
             const rate = convertCurrency(1, pair.from, pair.to);
             return (
               <div
                 key={`${pair.from}-${pair.to}-${index}`}
-                className="flex items-center justify-between p-2 sm:p-3 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors flex-col sm:flex-row gap-2"
+                className="flex items-center justify-between p-3 sm:p-4 bg-white/10 border border-white/15 rounded-xl hover:bg-white/15 transition-colors flex-col sm:flex-row gap-3"
               >
-                <div className="flex items-center gap-2 sm:gap-3">
+                <div className="flex items-center gap-2 sm:gap-3 text-white">
                   <div className="flex items-center gap-1">
                     <span className="text-base sm:text-lg">{getCurrencyFlag(pair.from)}</span>
-                    <span className="font-medium text-sm sm:text-base">{pair.from}</span>
+                    <span className="font-semibold text-sm sm:text-base">{pair.from}</span>
                   </div>
-                  <span className="text-muted-foreground text-sm">→</span>
+                  <span className="text-white/70 text-sm">→</span>
                   <div className="flex items-center gap-1">
                     <span className="text-base sm:text-lg">{getCurrencyFlag(pair.to)}</span>
-                    <span className="font-medium text-sm sm:text-base">{pair.to}</span>
+                    <span className="font-semibold text-sm sm:text-base">{pair.to}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2 sm:gap-3">
-                  <Badge variant="secondary" className="font-mono text-xs sm:text-sm">
+                  <Badge variant="secondary" className="font-mono text-xs sm:text-sm bg-white/20 text-white border border-white/30">
                     {formatCurrency(rate, pair.to)}
                   </Badge>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => onRemoveFavorite(index)}
-                    className="h-6 w-6 text-muted-foreground hover:text-destructive"
+                    className="h-7 w-7 text-white/80 hover:text-amber-200 bg-white/10 hover:bg-white/20"
+                    title="Remove favorite"
                   >
-                    <X className="h-3 w-3" />
+                    <X className="h-3.5 w-3.5" />
                   </Button>
                 </div>
               </div>
@@ -110,7 +121,7 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
           })}
         </div>
 
-        <div className="mt-4 text-xs text-muted-foreground text-center">
+        <div className="mt-4 text-xs text-white/70 text-center">
           Rates update automatically every minute
         </div>
       </CardContent>
