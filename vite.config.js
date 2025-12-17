@@ -11,10 +11,11 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
+            // Keep React and ReactDOM together in main chunk to avoid instance duplication
+            if (id.includes('react') || id.includes('react-dom')) return;
             if (id.includes('recharts')) return 'charts';
             if (id.includes('lucide-react')) return 'icons';
-            if (id.includes('react-dom') || id.includes('react')) return 'react-vendor';
-            if (id.includes('@radix-ui') || id.includes('clsx') || id.includes('tailwind-merge')) return 'ui-core';
+            if (id.includes('@radix-ui')) return 'ui-components';
             return 'vendor';
           }
         },
