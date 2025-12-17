@@ -80,9 +80,12 @@ export function AboutPage() {
     <div className="space-y-12">
       {/* Hero Section */}
       <section className="text-center space-y-6 py-12 bg-gradient-to-br from-primary/5 via-chart-1/5 to-chart-2/5 rounded-2xl">
-        <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary via-chart-1 to-chart-2 bg-clip-text text-transparent">
-          About CurrencyExchange
-        </h1>
+         <h1 className="text-3xl sm:text-6xl md:text-6xl font-extrabold tracking-tight         text-foreground"> About <br />
+          Currency Exchange <br />
+          <span className="bg-gradient-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent">
+    Reimagined.
+  </span>
+</h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
           We're on a mission to make currency exchange transparent, accessible,
           and reliable for everyone worldwide.
@@ -99,11 +102,18 @@ export function AboutPage() {
       {/* Stats */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
-          <Card key={index} className="text-center p-6">
-            <CardContent>
-              <stat.icon className="mx-auto mb-3 text-primary" />
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <div className="text-sm text-muted-foreground">{stat.label}</div>
+          <Card
+            key={index}
+            className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white text-center"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-blue-600 to-cyan-400 opacity-90" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+            <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm mb-3">
+                <stat.icon className="h-6 w-6 text-white" />
+              </div>
+              <div className="text-3xl font-extrabold tracking-tight">{stat.value}</div>
+              <div className="text-sm text-white/75">{stat.label}</div>
             </CardContent>
           </Card>
         ))}
@@ -112,14 +122,19 @@ export function AboutPage() {
       {/* Team */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {team.map((member, index) => (
-          <Card key={index} className="text-center p-6">
-            <CardContent>
+          <Card
+            key={index}
+            className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white text-center"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-fuchsia-500 to-pink-500 opacity-90" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+            <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
               <div className="text-6xl mb-4">{member.image}</div>
-              <h3 className="font-semibold">{member.name}</h3>
-              <Badge variant="secondary">{member.role}</Badge>
-              <p className="text-sm text-muted-foreground mt-2">
-                {member.bio}
-              </p>
+              <h3 className="font-semibold text-white">{member.name}</h3>
+              <div className="mt-1">
+                <Badge variant="secondary" className="bg-white/15 text-white border border-white/25">{member.role}</Badge>
+              </div>
+              <p className="text-sm text-white/75 mt-2">{member.bio}</p>
             </CardContent>
           </Card>
         ))}
