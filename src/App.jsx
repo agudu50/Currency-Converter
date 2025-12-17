@@ -1,6 +1,7 @@
 import { useState, Suspense, lazy } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { Router, useRouter } from "./components/Router";
 const LandingPage = lazy(() => import('./pages/LandingPage').then(m => ({ default: m.LandingPage })));
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
@@ -63,9 +64,11 @@ function AppContent() {
       <Header />
       <main className="flex-1 w-full px-3 sm:px-4 py-4 sm:py-8">
         <div className="max-w-7xl mx-auto">
-          <Suspense fallback={<div className="p-6 text-sm text-muted-foreground">Loading…</div>}>
-            {renderPage()}
-          </Suspense>
+          <ErrorBoundary>
+            <Suspense fallback={<div className="p-6 text-sm text-muted-foreground">Loading…</div>}>
+              {renderPage()}
+            </Suspense>
+          </ErrorBoundary>
         </div>
       </main>
       <Footer />
