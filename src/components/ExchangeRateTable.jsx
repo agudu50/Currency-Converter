@@ -16,6 +16,7 @@ import {
   convertCurrency,
   formatCurrency,
   fetchExchangeRates,
+  fetchHistoricalRates,
 } from "../utils/currencyData";
 
 
@@ -29,30 +30,59 @@ export default function ExchangeRateTable() {
     loadRates();
   }, []);
 
+  const calculateTrend = (historicalData) => {
+    if (!historicalData || historicalData.length < 2) {
+      return { trend: "neutral", change: 0 };
+    }
+
+    const oldestRate = historicalData[0].rate;
+    const newestRate = historicalData[historicalData.length - 1].rate;
+    const change = ((newestRate - oldestRate) / oldestRate * 100).toFixed(2);
+
+    return {
+      trend: parseFloat(change) >= 0 ? "up" : "down",
+      change: parseFloat(change),
+    };
+  };
+
   const loadRates = async () => {
     setLoading(true);
     try {
       await fetchExchangeRates(baseCurrency);
       
-      // Generate rate data with mock trend information
-      const data = currencies
+      // Get top 12 currencies and fetch their real trend data
+      const topCurrencies = currencies
         .filter((currency) => currency.code !== baseCurrency)
-        .map((currency) => {
-          const rate = convertCurrency(1, baseCurrency, currency.code);
-          // Mock trend data - in a real app this would come from historical data
-          const trend = Math.random() > 0.5 ? "up" : "down";
-          const change = (Math.random() * 2 - 1).toFixed(2);
+        .slice(0, 12);
 
+      // Fetch historical data for each currency to calculate real trends
+      const dataPromises = topCurrencies.map(async (currency) => {
+        const rate = convertCurrency(1, baseCurrency, currency.code);
+        try {
+          const historicalData = await fetchHistoricalRates(baseCurrency, currency.code, 7);
+          const { trend, change } = calculateTrend(historicalData);
+          
           return {
             ...currency,
             rate,
             trend,
-            change: parseFloat(change),
+            change,
             formattedRate: formatCurrency(rate, currency.code),
           };
-        })
-        .slice(0, 12); // Show top 12 currencies
-      
+        } catch (error) {
+          // Fallback: if historical data fails, show neutral
+          console.error(`Failed to fetch trend for ${currency.code}:`, error);
+          return {
+            ...currency,
+            rate,
+            trend: "neutral",
+            change: 0,
+            formattedRate: formatCurrency(rate, currency.code),
+          };
+        }
+      });
+
+      const data = await Promise.all(dataPromises);
       setRateData(data);
       setLastUpdated(new Date());
     } catch (error) {
@@ -143,10 +173,10 @@ export default function ExchangeRateTable() {
                     >
                       {currency.trend === "up" ? (
                         <TrendingUp className="h-3 w-3 mr-1" />
-                      ) : (
+                      ) : currency.trend === "down" ? (
                         <TrendingDown className="h-3 w-3 mr-1" />
-                      )}
-                      <span className="hidden sm:inline capitalize">{currency.trend}</span>
+                      ) : null}
+                      <span className="hidden sm:inline capitalize">{currency.trend === "neutral" ? "stable" : currency.trend}</span>
                     </Badge>
                   </TableCell>
                 </TableRow>
