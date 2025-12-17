@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -13,6 +13,11 @@ import {
 export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
   const [refreshing, setRefreshing] = useState(false);
   const [, forceUpdate] = useState(0);
+
+  // Ensure we have live rates on mount
+  useEffect(() => {
+    fetchExchangeRates('USD').catch((err) => console.error('Failed to fetch rates for favorites:', err));
+  }, []);
 
   const refreshRates = async () => {
     setRefreshing(true);

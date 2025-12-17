@@ -5,7 +5,7 @@ import { Badge } from "../components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { TrendingUp, TrendingDown, Activity, DollarSign, Euro, RefreshCw } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { generateHistoricalData, fetchExchangeRates, convertCurrency } from "../utils/currencyData";
+import { fetchHistoricalRates, fetchExchangeRates, convertCurrency } from "../utils/currencyData";
 
 export function MarketPage() {
   const [selectedTimeframe, setSelectedTimeframe] = useState("1D");
@@ -15,12 +15,14 @@ export function MarketPage() {
   const [exoticPairs, setExoticPairs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const [marketOverview, setMarketOverview] = useState([]);
 
   // Load exchange rates
   const loadMarketData = async () => {
     setLoading(true);
     try {
       await fetchExchangeRates('USD');
+      const historical = await fetchHistoricalRates('USD', 'EUR', 30);
       
       // Major pairs
       const majorData = [
@@ -72,6 +74,8 @@ export function MarketPage() {
       });
       setExoticPairs(exoticData);
 
+      setMarketOverview(historical);
+
       setLastUpdated(new Date());
     } catch (error) {
       console.error('Error loading market data:', error);
@@ -91,8 +95,6 @@ export function MarketPage() {
       default: return majorPairs;
     }
   };
-
-  const marketOverview = generateHistoricalData("USD", "EUR", 30);
 
   return (
     <div className="space-y-8">

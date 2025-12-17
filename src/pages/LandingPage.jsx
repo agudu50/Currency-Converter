@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import { Card } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { useRouter } from "../components/Router";
@@ -15,37 +15,42 @@ import {
   ArrowDownRight
 } from "lucide-react";
 
-import ExchangeRateTable from "../components/ExchangeRateTable";
-import CurrencyChart from "../components/CurrencyChart";
+const ExchangeRateTable = lazy(() => import("../components/ExchangeRateTable"));
+const CurrencyChart = lazy(() => import("../components/CurrencyChart"));
+import { fetchExchangeRates, convertCurrency } from "../utils/currencyData";
 
 
 export function LandingPage() {
   const { navigateTo } = useRouter();
 
-  // Sample moving rates
-  const [rates, setRates] = useState([
-    { pair: "USD/EUR", rate: 0.93, trend: 'up' },
-    { pair: "USD/GBP", rate: 0.81, trend: 'down' },
-    { pair: "USD/JPY", rate: 144.5, trend: 'up' },
-    { pair: "USD/AUD", rate: 1.56, trend: 'up' },
-  ]);
+  const tickerPairs = [
+    { pair: "USD/EUR", base: "USD", quote: "EUR" },
+    { pair: "USD/GBP", base: "USD", quote: "GBP" },
+    { pair: "USD/JPY", base: "USD", quote: "JPY" },
+    { pair: "USD/AUD", base: "USD", quote: "AUD" },
+  ];
 
-  // Animate rates periodically
+  const [rates, setRates] = useState(tickerPairs.map(p => ({ ...p, rate: 0, trend: 'up' })));
+
+  // Load live ticker rates and refresh periodically
   useEffect(() => {
-    const interval = setInterval(() => {
-      setRates(prevRates =>
-        prevRates.map(r => {
-          const newRate = (r.rate * (0.995 + Math.random() * 0.01)).toFixed(4);
-          return {
-            ...r,
-            trend: newRate > r.rate ? 'up' : 'down',
-            rate: newRate,
-          };
-        })
-      );
-    }, 3000);
+    let active = true;
+    const load = async () => {
+      try {
+        await fetchExchangeRates('USD');
+        setRates(prev => prev.map((r) => {
+          const rate = convertCurrency(1, r.base, r.quote);
+          const trend = rate > (r.rate || 0) ? 'up' : 'down';
+          return { ...r, rate: Number(rate.toFixed(4)), trend };
+        }));
+      } catch (err) {
+        console.error('Ticker fetch failed:', err);
+      }
+    };
 
-    return () => clearInterval(interval);
+    load();
+    const interval = setInterval(load, 60_000);
+    return () => { active = false; clearInterval(interval); };
   }, []);
 
   return (
@@ -192,7 +197,9 @@ export function LandingPage() {
                 </div>
               </div>
               
-              <CurrencyChart />
+              <Suspense fallback={<div className="p-6 text-sm text-muted-foreground">Loading chart…</div>}>
+                <CurrencyChart />
+              </Suspense>
             </div>
 
             <div className="space-y-8">
@@ -245,7 +252,9 @@ export function LandingPage() {
               </div>
               
               {/* Live Exchange Rates Card */}
-              <ExchangeRateTable />
+              <Suspense fallback={<div className="p-6 text-sm text-muted-foreground">Loading rates…</div>}>
+                <ExchangeRateTable />
+              </Suspense>
             </div>
           </div>
 

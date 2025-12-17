@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import {
   Select,
@@ -16,8 +16,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { TrendingUp } from "lucide-react";
-import { currencies, generateHistoricalData } from "../utils/currencyData";
+import { currencies, fetchHistoricalRates } from "../utils/currencyData";
 
 
 
@@ -25,23 +24,29 @@ export default function CurrencyChart() {
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("EUR");
   const [timeframe, setTimeframe] = useState("30");
+  const [chartData, setChartData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const chartData = generateHistoricalData(
-    fromCurrency,
-    toCurrency,
-    parseInt(timeframe)
-  );
+  useEffect(() => {
+    let active = true;
+    const load = async () => {
+      setLoading(true);
+      const data = await fetchHistoricalRates(fromCurrency, toCurrency, parseInt(timeframe));
+      if (active) setChartData(data);
+      setLoading(false);
+    };
+    load();
+    return () => { active = false; };
+  }, [fromCurrency, toCurrency, timeframe]);
 
   const formatTooltip = (value, name) => {
     return [value.toFixed(4), `${fromCurrency}/${toCurrency}`];
   };
 
   return (
-    <Card className="bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-100 overflow-hidden">
-      <CardHeader className="p-6 border-b border-slate-100 bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50">
-        <CardTitle className="text-xl font-bold text-slate-800 flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-indigo-500" /> Historical Exchange Rates
-        </CardTitle>
+    <Card className="bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-100 overflow-hidden hover:shadow-2xl hover:shadow-indigo-200/70 transition-all duration-300">
+      <CardHeader className="p-6 border-b border-slate-100 bg-gradient-to-r from-blue-50 via-cyan-50 to-blue-50">
+        <CardTitle className="text-xl font-bold text-slate-800">Historical Exchange Rates</CardTitle>
 
         <div className="flex flex-wrap gap-4 mt-4">
           {/* From currency */}
@@ -135,6 +140,7 @@ export default function CurrencyChart() {
                 strokeWidth={2}
                 dot={false}
                 activeDot={{ r: 4, fill: "hsl(var(--chart-1))" }}
+                isAnimationActive={!loading}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -145,21 +151,21 @@ export default function CurrencyChart() {
           <div>
             <div className="text-sm text-muted-foreground">Current Rate</div>
             <div className="font-semibold">
-              {chartData[chartData.length - 1]?.rate.toFixed(4)}
+              {chartData[chartData.length - 1]?.rate?.toFixed(4) ?? "-"}
             </div>
           </div>
 
           <div>
             <div className="text-sm text-muted-foreground">Highest</div>
             <div className="font-semibold text-green-600">
-              {Math.max(...chartData.map((d) => d.rate)).toFixed(4)}
+              {chartData.length ? Math.max(...chartData.map((d) => d.rate)).toFixed(4) : "-"}
             </div>
           </div>
 
           <div>
             <div className="text-sm text-muted-foreground">Lowest</div>
             <div className="font-semibold text-red-600">
-              {Math.min(...chartData.map((d) => d.rate)).toFixed(4)}
+              {chartData.length ? Math.min(...chartData.map((d) => d.rate)).toFixed(4) : "-"}
             </div>
           </div>
 
@@ -173,12 +179,13 @@ export default function CurrencyChart() {
                   : "text-red-600"
               }`}
             >
-              {(
-                ((chartData[chartData.length - 1]?.rate -
-                  chartData[0]?.rate) /
-                  chartData[0]?.rate) *
-                100
-              ).toFixed(2)}
+              {chartData.length > 1
+                ? (
+                    ((chartData[chartData.length - 1]?.rate - chartData[0]?.rate) /
+                      chartData[0]?.rate) *
+                    100
+                  ).toFixed(2)
+                : "-"}
               %
             </div>
           </div>

@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useState, Suspense, lazy } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Router, useRouter } from "./components/Router";
-import { LandingPage } from "./pages/LandingPage";
-import { HomePage } from "./pages/HomePage";
-import { MarketPage } from "./pages/MarketPage";
-import { NewsPage } from "./pages/NewsPage";
-import { AlertsPage } from "./pages/AlertsPage";
-import { SettingsPage } from "./pages/SettingsPage";
-import { AboutPage } from "./pages/AboutPage";
+const LandingPage = lazy(() => import('./pages/LandingPage').then(m => ({ default: m.LandingPage })));
+const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
+const MarketPage = lazy(() => import('./pages/MarketPage').then(m => ({ default: m.MarketPage })));
+const NewsPage = lazy(() => import('./pages/NewsPage').then(m => ({ default: m.NewsPage })));
+const AlertsPage = lazy(() => import('./pages/AlertsPage').then(m => ({ default: m.AlertsPage })));
+const SettingsPage = lazy(() => import('./pages/SettingsPage').then(m => ({ default: m.SettingsPage })));
+const AboutPage = lazy(() => import('./pages/AboutPage').then(m => ({ default: m.AboutPage })));
 
 function AppContent() {
   const { currentPage } = useRouter();
@@ -63,7 +63,9 @@ function AppContent() {
       <Header />
       <main className="flex-1 w-full px-3 sm:px-4 py-4 sm:py-8">
         <div className="max-w-7xl mx-auto">
-          {renderPage()}
+          <Suspense fallback={<div className="p-6 text-sm text-muted-foreground">Loading…</div>}>
+            {renderPage()}
+          </Suspense>
         </div>
       </main>
       <Footer />

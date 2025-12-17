@@ -16,9 +16,12 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
       {/* Hero Section */}
       <section className="text-center space-y-4 sm:space-y-6 py-6 sm:py-12 px-2 sm:px-4 bg-gradient-to-br from-primary/5 via-chart-1/5 to-chart-2/5 rounded-lg sm:rounded-2xl">
         <div className="space-y-3 sm:space-y-4">
-          <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary via-chart-1 to-chart-2 bg-clip-text text-transparent">
-            Currency Exchange
-          </h1>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-slate-900">
+              Currency Exchange <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500">
+                Reimagined.
+              </span>
+            </h1>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Get real-time exchange rates, convert currencies instantly, and track market trends with our comprehensive currency tools.
           </p>
