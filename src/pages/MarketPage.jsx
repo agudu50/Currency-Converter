@@ -218,8 +218,8 @@ export function MarketPage() {
           ) : (
             <div className="space-y-4">
               {getMarketData().map((item, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-white/10 border border-white/15 rounded-xl hover:bg-white/15 transition-colors">
-                  <div className="flex items-center gap-4">
+                <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 bg-white/10 border border-white/15 rounded-xl hover:bg-white/15 transition-colors">
+                  <div className="flex items-center gap-3 sm:gap-4">
                     <div className="w-12 h-12 bg-white/15 rounded-full flex items-center justify-center text-white">
                       <span className="font-semibold text-sm">{item.pair.split('/')[0]}</span>
                     </div>
@@ -228,7 +228,7 @@ export function MarketPage() {
                       <p className="text-sm text-white/70">Volume: {item.volume}</p>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-right sm:text-right">
                     <div className="font-mono text-lg font-semibold text-white">{item.price}</div>
                     <div className={`flex items-center gap-1 text-sm ${item.trend === 'up' ? 'text-emerald-200' : 'text-rose-200'}`}>
                       {item.trend === 'up' ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
