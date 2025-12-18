@@ -127,9 +127,11 @@ export function MarketPage() {
                 <p className="text-2xl font-bold text-white">{item.value}</p>
                 <p className="text-sm text-white/80">{item.sub}</p>
               </div>
-              <div className="p-3 rounded-full bg-white/15 backdrop-blur-sm text-white">
-                <item.icon className="h-6 w-6" />
-              </div>
+              {(() => { const Icon = item.icon; return (
+                <div className="p-3 rounded-full bg-white/15 backdrop-blur-sm text-white" aria-label={`${item.title} icon`}>
+                  {Icon ? <Icon className="h-6 w-6" /> : null}
+                </div>
+              ); })()}
             </CardContent>
           </Card>
         ))}

@@ -109,9 +109,11 @@ export function AboutPage() {
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-blue-600 to-cyan-400 opacity-90" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
             <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm mb-3">
-                <stat.icon className="h-6 w-6 text-white" />
-              </div>
+              {(() => { const Icon = stat.icon; return (
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm mb-3" aria-label={`${stat.label} icon`}>
+                  {Icon ? <Icon className="h-6 w-6 text-white" /> : null}
+                </div>
+              ); })()}
               <div className="text-3xl font-extrabold tracking-tight">{stat.value}</div>
               <div className="text-sm text-white/75">{stat.label}</div>
             </CardContent>
