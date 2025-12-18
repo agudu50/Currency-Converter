@@ -17,7 +17,7 @@ import {
 
 const ExchangeRateTable = lazy(() => import("../components/ExchangeRateTable"));
 const CurrencyChart = lazy(() => import("../components/CurrencyChart"));
-import { fetchExchangeRates, convertCurrency } from "../utils/currencyData";
+import { fetchExchangeRates, convertCurrencyAsync } from "../utils/currencyData";
 
 
 export function LandingPage() {
@@ -38,11 +38,15 @@ export function LandingPage() {
     const load = async () => {
       try {
         await fetchExchangeRates('USD');
-        setRates(prev => prev.map((r) => {
-          const rate = convertCurrency(1, r.base, r.quote);
-          const trend = rate > (r.rate || 0) ? 'up' : 'down';
-          return { ...r, rate: Number(rate.toFixed(4)), trend };
-        }));
+        const updated = await Promise.all(
+          tickerPairs.map(async (r) => {
+            const rate = await convertCurrencyAsync(1, r.base, r.quote);
+            const prev = rates.find(x => x.pair === r.pair)?.rate || 0;
+            const trend = rate > prev ? 'up' : 'down';
+            return { ...r, rate: Number(rate.toFixed(4)), trend };
+          })
+        );
+        setRates(updated);
       } catch (err) {
         console.error('Ticker fetch failed:', err);
       }

@@ -13,9 +13,10 @@ import { Button } from "./ui/button";
 import { ArrowUpDown, Star, RefreshCw } from "lucide-react";
 import {
   currencies,
-  convertCurrency,
+  convertCurrencyAsync,
   formatCurrency,
   fetchExchangeRates,
+  getAvailableCurrencyCodes,
 } from "../utils/currencyData";
 
 
@@ -34,15 +35,20 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
 
   // Recalculate when inputs change
   useEffect(() => {
-    if (amount && fromCurrency && toCurrency) {
-      const numAmount = parseFloat(amount) || 0;
-      const converted = convertCurrency(
-        numAmount,
-        fromCurrency,
-        toCurrency
-      );
-      setResult(converted);
-    }
+    let active = true;
+    const run = async () => {
+      if (amount && fromCurrency && toCurrency) {
+        const numAmount = parseFloat(amount) || 0;
+        const converted = await convertCurrencyAsync(
+          numAmount,
+          fromCurrency,
+          toCurrency
+        );
+        if (active) setResult(converted);
+      }
+    };
+    run();
+    return () => { active = false; };
   }, [amount, fromCurrency, toCurrency]);
 
   const loadExchangeRates = async () => {
@@ -53,7 +59,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
       // Recalculate current conversion with fresh rates
       if (amount && fromCurrency && toCurrency) {
         const numAmount = parseFloat(amount) || 0;
-        const converted = convertCurrency(numAmount, fromCurrency, toCurrency);
+        const converted = await convertCurrencyAsync(numAmount, fromCurrency, toCurrency);
         setResult(converted);
       }
     } catch (error) {
@@ -138,7 +144,9 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {currencies.map((currency) => (
+                {(() => {
+                  const live = new Set(getAvailableCurrencyCodes());
+                  return currencies.filter(c => live.has(c.code)).map((currency) => (
                   <SelectItem key={currency.code} value={currency.code}>
                     <div className="flex items-center gap-2">
                       <span>{currency.flag}</span>
@@ -146,7 +154,8 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
                       <span className="text-slate-500 text-xs sm:text-sm">- {currency.name}</span>
                     </div>
                   </SelectItem>
-                ))}
+                  ));
+                })()}
               </SelectContent>
             </Select>
           </div>
@@ -169,7 +178,9 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {currencies.map((currency) => (
+                {(() => {
+                  const live = new Set(getAvailableCurrencyCodes());
+                  return currencies.filter(c => live.has(c.code)).map((currency) => (
                   <SelectItem key={currency.code} value={currency.code}>
                     <div className="flex items-center gap-2">
                       <span>{currency.flag}</span>
@@ -177,7 +188,8 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
                       <span className="text-slate-500 text-xs sm:text-sm">- {currency.name}</span>
                     </div>
                   </SelectItem>
-                ))}
+                  ));
+                })()}
               </SelectContent>
             </Select>
           </div>
@@ -189,13 +201,26 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
           <div className="text-2xl sm:text-3xl font-bold">{formatCurrency(result, toCurrency)}</div>
           <div className="text-xs sm:text-sm text-white/70 mt-2">
             1 {fromCurrency} = {" "}
-            {formatCurrency(
-              convertCurrency(1, fromCurrency, toCurrency),
-              toCurrency
-            )}
+            {/* Compute live unit rate asynchronously */}
+            <UnitRate from={fromCurrency} to={toCurrency} />
           </div>
         </div>
       </CardContent>
     </Card>
   );
+}
+
+function UnitRate({ from, to }) {
+  const [rate, setRate] = useState(null);
+  useEffect(() => {
+    let active = true;
+    const load = async () => {
+      const r = await convertCurrencyAsync(1, from, to);
+      if (active) setRate(r);
+    };
+    load();
+    return () => { active = false; };
+  }, [from, to]);
+  if (rate == null) return <span className="text-white/70">…</span>;
+  return <span>{formatCurrency(rate, to)}</span>;
 }

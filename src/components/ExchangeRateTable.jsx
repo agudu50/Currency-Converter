@@ -13,10 +13,11 @@ import { TrendingUp, TrendingDown, RefreshCw, BarChart3 } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   currencies,
-  convertCurrency,
+  convertCurrencyAsync,
   formatCurrency,
   fetchExchangeRates,
   fetchHistoricalRates,
+  getAvailableCurrencyCodes,
 } from "../utils/currencyData";
 
 
@@ -49,15 +50,16 @@ export default function ExchangeRateTable() {
     setLoading(true);
     try {
       await fetchExchangeRates(baseCurrency);
-      
-      // Get top 12 currencies and fetch their real trend data
+      const available = new Set(getAvailableCurrencyCodes());
+
+      // Filter to currencies present in live rates, then take top 12
       const topCurrencies = currencies
-        .filter((currency) => currency.code !== baseCurrency)
+        .filter((currency) => currency.code !== baseCurrency && available.has(currency.code))
         .slice(0, 12);
 
       // Fetch historical data for each currency to calculate real trends
       const dataPromises = topCurrencies.map(async (currency) => {
-        const rate = convertCurrency(1, baseCurrency, currency.code);
+        const rate = await convertCurrencyAsync(1, baseCurrency, currency.code);
         try {
           const historicalData = await fetchHistoricalRates(baseCurrency, currency.code, 7);
           const { trend, change } = calculateTrend(historicalData);

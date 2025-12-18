@@ -5,7 +5,7 @@ import { Badge } from "./ui/badge";
 import { X, RefreshCw } from "lucide-react";
 import {
   currencies,
-  convertCurrency,
+  convertCurrencyAsync,
   formatCurrency,
   fetchExchangeRates,
 } from "../utils/currencyData";
@@ -84,7 +84,6 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
       <CardContent className="relative z-10 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0">
         <div className="grid gap-2 sm:gap-3">
           {favorites.map((pair, index) => {
-            const rate = convertCurrency(1, pair.from, pair.to);
             return (
               <div
                 key={`${pair.from}-${pair.to}-${index}`}
@@ -104,7 +103,7 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
 
                 <div className="flex items-center gap-2 sm:gap-3">
                   <Badge variant="secondary" className="font-mono text-xs sm:text-sm bg-white/20 text-white border border-white/30">
-                    {formatCurrency(rate, pair.to)}
+                    <LiveRate from={pair.from} to={pair.to} />
                   </Badge>
                   <Button
                     variant="ghost"
@@ -127,4 +126,19 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
       </CardContent>
     </Card>
   );
+}
+
+function LiveRate({ from, to }) {
+  const [rate, setRate] = useState(null);
+  useEffect(() => {
+    let active = true;
+    const load = async () => {
+      const r = await convertCurrencyAsync(1, from, to);
+      if (active) setRate(r);
+    };
+    load();
+    return () => { active = false; };
+  }, [from, to]);
+  if (rate == null) return <span className="text-white/70">…</span>;
+  return <span>{formatCurrency(rate, to)}</span>;
 }

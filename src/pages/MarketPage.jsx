@@ -5,7 +5,7 @@ import { Badge } from "../components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { TrendingUp, TrendingDown, Activity, DollarSign, Euro, RefreshCw } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { fetchHistoricalRates, fetchExchangeRates, convertCurrency } from "../utils/currencyData";
+import { fetchHistoricalRates, fetchExchangeRates, convertCurrencyAsync } from "../utils/currencyData";
 
 export function MarketPage() {
   const [selectedTimeframe, setSelectedTimeframe] = useState("1D");
@@ -25,14 +25,15 @@ export function MarketPage() {
       const historical = await fetchHistoricalRates("USD", "EUR", 30);
 
       // Major pairs
-      const majorData = [
+      const majorPairsConfig = [
         { pair: "EUR/USD", from: "EUR", to: "USD" },
         { pair: "GBP/USD", from: "GBP", to: "USD" },
         { pair: "USD/JPY", from: "USD", to: "JPY" },
         { pair: "USD/CHF", from: "USD", to: "CHF" },
-      ].map((item) => {
-        const rate = convertCurrency(1, item.from, item.to);
-        const prevRate = rate * (1 + (Math.random() - 0.5) * 0.01); // Simulate previous rate
+      ];
+      const majorData = await Promise.all(majorPairsConfig.map(async (item) => {
+        const rate = await convertCurrencyAsync(1, item.from, item.to);
+        const prevRate = rate * (1 + (Math.random() - 0.5) * 0.01); // Simulated previous rate
         const change = rate - prevRate;
         const changePercent = ((change / prevRate) * 100).toFixed(2);
         return {
@@ -43,7 +44,7 @@ export function MarketPage() {
           trend: change >= 0 ? "up" : "down",
           volume: `${(Math.random() * 2 + 0.5).toFixed(1)}B`,
         };
-      });
+      }));
       setMajorPairs(majorData);
 
       // Crypto pairs (mock data)
@@ -53,13 +54,14 @@ export function MarketPage() {
       ]);
 
       // Exotic pairs
-      const exoticData = [
+      const exoticPairsConfig = [
         { pair: "USD/TRY", from: "USD", to: "TRY" },
         { pair: "USD/ZAR", from: "USD", to: "ZAR" },
         { pair: "USD/MXN", from: "USD", to: "MXN" },
         { pair: "USD/BRL", from: "USD", to: "BRL" },
-      ].map((item) => {
-        const rate = convertCurrency(1, item.from, item.to);
+      ];
+      const exoticData = await Promise.all(exoticPairsConfig.map(async (item) => {
+        const rate = await convertCurrencyAsync(1, item.from, item.to);
         const prevRate = rate * (1 + (Math.random() - 0.5) * 0.01);
         const change = rate - prevRate;
         const changePercent = ((change / prevRate) * 100).toFixed(2);
@@ -71,7 +73,7 @@ export function MarketPage() {
           trend: change >= 0 ? "up" : "down",
           volume: `${(Math.random() * 500 + 100).toFixed(0)}M`,
         };
-      });
+      }));
       setExoticPairs(exoticData);
 
       setMarketOverview(historical);

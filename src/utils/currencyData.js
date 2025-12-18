@@ -140,9 +140,10 @@ export const currencies = [
   { code: 'MNT', name: 'Mongolian Tugrik', symbol: '₮', flag: '🇲🇳' },
 ];
 
-// API Configuration
-const API_KEY = import.meta.env.VITE_EXCHANGE_RATE_API_KEY || 'd3cce14a3fd7350176ecac8b';
-const BASE_URL = 'https://v6.exchangerate-api.com/v6';
+// API Configuration (CurrencyAPI)
+const API_KEY = import.meta.env.VITE_CURRENCY_API_KEY || 'cur_live_Yd5afKlYfaoJznq6fF31WfLBOrslsVDHYSEPnFyE';
+const BASE_URL = 'https://api.currencyapi.com/v3/latest';
+const HISTORICAL_URL = 'https://api.currencyapi.com/v3/historical';
 
 // Cache for exchange rates
 let ratesCache = {
@@ -168,24 +169,30 @@ export async function fetchExchangeRates(baseCurrency = 'USD') {
   }
 
   try {
-    const response = await fetch(`${BASE_URL}/${API_KEY}/latest/${baseCurrency}`);
+    const url = `${BASE_URL}?apikey=${API_KEY}&base_currency=${baseCurrency}`;
+    const response = await fetch(url);
     
     if (!response.ok) {
       throw new Error(`API Error: ${response.status}`);
     }
 
     const data = await response.json();
-    
-    if (data.result === 'success') {
+
+    if (data?.data) {
+      // currencyapi.com returns { data: { USD: { code, value }, ... } }
+      const parsedRates = Object.fromEntries(
+        Object.entries(data.data).map(([code, entry]) => [code, entry?.value ?? 0])
+      );
+
       ratesCache = {
-        rates: data.conversion_rates,
+        rates: parsedRates,
         timestamp: now,
         baseCurrency: baseCurrency
       };
-      return data.conversion_rates;
-    } else {
-      throw new Error('API request failed');
+      return parsedRates;
     }
+
+    throw new Error('API request failed: missing data');
   } catch (error) {
     console.error('Error fetching exchange rates:', error);
     // Return mock rates as fallback
@@ -248,6 +255,15 @@ export async function convertCurrencyAsync(amount, fromCurrency, toCurrency) {
   return usdAmount * toRate;
 }
 
+// Available currency codes from the latest fetched rates
+export function getAvailableCurrencyCodes() {
+  const rates = ratesCache.rates || {};
+  const codes = Object.keys(rates);
+  // Ensure base USD is included for safety
+  if (!codes.includes('USD')) codes.push('USD');
+  return codes;
+}
+
 // Format currency
 export function formatCurrency(amount, currencyCode) {
   return new Intl.NumberFormat('en-US', {
@@ -282,30 +298,28 @@ export function generateHistoricalData(fromCurrency, toCurrency, days = 30) {
 
 // Fetch historical rates (live) with fallback to mock
 export async function fetchHistoricalRates(fromCurrency, toCurrency, days = 30) {
-  const end = new Date();
-  const start = new Date();
-  start.setDate(end.getDate() - days);
-
-  const formatDate = (d) => d.toISOString().split('T')[0];
-  const url = `https://api.exchangerate.host/timeseries?start_date=${formatDate(start)}&end_date=${formatDate(end)}&base=${fromCurrency}&symbols=${toCurrency}`;
-
+  // Prefer CurrencyAPI historical (single-day), aggregate last N days; fallback to mock
   try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`Historical API error ${res.status}`);
-    const data = await res.json();
-    if (!data.rates) throw new Error('Historical API missing rates');
-
-    const entries = Object.entries(data.rates)
-      .sort(([a], [b]) => new Date(a) - new Date(b))
-      .map(([date, value]) => ({
-        date,
-        rate: Number((value?.[toCurrency] ?? 0).toFixed(4)),
-        dateFormatted: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-      }))
-      .filter((d) => d.rate > 0);
-
-    if (!entries.length) throw new Error('Historical API returned empty data');
-    return entries;
+    const entries = [];
+    for (let i = days; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      const dateStr = date.toISOString().split('T')[0];
+      const url = `${HISTORICAL_URL}?apikey=${API_KEY}&date=${dateStr}&base_currency=${fromCurrency}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Historical API error ${res.status}`);
+      const data = await res.json();
+      const value = data?.data?.[toCurrency]?.value;
+      const rate = Number((value ?? 0).toFixed(4));
+      entries.push({
+        date: dateStr,
+        rate,
+        dateFormatted: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      });
+    }
+    const filtered = entries.filter(e => e.rate > 0);
+    if (!filtered.length) throw new Error('Historical API missing rates');
+    return filtered;
   } catch (err) {
     console.error('Historical fetch failed, using mock data:', err);
     return generateHistoricalData(fromCurrency, toCurrency, days);
