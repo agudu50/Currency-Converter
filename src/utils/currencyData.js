@@ -298,30 +298,75 @@ export function generateHistoricalData(fromCurrency, toCurrency, days = 30) {
 
 // Fetch historical rates (live) with fallback to mock
 export async function fetchHistoricalRates(fromCurrency, toCurrency, days = 30) {
-  // Prefer CurrencyAPI historical (single-day), aggregate last N days; fallback to mock
+  // Primary: exchangerate.host timeseries (single request)
+  const end = new Date();
+  const start = new Date();
+  start.setDate(end.getDate() - days);
+  const formatDate = (d) => d.toISOString().split('T')[0];
+  const url = `https://api.exchangerate.host/timeseries?start_date=${formatDate(start)}&end_date=${formatDate(end)}&base=${fromCurrency}&symbols=${toCurrency}`;
+
   try {
-    const entries = [];
-    for (let i = days; i >= 0; i--) {
-      const date = new Date();
-      date.setDate(date.getDate() - i);
-      const dateStr = date.toISOString().split('T')[0];
-      const url = `${HISTORICAL_URL}?apikey=${API_KEY}&date=${dateStr}&base_currency=${fromCurrency}`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`Historical API error ${res.status}`);
-      const data = await res.json();
-      const value = data?.data?.[toCurrency]?.value;
-      const rate = Number((value ?? 0).toFixed(4));
-      entries.push({
-        date: dateStr,
-        rate,
-        dateFormatted: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-      });
-    }
-    const filtered = entries.filter(e => e.rate > 0);
-    if (!filtered.length) throw new Error('Historical API missing rates');
-    return filtered;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Historical API error ${res.status}`);
+    const data = await res.json();
+    if (!data.rates) throw new Error('Historical API missing rates');
+
+    const entries = Object.entries(data.rates)
+      .sort(([a], [b]) => new Date(a) - new Date(b))
+      .map(([date, value]) => ({
+        date,
+        rate: Number((value?.[toCurrency] ?? 0).toFixed(4)),
+        dateFormatted: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      }))
+      .filter((d) => d.rate > 0);
+
+    if (!entries.length) throw new Error('Historical API returned empty data');
+    return entries;
   } catch (err) {
     console.error('Historical fetch failed, using mock data:', err);
     return generateHistoricalData(fromCurrency, toCurrency, days);
+  }
+}
+
+// Batch historical fetch for multiple symbols (reduces API calls)
+export async function fetchHistoricalRatesBatch(baseCurrency, symbols = [], days = 7) {
+  const end = new Date();
+  const start = new Date();
+  start.setDate(end.getDate() - days);
+  const formatDate = (d) => d.toISOString().split('T')[0];
+  const qs = encodeURIComponent(symbols.join(','));
+  const url = `https://api.exchangerate.host/timeseries?start_date=${formatDate(start)}&end_date=${formatDate(end)}&base=${baseCurrency}&symbols=${qs}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Historical API error ${res.status}`);
+    const data = await res.json();
+    if (!data.rates) throw new Error('Historical API missing rates');
+
+    // Build map: symbol -> array of entries
+    const map = new Map();
+    symbols.forEach((s) => map.set(s, []));
+    Object.entries(data.rates)
+      .sort(([a], [b]) => new Date(a) - new Date(b))
+      .forEach(([date, obj]) => {
+        symbols.forEach((s) => {
+          const val = obj?.[s];
+          const rate = Number((val ?? 0).toFixed(4));
+          map.get(s).push({
+            date,
+            rate,
+            dateFormatted: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+          });
+        });
+      });
+
+    return map;
+  } catch (err) {
+    console.error('Batch historical fetch failed:', err);
+    // Fallback: build mock series per symbol
+    const map = new Map();
+    symbols.forEach((s) => {
+      map.set(s, generateHistoricalData(baseCurrency, s, days));
+    });
+    return map;
   }
 }

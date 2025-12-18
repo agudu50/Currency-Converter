@@ -16,7 +16,7 @@ import {
   convertCurrencyAsync,
   formatCurrency,
   fetchExchangeRates,
-  fetchHistoricalRates,
+  fetchHistoricalRatesBatch,
   getAvailableCurrencyCodes,
 } from "../utils/currencyData";
 
@@ -57,34 +57,22 @@ export default function ExchangeRateTable() {
         .filter((currency) => currency.code !== baseCurrency && available.has(currency.code))
         .slice(0, 12);
 
-      // Fetch historical data for each currency to calculate real trends
-      const dataPromises = topCurrencies.map(async (currency) => {
-        const rate = await convertCurrencyAsync(1, baseCurrency, currency.code);
-        try {
-          const historicalData = await fetchHistoricalRates(baseCurrency, currency.code, 7);
-          const { trend, change } = calculateTrend(historicalData);
-          
-          return {
-            ...currency,
-            rate,
-            trend,
-            change,
-            formattedRate: formatCurrency(rate, currency.code),
-          };
-        } catch (error) {
-          // Fallback: if historical data fails, show neutral
-          console.error(`Failed to fetch trend for ${currency.code}:`, error);
-          return {
-            ...currency,
-            rate,
-            trend: "neutral",
-            change: 0,
-            formattedRate: formatCurrency(rate, currency.code),
-          };
-        }
-      });
+      // Fetch historical data in one batch to avoid rate limits
+      const symbols = topCurrencies.map(c => c.code);
+      const historicalMap = await fetchHistoricalRatesBatch(baseCurrency, symbols, 7);
 
-      const data = await Promise.all(dataPromises);
+      const data = await Promise.all(topCurrencies.map(async (currency) => {
+        const rate = await convertCurrencyAsync(1, baseCurrency, currency.code);
+        const historicalData = historicalMap.get(currency.code) || [];
+        const { trend, change } = calculateTrend(historicalData);
+        return {
+          ...currency,
+          rate,
+          trend,
+          change,
+          formattedRate: formatCurrency(rate, currency.code),
+        };
+      }));
       setRateData(data);
       setLastUpdated(new Date());
     } catch (error) {
