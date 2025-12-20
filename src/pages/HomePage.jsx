@@ -255,7 +255,7 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
         ))}
       </section>
 
-      {/* Why Choose - Light Gradient Card */}
+      {/* Choose - Light Gradient Card */}
       <section className="py-12">
         <div className="max-w-6xl mx-auto">
           <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">

@@ -152,6 +152,9 @@ let ratesCache = {
   baseCurrency: 'USD'
 };
 
+// Track in-flight requests to avoid duplicate API calls
+let inflightRequests = new Map();
+
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
 
 // Fetch exchange rates from API
@@ -168,36 +171,51 @@ export async function fetchExchangeRates(baseCurrency = 'USD') {
     return ratesCache.rates;
   }
 
-  try {
-    const url = `${BASE_URL}?apikey=${API_KEY}&base_currency=${baseCurrency}`;
-    const response = await fetch(url);
-    
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    if (data?.data) {
-      // currencyapi.com returns { data: { USD: { code, value }, ... } }
-      const parsedRates = Object.fromEntries(
-        Object.entries(data.data).map(([code, entry]) => [code, entry?.value ?? 0])
-      );
-
-      ratesCache = {
-        rates: parsedRates,
-        timestamp: now,
-        baseCurrency: baseCurrency
-      };
-      return parsedRates;
-    }
-
-    throw new Error('API request failed: missing data');
-  } catch (error) {
-    console.error('Error fetching exchange rates:', error);
-    // Return mock rates as fallback
-    return getMockExchangeRates();
+  // If a request for this base currency is already in flight, wait for it
+  if (inflightRequests.has(baseCurrency)) {
+    return inflightRequests.get(baseCurrency);
   }
+
+  // Create a new request promise and track it
+  const requestPromise = (async () => {
+    try {
+      const url = `${BASE_URL}?apikey=${API_KEY}&base_currency=${baseCurrency}`;
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data?.data) {
+        // currencyapi.com returns { data: { USD: { code, value }, ... } }
+        const parsedRates = Object.fromEntries(
+          Object.entries(data.data).map(([code, entry]) => [code, entry?.value ?? 0])
+        );
+
+        ratesCache = {
+          rates: parsedRates,
+          timestamp: now,
+          baseCurrency: baseCurrency
+        };
+        return parsedRates;
+      }
+
+      throw new Error('API request failed: missing data');
+    } catch (error) {
+      console.error('Error fetching exchange rates:', error);
+      // Return mock rates as fallback
+      return getMockExchangeRates();
+    } finally {
+      // Remove this request from in-flight tracking
+      inflightRequests.delete(baseCurrency);
+    }
+  })();
+
+  // Track this request
+  inflightRequests.set(baseCurrency, requestPromise);
+  return requestPromise;
 }
 
 // Mock exchange rates (fallback)
@@ -257,11 +275,15 @@ export async function convertCurrencyAsync(amount, fromCurrency, toCurrency) {
 
 // Available currency codes from the latest fetched rates
 export function getAvailableCurrencyCodes() {
-  const rates = ratesCache.rates || {};
-  const codes = Object.keys(rates);
-  // Ensure base USD is included for safety
-  if (!codes.includes('USD')) codes.push('USD');
-  return codes;
+  // If we have fetched rates, use those
+  if (ratesCache.rates && Object.keys(ratesCache.rates).length > 0) {
+    const codes = Object.keys(ratesCache.rates);
+    // Ensure base USD is included for safety
+    if (!codes.includes('USD')) codes.push('USD');
+    return codes;
+  }
+  // Otherwise, return all supported currency codes from our currencies array
+  return currencies.map(c => c.code);
 }
 
 // Format currency

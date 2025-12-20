@@ -119,7 +119,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
         )}
       </CardHeader>
 
-      <CardContent className="space-y-4 sm:space-y-6 bg-white/70 backdrop-blur-sm">
+      <CardContent className="space-y-4 sm:space-y-6 bg-white/70 backdrop-blur-sm p-6">
         {/* Amount Input */}
         <div className="space-y-2">
           <Label htmlFor="amount" className="text-sm text-foreground">Amount</Label>
@@ -134,25 +134,25 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
         </div>
 
         {/* Currency Selectors */}
-        <div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-4">
+        <div className="flex flex-col sm:flex-row gap-4 items-start">
           {/* From */}
-          <div className="flex-1 space-y-2 w-full">
+          <div className="flex-1 space-y-2">
             <Label className="text-sm text-foreground">From</Label>
             <Select value={fromCurrency} onValueChange={setFromCurrency}>
               <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 bg-white border border-border/60 text-foreground">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="max-h-80">
                 {(() => {
                   const live = new Set(getAvailableCurrencyCodes());
                   return currencies.filter(c => live.has(c.code)).map((currency) => (
-                  <SelectItem key={currency.code} value={currency.code}>
-                    <div className="flex items-center gap-2">
-                      <span>{currency.flag}</span>
-                      <span>{currency.code}</span>
-                      <span className="text-muted-foreground text-xs sm:text-sm">- {currency.name}</span>
-                    </div>
-                  </SelectItem>
+                    <SelectItem key={currency.code} value={currency.code}>
+                      <div className="flex items-center gap-2">
+                        <span>{currency.flag}</span>
+                        <span>{currency.code}</span>
+                        <span className="text-muted-foreground text-xs sm:text-sm">- {currency.name}</span>
+                      </div>
+                    </SelectItem>
                   ));
                 })()}
               </SelectContent>
@@ -164,29 +164,29 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
             variant="outline"
             size="icon"
             onClick={swapCurrencies}
-            className="rounded-full h-11 w-11 sm:h-12 sm:w-12 flex-shrink-0 border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white text-foreground hover:border-primary hover:text-primary transition-colors sm:mb-0 mt-3"
+            className="rounded-full h-11 w-11 sm:h-12 sm:w-12 flex-shrink-0 border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white text-foreground hover:border-primary hover:text-primary transition-colors self-end"
           >
             <ArrowUpDown className="h-5 w-5" />
           </Button>
 
           {/* To */}
-          <div className="flex-1 space-y-2 w-full">
+          <div className="flex-1 space-y-2">
             <Label className="text-sm text-foreground">To</Label>
             <Select value={toCurrency} onValueChange={setToCurrency}>
               <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 bg-white border border-border/60 text-foreground">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="max-h-80">
                 {(() => {
                   const live = new Set(getAvailableCurrencyCodes());
                   return currencies.filter(c => live.has(c.code)).map((currency) => (
-                  <SelectItem key={currency.code} value={currency.code}>
-                    <div className="flex items-center gap-2">
-                      <span>{currency.flag}</span>
-                      <span>{currency.code}</span>
-                      <span className="text-muted-foreground text-xs sm:text-sm">- {currency.name}</span>
-                    </div>
-                  </SelectItem>
+                    <SelectItem key={currency.code} value={currency.code}>
+                      <div className="flex items-center gap-2">
+                        <span>{currency.flag}</span>
+                        <span>{currency.code}</span>
+                        <span className="text-muted-foreground text-xs sm:text-sm">- {currency.name}</span>
+                      </div>
+                    </SelectItem>
                   ));
                 })()}
               </SelectContent>
@@ -204,8 +204,55 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
             <UnitRate from={fromCurrency} to={toCurrency} />
           </div>
         </div>
+
+        {/* Multi-Currency Conversions */}
+        <div className="space-y-3 border-t border-border/30 pt-4">
+          <h3 className="text-sm font-semibold text-foreground">Quick conversions:</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {['EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF']
+              .filter(code => {
+                const live = new Set(getAvailableCurrencyCodes());
+                return live.has(code) && code !== fromCurrency;
+              })
+              .map((currencyCode) => (
+                <MultiCurrencyCard 
+                  key={currencyCode}
+                  amount={amount}
+                  from={fromCurrency}
+                  to={currencyCode}
+                />
+              ))}
+          </div>
+        </div>
       </CardContent>
     </Card>
+  );
+}
+
+function MultiCurrencyCard({ amount, from, to }) {
+  const [result, setResult] = useState(0);
+  useEffect(() => {
+    let active = true;
+    const run = async () => {
+      if (amount && from && to) {
+        const numAmount = parseFloat(amount) || 0;
+        const converted = await convertCurrencyAsync(numAmount, from, to);
+        if (active) setResult(converted);
+      }
+    };
+    run();
+    return () => { active = false; };
+  }, [amount, from, to]);
+
+  const currencyObj = currencies.find(c => c.code === to);
+  const currencyName = currencyObj ? currencyObj.name.split(' ')[0] : to;
+  
+  return (
+    <div className="bg-white border border-border/60 rounded-lg p-3 text-center hover:border-primary/60 hover:shadow-sm transition-colors">
+      <div className="text-xs text-muted-foreground mb-1">{to}</div>
+      <div className="text-lg font-semibold text-foreground">{formatCurrency(result, to)}</div>
+      <div className="text-xs text-muted-foreground mt-1">{currencyObj?.flag || ''} {currencyName}</div>
+    </div>
   );
 }
 

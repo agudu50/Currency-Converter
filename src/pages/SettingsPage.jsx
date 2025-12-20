@@ -93,55 +93,52 @@ export function SettingsPage() {
 
         {/* Profile Settings */}
         <TabsContent value="profile">
-          <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 opacity-90" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+          <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+            <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
             
-            <CardHeader className="relative z-10 border-b border-white/15">
-              <CardTitle className="flex items-center gap-2 text-white">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
-                  <User className="h-4 w-4" />
-                </span>
-                Profile Information
-              </CardTitle>
+            <CardHeader className="flex items-center gap-2 bg-white/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <User className="h-4 w-4" />
+              </span>
+              <CardTitle className="text-lg font-semibold text-foreground">Profile Information</CardTitle>
             </CardHeader>
-            <CardContent className="relative z-10 space-y-6 p-6 bg-white/5 backdrop-blur-sm border border-white/10 border-t-0">
+            <CardContent className="space-y-6 p-6 bg-white/70 backdrop-blur-sm">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName" className="text-white/90">First Name</Label>
+                  <Label htmlFor="firstName" className="text-foreground">First Name</Label>
                   <Input
                     id="firstName"
                     value={settings.firstName}
                     onChange={(e) => updateSetting('firstName', e.target.value)}
-                    className="bg-white/10 border-white/25 text-white placeholder:text-white/50 focus:border-white/40"
+                    className="bg-white border border-border/60 text-foreground focus:border-primary focus:ring-primary/20"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName" className="text-white/90">Last Name</Label>
+                  <Label htmlFor="lastName" className="text-foreground">Last Name</Label>
                   <Input
                     id="lastName"
                     value={settings.lastName}
                     onChange={(e) => updateSetting('lastName', e.target.value)}
-                    className="bg-white/10 border-white/25 text-white placeholder:text-white/50 focus:border-white/40"
+                    className="bg-white border border-border/60 text-foreground focus:border-primary focus:ring-primary/20"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-white/90">Email Address</Label>
+                <Label htmlFor="email" className="text-foreground">Email Address</Label>
                 <Input
                   id="email"
                   type="email"
                   value={settings.email}
                   onChange={(e) => updateSetting('email', e.target.value)}
-                  className="bg-white/10 border-white/25 text-white placeholder:text-white/50 focus:border-white/40"
+                  className="bg-white border border-border/60 text-foreground focus:border-primary focus:ring-primary/20"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label className="text-white/90">Timezone</Label>
+                <Label className="text-foreground">Timezone</Label>
                 <Select value={settings.timezone} onValueChange={(value) => updateSetting('timezone', value)}>
-                  <SelectTrigger className="bg-white/10 border-white/25 text-white focus:border-white/40">
+                  <SelectTrigger className="bg-white border border-border/60 text-foreground focus:border-primary focus:ring-primary/20">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -162,24 +159,21 @@ export function SettingsPage() {
         {/* Preferences */}
         <TabsContent value="preferences">
           <div className="space-y-6">
-            <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-green-500 to-teal-500 opacity-90" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+            <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+              <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
               
-              <CardHeader className="relative z-10 border-b border-white/15">
-                <CardTitle className="flex items-center gap-2 text-white">
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
-                    <Globe className="h-4 w-4" />
-                  </span>
-                  Currency & Display
-                </CardTitle>
+              <CardHeader className="flex items-center gap-2 bg-white/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Globe className="h-4 w-4" />
+                </span>
+                <CardTitle className="text-lg font-semibold text-foreground">Currency & Display</CardTitle>
               </CardHeader>
-              <CardContent className="relative z-10 space-y-6 p-6 bg-white/5 backdrop-blur-sm border border-white/10 border-t-0">
+              <CardContent className="space-y-6 p-6 bg-white/70 backdrop-blur-sm">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="text-white/90">Base Currency</Label>
+                    <Label className="text-foreground">Base Currency</Label>
                     <Select value={settings.baseCurrency} onValueChange={(value) => updateSetting('baseCurrency', value)}>
-                      <SelectTrigger className="bg-white/10 border-white/25 text-white focus:border-white/40">
+                      <SelectTrigger className="bg-white border border-border/60 text-foreground focus:border-primary focus:ring-primary/20">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -193,9 +187,9 @@ export function SettingsPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-white/90">Decimal Places</Label>
+                    <Label className="text-foreground">Decimal Places</Label>
                     <Select value={settings.decimalPlaces.toString()} onValueChange={(value) => updateSetting('decimalPlaces', parseInt(value))}>
-                      <SelectTrigger className="bg-white/10 border-white/25 text-white focus:border-white/40">
+                      <SelectTrigger className="bg-white border border-border/60 text-foreground focus:border-primary focus:ring-primary/20">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -209,24 +203,21 @@ export function SettingsPage() {
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-fuchsia-500 to-pink-500 opacity-90" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+            <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+              <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
               
-              <CardHeader className="relative z-10 border-b border-white/15">
-                <CardTitle className="flex items-center gap-2 text-white">
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
-                    <Palette className="h-4 w-4" />
-                  </span>
-                  Appearance
-                </CardTitle>
+              <CardHeader className="flex items-center gap-2 bg-white/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Palette className="h-4 w-4" />
+                </span>
+                <CardTitle className="text-lg font-semibold text-foreground">Appearance</CardTitle>
               </CardHeader>
-              <CardContent className="relative z-10 space-y-6 p-6 bg-white/5 backdrop-blur-sm border border-white/10 border-t-0">
+              <CardContent className="space-y-6 p-6 bg-white/70 backdrop-blur-sm">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="text-white/90">Theme</Label>
+                    <Label className="text-foreground">Theme</Label>
                     <Select value={settings.theme} onValueChange={(value) => updateSetting('theme', value)}>
-                      <SelectTrigger className="bg-white/10 border-white/25 text-white focus:border-white/40">
+                      <SelectTrigger className="bg-white border border-border/60 text-foreground focus:border-primary focus:ring-primary/20">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -238,9 +229,9 @@ export function SettingsPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-white/90">Language</Label>
+                    <Label className="text-foreground">Language</Label>
                     <Select value={settings.language} onValueChange={(value) => updateSetting('language', value)}>
-                      <SelectTrigger className="bg-white/10 border-white/25 text-white focus:border-white/40">
+                      <SelectTrigger className="bg-white border border-border/60 text-foreground focus:border-primary focus:ring-primary/20">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -260,24 +251,21 @@ export function SettingsPage() {
 
         {/* Notifications */}
         <TabsContent value="notifications">
-          <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-blue-500 to-cyan-500 opacity-90" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+          <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+            <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
             
-            <CardHeader className="relative z-10 border-b border-white/15">
-              <CardTitle className="flex items-center gap-2 text-white">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
-                  <Bell className="h-4 w-4" />
-                </span>
-                Notification Preferences
-              </CardTitle>
+            <CardHeader className="flex items-center gap-2 bg-white/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Bell className="h-4 w-4" />
+              </span>
+              <CardTitle className="text-lg font-semibold text-foreground">Notification Preferences</CardTitle>
             </CardHeader>
-            <CardContent className="relative z-10 space-y-6 p-6 bg-white/5 backdrop-blur-sm border border-white/10 border-t-0">
+            <CardContent className="space-y-6 p-6 bg-white/70 backdrop-blur-sm">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium text-white">Email Notifications</h3>
-                    <p className="text-sm text-white/70">Receive rate alerts and updates via email</p>
+                    <h3 className="font-medium text-foreground">Email Notifications</h3>
+                    <p className="text-sm text-muted-foreground">Receive rate alerts and updates via email</p>
                   </div>
                   <Switch
                     checked={settings.emailNotifications}
@@ -285,12 +273,12 @@ export function SettingsPage() {
                   />
                 </div>
 
-                <Separator className="bg-white/15" />
+                <Separator className="bg-border/30" />
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium text-white">Push Notifications</h3>
-                    <p className="text-sm text-white/70">Get instant browser notifications</p>
+                    <h3 className="font-medium text-foreground">Push Notifications</h3>
+                    <p className="text-sm text-muted-foreground">Get instant browser notifications</p>
                   </div>
                   <Switch
                     checked={settings.pushNotifications}
@@ -298,15 +286,15 @@ export function SettingsPage() {
                   />
                 </div>
 
-                <Separator className="bg-white/15" />
+                <Separator className="bg-border/30" />
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium text-white">SMS Alerts</h3>
-                    <p className="text-sm text-white/70">Receive critical alerts via SMS</p>
+                    <h3 className="font-medium text-foreground">SMS Alerts</h3>
+                    <p className="text-sm text-muted-foreground">Receive critical alerts via SMS</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="bg-amber-500/20 text-amber-200 border border-amber-200/40">Premium</Badge>
+                    <Badge variant="secondary" className="bg-amber-100 text-amber-700 border border-amber-200">Premium</Badge>
                     <Switch
                       checked={settings.smsAlerts}
                       onCheckedChange={(checked) => updateSetting('smsAlerts', checked)}
@@ -314,12 +302,12 @@ export function SettingsPage() {
                   </div>
                 </div>
 
-                <Separator className="bg-white/15" />
+                <Separator className="bg-border/30" />
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium text-white">Market Updates</h3>
-                    <p className="text-sm text-white/70">Daily market summaries and analysis</p>
+                    <h3 className="font-medium text-foreground">Market Updates</h3>
+                    <p className="text-sm text-muted-foreground">Daily market summaries and analysis</p>
                   </div>
                   <Switch
                     checked={settings.marketUpdates}
@@ -333,24 +321,21 @@ export function SettingsPage() {
 
         {/* Privacy */}
         <TabsContent value="privacy">
-          <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 opacity-90" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+          <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+            <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
             
-            <CardHeader className="relative z-10 border-b border-white/15">
-              <CardTitle className="flex items-center gap-2 text-white">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
-                  <Shield className="h-4 w-4" />
-                </span>
-                Privacy & Data
-              </CardTitle>
+            <CardHeader className="flex items-center gap-2 bg-white/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Shield className="h-4 w-4" />
+              </span>
+              <CardTitle className="text-lg font-semibold text-foreground">Privacy & Data</CardTitle>
             </CardHeader>
-            <CardContent className="relative z-10 space-y-6 p-6 bg-white/5 backdrop-blur-sm border border-white/10 border-t-0">
+            <CardContent className="space-y-6 p-6 bg-white/70 backdrop-blur-sm">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium text-white">Share Usage Data</h3>
-                    <p className="text-sm text-white/70">Help improve our service by sharing anonymous usage data</p>
+                    <h3 className="font-medium text-foreground">Share Usage Data</h3>
+                    <p className="text-sm text-muted-foreground">Help improve our service by sharing anonymous usage data</p>
                   </div>
                   <Switch
                     checked={settings.shareData}
@@ -358,12 +343,12 @@ export function SettingsPage() {
                   />
                 </div>
 
-                <Separator className="bg-white/15" />
+                <Separator className="bg-border/30" />
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium text-white">Cookie Consent</h3>
-                    <p className="text-sm text-white/70">Allow cookies for enhanced functionality</p>
+                    <h3 className="font-medium text-foreground">Cookie Consent</h3>
+                    <p className="text-sm text-muted-foreground">Allow cookies for enhanced functionality</p>
                   </div>
                   <Switch
                     checked={settings.cookieConsent}
@@ -371,12 +356,12 @@ export function SettingsPage() {
                   />
                 </div>
 
-                <Separator className="bg-white/15" />
+                <Separator className="bg-border/30" />
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium text-white">Marketing Emails</h3>
-                    <p className="text-sm text-white/70">Receive promotional content and product updates</p>
+                    <h3 className="font-medium text-foreground">Marketing Emails</h3>
+                    <p className="text-sm text-muted-foreground">Receive promotional content and product updates</p>
                   </div>
                   <Switch
                     checked={settings.marketingEmails}
@@ -391,63 +376,57 @@ export function SettingsPage() {
         {/* Account */}
         <TabsContent value="account">
           <div className="space-y-6">
-            <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-blue-500 to-cyan-500 opacity-90" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+            <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+              <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
 
-              <CardHeader className="relative z-10 border-b border-white/15">
-                <CardTitle className="flex items-center gap-2 text-white">
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
-                    <Download className="h-4 w-4" />
-                  </span>
-                  Data Management
-                </CardTitle>
+              <CardHeader className="flex items-center gap-2 bg-white/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Download className="h-4 w-4" />
+                </span>
+                <CardTitle className="text-lg font-semibold text-foreground">Data Management</CardTitle>
               </CardHeader>
-              <CardContent className="relative z-10 space-y-4 p-6 bg-white/5 backdrop-blur-sm border border-white/10 border-t-0">
-                <div className="flex items-start justify-between gap-4 p-4 bg-white/10 border border-white/15 rounded-xl">
+              <CardContent className="space-y-4 p-6 bg-white/70 backdrop-blur-sm">
+                <div className="flex items-start justify-between gap-4 p-4 bg-white border border-border/60 rounded-xl hover:border-primary/60 hover:shadow-sm transition-colors">
                   <div className="space-y-1">
-                    <h3 className="font-medium text-white">Export Data</h3>
-                    <p className="text-sm text-white/70">Download all your data in JSON format</p>
+                    <h3 className="font-medium text-foreground">Export Data</h3>
+                    <p className="text-sm text-muted-foreground">Download all your data in JSON format</p>
                   </div>
-                  <Button variant="outline" onClick={exportData} className="bg-white/10 hover:bg-white/20 text-white border-white/25 hover:border-white/40">
+                  <Button variant="outline" onClick={exportData} className="border-border/70 text-foreground hover:border-primary hover:text-primary">
                     <Download className="h-4 w-4 mr-2" />
                     Export
                   </Button>
                 </div>
 
-                <div className="flex items-start justify-between gap-4 p-4 bg-white/10 border border-white/15 rounded-xl">
+                <div className="flex items-start justify-between gap-4 p-4 bg-white border border-border/60 rounded-xl hover:border-primary/60 hover:shadow-sm transition-colors">
                   <div className="space-y-1">
-                    <h3 className="font-medium text-white">Account Statistics</h3>
-                    <p className="text-sm text-white/70">
+                    <h3 className="font-medium text-foreground">Account Statistics</h3>
+                    <p className="text-sm text-muted-foreground">
                       Member since: January 2024 • Total conversions: 1,247
                     </p>
                   </div>
-                  <Badge variant="secondary" className="bg-emerald-500/20 text-emerald-100 border border-emerald-200/40">Active</Badge>
+                  <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 border border-emerald-200">Active</Badge>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-              <div className="absolute inset-0 bg-gradient-to-br from-rose-600 via-red-600 to-orange-500 opacity-90" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.18),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.15),transparent_30%)]" />
+            <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-rose-100 via-rose-50 to-white shadow-lg backdrop-blur-sm text-foreground">
+              <div className="h-1 w-full bg-gradient-to-r from-rose-500/80 via-red-500/70 to-orange-400/70" />
 
-              <CardHeader className="relative z-10 border-b border-white/15">
-                <CardTitle className="flex items-center gap-2 text-white">
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
-                    <Trash2 className="h-4 w-4" />
-                  </span>
-                  Danger Zone
-                </CardTitle>
+              <CardHeader className="flex items-center gap-2 bg-white/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-rose-100 text-rose-700">
+                  <Trash2 className="h-4 w-4" />
+                </span>
+                <CardTitle className="text-lg font-semibold text-foreground">Danger Zone</CardTitle>
               </CardHeader>
-              <CardContent className="relative z-10 space-y-4 p-6 bg-white/5 backdrop-blur-sm border border-white/10 border-t-0">
-                <div className="flex items-start justify-between gap-4 p-4 bg-white/10 border border-white/15 rounded-xl">
+              <CardContent className="space-y-4 p-6 bg-white/70 backdrop-blur-sm">
+                <div className="flex items-start justify-between gap-4 p-4 bg-white border border-border/60 rounded-xl hover:border-rose-200 hover:shadow-sm transition-colors">
                   <div className="space-y-1">
-                    <h3 className="font-medium text-white">Delete Account</h3>
-                    <p className="text-sm text-white/75">
+                    <h3 className="font-medium text-foreground">Delete Account</h3>
+                    <p className="text-sm text-muted-foreground">
                       Permanently delete your account and all associated data
                     </p>
                   </div>
-                  <Button variant="destructive" className="bg-white/10 hover:bg-white/20 text-white border border-white/30">
+                  <Button variant="destructive" className="">
                     <Trash2 className="h-4 w-4 mr-2" />
                     Delete Account
                   </Button>
