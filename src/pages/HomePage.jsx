@@ -255,43 +255,47 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
         ))}
       </section>
 
-      {/* Choose Section - Gradient Glass Card */}
+      {/* Why Choose - Light Gradient Card */}
       <section className="py-12">
         <div className="max-w-6xl mx-auto">
-          <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-amber-400 opacity-90" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+          <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+            <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
 
-            <div className="relative z-10 p-8 sm:p-10 border-b border-white/15">
-              <h2 className="text-3xl md:text-4xl font-bold text-white">Why Choose Our Platform?</h2>
-              <p className="text-white/80 text-lg mt-3 max-w-3xl">
-                Built for professionals and everyday users who need reliable, accurate currency data.
-              </p>
-            </div>
-
-            <div className="relative z-10 grid md:grid-cols-2 gap-4 sm:gap-6 p-8 sm:p-10 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0">
-              {[ 
-                { icon: Zap, title: "Real-Time Rates", desc: "Get live exchange rates updated every minute from global financial markets and major banks." },
-                { icon: BarChart3, title: "Advanced Analytics", desc: "Analyze currency trends with interactive charts, historical data, and technical indicators." },
-                { icon: Star, title: "Smart Favorites", desc: "Save your most used currency pairs for quick access and get personalized insights." },
-                { icon: Globe, title: "Global Coverage", desc: "Access rates for major world currencies including exotic pairs and emerging markets." },
-                { icon: Shield, title: "Bank-Grade Security", desc: "Enterprise-level security with encrypted connections and secure data handling." },
-                { icon: Clock, title: "24/7 Availability", desc: "Round-the-clock access to currency data with 99.9% uptime guarantee." },
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  className="group flex gap-4 p-4 sm:p-5 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors"
-                >
-                  <div className="h-12 w-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center text-white">
-                    <item.icon className="h-6 w-6" />
-                  </div>
-                  <div className="space-y-1">
-                    <div className="font-semibold text-lg text-white">{item.title}</div>
-                    <p className="text-sm text-white/80 leading-relaxed">{item.desc}</p>
-                  </div>
+            <CardContent className="p-8 sm:p-10 space-y-8">
+              <div className="space-y-3 max-w-4xl">
+                <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold">
+                  Why Choose Us
                 </div>
-              ))}
-            </div>
+                <h2 className="text-3xl md:text-4xl font-bold leading-tight">Why Choose Our Platform?</h2>
+                <p className="text-lg text-muted-foreground max-w-3xl">
+                  Built for professionals and everyday users who need reliable, accurate currency data.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
+                {[ 
+                  { icon: Zap, title: "Real-Time Rates", desc: "Get live exchange rates updated every minute from global financial markets and major banks." },
+                  { icon: BarChart3, title: "Advanced Analytics", desc: "Analyze currency trends with interactive charts, historical data, and technical indicators." },
+                  { icon: Star, title: "Smart Favorites", desc: "Save your most used currency pairs for quick access and get personalized insights." },
+                  { icon: Globe, title: "Global Coverage", desc: "Access rates for major world currencies including exotic pairs and emerging markets." },
+                  { icon: Shield, title: "Bank-Grade Security", desc: "Enterprise-level security with encrypted connections and secure data handling." },
+                  { icon: Clock, title: "24/7 Availability", desc: "Round-the-clock access to currency data with 99.9% uptime guarantee." },
+                ].map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="group flex gap-4 p-4 sm:p-5 rounded-2xl border border-border/60 bg-white shadow-sm hover:border-primary/60 hover:shadow-md transition-colors"
+                  >
+                    <div className="h-12 w-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                      <item.icon className="h-6 w-6" />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="font-semibold text-lg text-foreground">{item.title}</div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
           </Card>
         </div>
       </section>

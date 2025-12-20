@@ -66,41 +66,40 @@ export function AlertsPage() {
         <div className="grid gap-4">
           {alerts.map((alert) => {
             const Icon = alert.icon;
+            const isPrice = alert.type === "price";
+            const isVolatility = alert.type === "volatility";
             return (
-              <Card key={alert.id} className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 opacity-90" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
-                
-                <div className="relative z-10 bg-white/5 backdrop-blur-sm border border-white/10">
-                  <div className="p-3 sm:p-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
-                    <div className="flex items-start gap-3 sm:gap-4 flex-1">
-                      <div className="p-2 sm:p-3 rounded-lg bg-white/15 backdrop-blur-sm flex-shrink-0">
-                        <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+              <Card key={alert.id} className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+                <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
+
+                <div className="p-3 sm:p-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                  <div className="flex items-start gap-3 sm:gap-4 flex-1">
+                    <div className="p-2 sm:p-3 rounded-lg bg-primary/10 text-primary flex-shrink-0">
+                      <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
+                    </div>
+                    <div className="space-y-1 sm:space-y-2 flex-1 min-w-0">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                        <h3 className="text-base sm:text-xl font-semibold text-foreground truncate">{alert.currency}</h3>
+                        <span className="px-2 py-1 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-medium w-fit">
+                          Active
+                        </span>
                       </div>
-                      <div className="space-y-1 sm:space-y-2 flex-1 min-w-0">
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                          <h3 className="text-base sm:text-xl font-semibold text-white truncate">{alert.currency}</h3>
-                          <span className="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-200/40 text-xs font-medium w-fit">
-                            Active
-                          </span>
-                        </div>
-                        <p className="text-xs sm:text-sm text-white/80 line-clamp-2">
-                          Alert when price is <span className="font-semibold text-white">{alert.condition}</span> {alert.value}
-                        </p>
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm">
-                          <span className="text-white/70">
-                            Current: <span className="font-semibold text-white">{alert.current}</span>
-                          </span>
-                          <span className="text-white/70">
-                            Target: <span className="font-semibold text-white">{alert.value}</span>
-                          </span>
-                        </div>
+                      <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
+                        Alert when price is <span className="font-semibold text-foreground">{alert.condition}</span> {alert.value}
+                      </p>
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+                        <span>
+                          Current: <span className="font-semibold text-foreground">{alert.current}</span>
+                        </span>
+                        <span>
+                          Target: <span className="font-semibold text-foreground">{alert.value}</span>
+                        </span>
                       </div>
                     </div>
-                    <div className="flex gap-2 flex-shrink-0">
-                      <Button variant="outline" size="sm" className="bg-white/10 hover:bg-white/20 text-white border-white/25 hover:border-white/40 text-xs sm:text-sm">Edit</Button>
-                      <Button variant="destructive" size="sm" className="bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 border border-rose-200/40 text-xs sm:text-sm">Delete</Button>
-                    </div>
+                  </div>
+                  <div className="flex gap-2 flex-shrink-0">
+                    <Button variant="outline" size="sm" className="border-border/70 text-foreground hover:border-primary hover:text-primary text-xs sm:text-sm">Edit</Button>
+                    <Button variant="destructive" size="sm" className="text-xs sm:text-sm">Delete</Button>
                   </div>
                 </div>
               </Card>

@@ -178,12 +178,11 @@ export function MarketPage() {
       </div>
 
       {/* Market Chart */}
-      <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-blue-600 to-emerald-400 opacity-90" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+      <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+        <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
 
-        <CardHeader className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/15">
-          <CardTitle className="text-xl font-semibold text-white">Market Trend - USD/EUR</CardTitle>
+        <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+          <CardTitle className="text-xl font-semibold text-foreground">Market Trend - USD/EUR</CardTitle>
           <div className="flex gap-2 flex-wrap">
             {["1D", "1W", "1M", "3M", "1Y"].map((timeframe) => (
               <Button
@@ -191,25 +190,30 @@ export function MarketPage() {
                 variant={selectedTimeframe === timeframe ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedTimeframe(timeframe)}
-                className={selectedTimeframe === timeframe ? "bg-white text-slate-900 hover:bg-white/90" : "border-white/40 text-white hover:bg-white/10"}
+                className={
+                  selectedTimeframe === timeframe
+                    ? "bg-primary text-white hover:bg-primary/90"
+                    : "border-border/60 text-foreground hover:border-primary hover:text-primary"
+                }
               >
                 {timeframe}
               </Button>
             ))}
           </div>
         </CardHeader>
-        <CardContent className="relative z-10 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0 min-w-0">
+
+        <CardContent className="bg-white/70 backdrop-blur-sm min-w-0 p-6">
           <div className="min-w-0 h-64 sm:h-80">
             <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <AreaChart data={marketOverview}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.15)" />
-                <XAxis dataKey="dateFormatted" tick={{ fontSize: 12, fill: '#e2e8f0' }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 12, fill: '#e2e8f0' }} axisLine={false} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(15,23,42,0.08)" />
+                <XAxis dataKey="dateFormatted" tick={{ fontSize: 12, fill: '#0f172a' }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 12, fill: '#0f172a' }} axisLine={false} tickLine={false} />
                 <Tooltip
                   contentStyle={{ backgroundColor: 'rgba(255,255,255,0.95)', border: '1px solid rgba(15,23,42,0.1)', borderRadius: '10px', color: '#0f172a' }}
                   labelStyle={{ color: '#0f172a' }}
                 />
-                <Area type="monotone" dataKey="rate" stroke="#e0f2fe" fill="#e0f2fe" fillOpacity={0.2} strokeWidth={2.5} />
+                <Area type="monotone" dataKey="rate" stroke="#2563eb" fill="#2563eb" fillOpacity={0.15} strokeWidth={2.5} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -217,22 +221,21 @@ export function MarketPage() {
       </Card>
 
       {/* Currency Pairs Table */}
-      <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-blue-600 to-emerald-400 opacity-90" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+      <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white text-slate-900 shadow-lg shadow-slate-900/10">
+        <div className="h-1 w-full bg-gradient-to-r from-indigo-500/70 via-blue-500/60 to-cyan-400/60" />
 
-        <CardHeader className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/15">
+        <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200">
           <div>
-            <CardTitle className="text-white">Live Currency Pairs</CardTitle>
+            <CardTitle className="text-slate-900">Live Currency Pairs</CardTitle>
             {lastUpdated && (
-              <p className="text-sm text-white/70 mt-1">
+              <p className="text-sm text-slate-700 mt-1">
                 Last updated: {lastUpdated.toLocaleTimeString()}
               </p>
             )}
           </div>
           <div className="flex gap-2 items-center">
             <Select value={selectedMarket} onValueChange={setSelectedMarket}>
-              <SelectTrigger className="w-48 bg-white/90 text-slate-900 border-white/40">
+              <SelectTrigger className="w-48 bg-white text-slate-900 border border-border/60 shadow-sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -242,40 +245,43 @@ export function MarketPage() {
               </SelectContent>
             </Select>
             <Button
-              variant="ghost"
+              variant="outline"
               size="icon"
               onClick={loadMarketData}
               disabled={loading}
-              className={`text-white/80 hover:text-white bg-white/10 hover:bg-white/20 ${loading ? 'animate-spin' : ''}`}
+              className={`border-border/60 text-slate-900 bg-white hover:bg-slate-50 ${loading ? 'animate-spin' : ''}`}
             >
               <RefreshCw className="h-4 w-4" />
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="relative z-10 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0">
+        <CardContent className="border-t border-slate-200 bg-white rounded-b-3xl">
           {loading && !lastUpdated ? (
             <div className="flex items-center justify-center py-12">
-              <RefreshCw className="h-8 w-8 animate-spin text-white/70" />
+              <RefreshCw className="h-8 w-8 animate-spin text-slate-500" />
             </div>
           ) : (
             <div className="space-y-4">
               {getMarketData().map((item, index) => (
-                <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 bg-white/10 border border-white/15 rounded-xl hover:bg-white/15 transition-colors">
+                <div
+                  key={index}
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 bg-white/85 border border-border/60 rounded-xl hover:shadow-sm hover:-translate-y-[1px] transition-all text-slate-900"
+                >
                   <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="w-12 h-12 bg-white/15 rounded-full flex items-center justify-center text-white">
-                      <span className="font-semibold text-sm">{item.pair.split('/')[0]}</span>
+                    <div className="w-12 h-12 bg-slate-900/5 rounded-full flex items-center justify-center text-slate-900 font-semibold text-sm">
+                      {item.pair.split('/')[0]}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-white">{item.pair}</h3>
-                      <p className="text-sm text-white/70">Volume: {item.volume}</p>
+                      <h3 className="font-semibold text-slate-900">{item.pair}</h3>
+                      <p className="text-sm text-slate-700">Volume: {item.volume}</p>
                     </div>
                   </div>
-                  <div className="text-right sm:text-right">
-                    <div className="font-mono text-lg font-semibold text-white">{item.price}</div>
-                    <div className={`flex items-center gap-1 text-sm ${item.trend === 'up' ? 'text-emerald-200' : 'text-rose-200'}`}>
+                  <div className="text-right sm:text-right space-y-1">
+                    <div className="font-mono text-lg font-semibold text-slate-900">{item.price}</div>
+                    <div className={`flex items-center gap-1 text-sm ${item.trend === 'up' ? 'text-emerald-600' : 'text-rose-600'}`}>
                       {item.trend === 'up' ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
                       <span>{item.change}</span>
-                      <Badge variant="secondary" className="border border-white/25 bg-white/15 text-white">
+                      <Badge variant="secondary" className="border border-border/60 bg-slate-900/5 text-slate-900">
                         {item.changePercent}
                       </Badge>
                     </div>
@@ -292,45 +298,40 @@ export function MarketPage() {
         {[{
           title: "Top Gainers",
           icon: TrendingUp,
-          color: "from-emerald-500 via-green-500 to-teal-400",
+          accent: "from-emerald-500/80 via-green-500/70 to-teal-400/70",
           items: [
             { pair: "NZD/USD", change: "+1.89%" },
             { pair: "AUD/JPY", change: "+1.45%" },
           ],
-          badgeClass: "text-emerald-200 border border-emerald-200/40 bg-white/10",
         }, {
           title: "Top Losers",
           icon: TrendingDown,
-          color: "from-rose-500 via-red-500 to-orange-400",
+          accent: "from-rose-500/80 via-red-500/70 to-orange-400/70",
           items: [
             { pair: "USD/TRY", change: "-2.34%" },
             { pair: "GBP/JPY", change: "-1.67%" },
           ],
-          badgeClass: "text-rose-200 border border-rose-200/40 bg-white/10",
         }].map((block, idx) => (
-          <Card key={idx} className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-            <div className={`absolute inset-0 bg-gradient-to-br ${block.color} opacity-90`} />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.18),transparent_30%)]" />
+          <Card key={idx} className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+            <div className={`h-1 w-full bg-gradient-to-r ${block.accent}`} />
 
-            <CardHeader className="relative z-10 pb-2 border-b border-white/15">
-              <CardTitle className="flex items-center gap-2 text-white">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
-                  <block.icon className="h-4 w-4" />
-                </span>
-                {block.title}
-              </CardTitle>
+            <CardHeader className="flex items-center gap-2 bg-white/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <block.icon className="h-4 w-4" />
+              </span>
+              <CardTitle className="text-lg font-semibold text-foreground">{block.title}</CardTitle>
             </CardHeader>
 
-            <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0 space-y-3">
+            <CardContent className="p-6 bg-white/70 backdrop-blur-sm space-y-3">
               {block.items.map((item, i) => {
                 const isNegative = item.change.trim().startsWith("-");
                 const badgeTone = isNegative
-                  ? "text-rose-200 border border-rose-200/40 bg-white/10"
-                  : "text-emerald-200 border border-emerald-200/40 bg-white/10";
+                  ? "text-rose-700 border border-rose-200 bg-rose-50"
+                  : "text-emerald-700 border border-emerald-200 bg-emerald-50";
                 return (
-                  <div key={i} className="flex justify-between items-center p-3 rounded-xl bg-white/10 border border-white/15 hover:bg-white/15 transition-colors">
-                    <span className="font-semibold text-white">{item.pair}</span>
-                    <Badge variant="secondary" className={badgeTone}>
+                  <div key={i} className="flex justify-between items-center p-3 rounded-xl bg-white border border-border/60 hover:border-primary/60 hover:shadow-sm transition-colors">
+                    <span className="font-semibold text-foreground">{item.pair}</span>
+                    <Badge variant="secondary" className={`${badgeTone} font-semibold`}>
                       {item.change}
                     </Badge>
                   </div>

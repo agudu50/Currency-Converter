@@ -177,37 +177,35 @@ export function NewsPage() {
       </section>
 
       {/* Market Alerts */}
-      <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 opacity-90" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+      <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+        <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
 
-        <CardHeader className="relative z-10 border-b border-white/15">
-          <CardTitle className="flex items-center gap-2 text-white">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
-              <TrendingUp className="h-4 w-4" />
-            </span>
-            Live Market Alerts
-          </CardTitle>
+        <CardHeader className="flex items-center gap-2 bg-white/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+            <TrendingUp className="h-4 w-4" />
+          </span>
+          <CardTitle className="text-xl font-semibold text-foreground">Live Market Alerts</CardTitle>
         </CardHeader>
-        <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0 space-y-3">
+
+        <CardContent className="p-6 bg-white/70 backdrop-blur-sm space-y-3">
           {marketAlerts.map((alert, index) => {
             const getBadgeColor = (type) => {
               switch (type) {
-                case "breaking": return "bg-rose-500/20 text-rose-200 border border-rose-200/40";
-                case "warning": return "bg-amber-500/20 text-amber-200 border border-amber-200/40";
-                default: return "bg-cyan-500/20 text-cyan-200 border border-cyan-200/40";
+                case "breaking": return "bg-rose-100 text-rose-700 border border-rose-200";
+                case "warning": return "bg-amber-100 text-amber-700 border border-amber-200";
+                default: return "bg-cyan-100 text-cyan-700 border border-cyan-200";
               }
             };
             return (
-              <div key={index} className="p-4 rounded-xl bg-white/10 border border-white/15 hover:bg-white/15 transition-colors">
+              <div key={index} className="p-4 rounded-xl bg-white border border-border/60 hover:border-primary/60 hover:shadow-sm transition-colors">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                   <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                    <Badge variant="secondary" className={`uppercase text-xs ${getBadgeColor(alert.type)}`}>
+                    <Badge variant="secondary" className={`uppercase text-xs font-semibold ${getBadgeColor(alert.type)}`}>
                       {alert.type}
                     </Badge>
-                    <span className="font-semibold text-sm sm:text-base text-white">{alert.title}</span>
+                    <span className="font-semibold text-sm sm:text-base text-foreground">{alert.title}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs sm:text-sm text-white/70">
+                  <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
                     <Clock className="h-3 w-3" /> {alert.time}
                   </div>
                 </div>
@@ -234,50 +232,56 @@ export function NewsPage() {
         <TabsContent value={selectedCategory} className="mt-6 sm:mt-8">
           <div className="grid gap-4 sm:gap-6">
             {filteredNews.map((article) => (
-              <Card key={article.id} className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white hover:shadow-2xl transition-all duration-200">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-blue-600 to-cyan-400 opacity-90" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
-                <CardContent className="relative z-10 p-4 sm:p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl">
+              <Card key={article.id} className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground hover:shadow-xl transition-all duration-200">
+                <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
+                <CardContent className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm">
                   <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                     <div className="flex-shrink-0 self-start">
-                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/15 backdrop-blur-sm rounded-lg flex items-center justify-center text-xl sm:text-2xl">
+                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 text-primary rounded-lg flex items-center justify-center text-xl sm:text-2xl">
                         {article.image}
                       </div>
                     </div>
-                    
+
                     <div className="flex-1 space-y-2 sm:space-y-3">
                       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-                        <h2 className="text-base sm:text-lg md:text-xl font-semibold leading-tight text-white hover:text-white/90 cursor-pointer">
+                        <h2 className="text-base sm:text-lg md:text-xl font-semibold leading-tight text-foreground">
                           {article.title}
                         </h2>
-                        <Badge variant="secondary" className={`flex-shrink-0 w-fit text-xs ${
-                          article.impact === 'high' ? 'bg-rose-500/20 text-rose-200 border border-rose-200/40' :
-                          article.impact === 'medium' ? 'bg-amber-500/20 text-amber-200 border border-amber-200/40' :
-                          'bg-emerald-500/20 text-emerald-200 border border-emerald-200/40'
-                        }`}>
+                        <Badge
+                          variant="secondary"
+                          className={`flex-shrink-0 w-fit text-xs font-semibold ${
+                            article.impact === 'high'
+                              ? 'bg-rose-100 text-rose-700 border border-rose-200'
+                              : article.impact === 'medium'
+                              ? 'bg-amber-100 text-amber-700 border border-amber-200'
+                              : 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+                          }`}
+                        >
                           {article.impact} impact
                         </Badge>
                       </div>
-                      
-                      <p className="text-sm sm:text-base text-white/80 leading-relaxed">{article.summary}</p>
-                      
+
+                      <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{article.summary}</p>
+
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">
                         <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-                          <div className="flex items-center gap-2 text-xs sm:text-sm text-white/70">
+                          <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
                             <Globe className="h-3 w-3 sm:h-4 sm:w-4" /> {article.source}
                           </div>
-                          <div className="flex items-center gap-2 text-xs sm:text-sm text-white/70">
+                          <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
                             <Clock className="h-3 w-3 sm:h-4 sm:w-4" /> {article.time}
                           </div>
                         </div>
-                        
+
                         <div className="flex items-center gap-2">
                           <div className="flex gap-1 flex-wrap">
                             {article.currencies.map((currency) => (
-                              <Badge key={currency} variant="secondary" className="text-xs bg-white/15 text-white border border-white/25">{currency}</Badge>
+                              <Badge key={currency} variant="secondary" className="text-xs bg-primary/10 text-primary border border-primary/20">
+                                {currency}
+                              </Badge>
                             ))}
                           </div>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-white/80 hover:text-white hover:bg-white/10">
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-primary hover:text-primary bg-primary/10 hover:bg-primary/20">
                             <ExternalLink className="h-4 w-4" />
                           </Button>
                         </div>
@@ -292,42 +296,42 @@ export function NewsPage() {
       </Tabs>
 
       {/* Economic Calendar Preview */}
-      <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-fuchsia-500 to-pink-500 opacity-90" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+      <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+        <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
 
-        <CardHeader className="relative z-10 border-b border-white/15">
-          <CardTitle className="flex items-center gap-2 text-white">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">
-              <Calendar className="h-4 w-4" />
-            </span>
-            Upcoming Economic Events
-          </CardTitle>
+        <CardHeader className="flex items-center gap-2 bg-white/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+            <Calendar className="h-4 w-4" />
+          </span>
+          <CardTitle className="text-xl font-semibold text-foreground">Upcoming Economic Events</CardTitle>
         </CardHeader>
-        <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0">
+
+        <CardContent className="p-6 bg-white/70 backdrop-blur-sm">
           <div className="space-y-3 sm:space-y-4">
             {[
               { time: "09:30 GMT", event: "US CPI", currency: "USD", impact: "high", forecast: "3.2%", previous: "3.1%" },
               { time: "14:00 GMT", event: "ECB Interest Rate Decision", currency: "EUR", impact: "high", forecast: "4.25%", previous: "4.25%" },
               { time: "Tomorrow 12:30 GMT", event: "UK Employment Data", currency: "GBP", impact: "medium", forecast: "4.0%", previous: "3.9%" }
             ].map((event, index) => (
-              <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 sm:p-4 bg-white/10 border border-white/15 rounded-xl hover:bg-white/15 transition-colors">
+              <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 sm:p-4 bg-white border border-border/60 rounded-xl hover:border-primary/60 hover:shadow-sm transition-colors">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                  <div className="text-xs sm:text-sm text-white/70 sm:min-w-24">{event.time}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground sm:min-w-24">{event.time}</div>
                   <div>
-                    <div className="font-semibold text-sm sm:text-base text-white">{event.event}</div>
-                    <div className="text-xs sm:text-sm text-white/70">
+                    <div className="font-semibold text-sm sm:text-base text-foreground">{event.event}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">
                       Forecast: {event.forecast} | Previous: {event.previous}
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="text-xs bg-white/15 text-white border border-white/25">{event.currency}</Badge>
-                  <Badge variant="secondary" className={`text-xs ${
-                    event.impact === 'high' ? 'bg-rose-500/20 text-rose-200 border border-rose-200/40' :
-                    event.impact === 'medium' ? 'bg-amber-500/20 text-amber-200 border border-amber-200/40' :
-                    'bg-emerald-500/20 text-emerald-200 border border-emerald-200/40'
-                  }`}>{event.impact}</Badge>
+                  <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border border-primary/20">{event.currency}</Badge>
+                  <Badge variant="secondary" className={`text-xs font-semibold ${
+                    event.impact === 'high' ? 'bg-rose-100 text-rose-700 border border-rose-200' :
+                    event.impact === 'medium' ? 'bg-amber-100 text-amber-700 border border-amber-200' :
+                    'bg-emerald-100 text-emerald-700 border border-emerald-200'
+                  }`}>
+                    {event.impact}
+                  </Badge>
                 </div>
               </div>
             ))}

@@ -202,17 +202,16 @@ export function AboutPage() {
 
       {/* Mission & Vision */}
       <section>
-        <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-fuchsia-500 to-pink-500 opacity-90" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
-          <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
-            <h3 className="text-xl font-semibold mb-3 text-white">Our Mission</h3>
-            <p className="text-sm text-white/80 leading-relaxed">
+        <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white text-slate-900 shadow-lg shadow-slate-900/10">
+          <div className="h-1 w-full bg-gradient-to-r from-indigo-500/70 via-blue-500/60 to-cyan-400/60" />
+          <CardContent className="p-6 space-y-4">
+            <h3 className="text-xl font-semibold text-slate-900">Our Mission</h3>
+            <p className="text-sm text-slate-800/85 leading-relaxed">
               We make currency exchange transparent and accessible for everyone—from individual travelers to global businesses—by providing accurate live rates, intuitive tools, and secure experiences.
             </p>
-            <div className="grid sm:grid-cols-2 gap-3 mt-4">
+            <div className="grid sm:grid-cols-2 gap-3">
               {["Real-time market insights", "Bank-grade security", "Global coverage", "Mobile-first design"].map((item, idx) => (
-                <div key={idx} className="p-3 rounded-xl bg-white/10 border border-white/15 text-sm text-white/85">
+                <div key={idx} className="p-3 rounded-xl bg-white/80 text-slate-900 border border-border/60 text-sm font-medium">
                   • {item}
                 </div>
               ))}
@@ -223,25 +222,23 @@ export function AboutPage() {
 
       {/* Technology & Integrations */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-blue-600 to-cyan-400 opacity-90" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
-          <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
-            <h3 className="text-xl font-semibold mb-3 text-white">Technology</h3>
+        <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white text-slate-900 shadow-lg shadow-slate-900/10">
+          <div className="h-1 w-full bg-gradient-to-r from-indigo-500/70 via-blue-500/60 to-cyan-400/60" />
+          <CardContent className="p-6 space-y-4">
+            <h3 className="text-xl font-semibold text-slate-900">Technology</h3>
             <div className="grid grid-cols-2 gap-3">
               {["React 19", "Vite 7", "Tailwind CSS", "Radix UI", "Recharts", "CurrencyAPI", "exchangerate.host", "Vercel"].map((t, i) => (
-                <Badge key={i} variant="secondary" className="bg-white/15 text-white border border-white/25">{t}</Badge>
+                <Badge key={i} variant="secondary" className="bg-white/80 text-slate-900 border border-border/60">{t}</Badge>
               ))}
             </div>
           </CardContent>
         </Card>
 
-        <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-400 opacity-90" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
-          <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
-            <h3 className="text-xl font-semibold mb-3 text-white">Security & Compliance</h3>
-            <ul className="text-sm text-white/80 space-y-2">
+        <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-white text-slate-900 shadow-lg shadow-slate-900/10">
+          <div className="h-1 w-full bg-gradient-to-r from-emerald-500/70 via-teal-400/60 to-lime-300/60" />
+          <CardContent className="p-6 space-y-4">
+            <h3 className="text-xl font-semibold text-slate-900">Security & Compliance</h3>
+            <ul className="text-sm text-slate-800/85 space-y-2">
               <li>• Encrypted transport (HTTPS)</li>
               <li>• Strict API key handling via environment variables</li>
               <li>• Privacy-first analytics (opt-in)</li>
@@ -253,15 +250,14 @@ export function AboutPage() {
 
       {/* Contact & Community */}
       <section>
-        <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 opacity-90" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
-          <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
-            <h3 className="text-xl font-semibold mb-4 text-white">Get in Touch</h3>
+        <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-white text-slate-900 shadow-lg shadow-slate-900/10">
+          <div className="h-1 w-full bg-gradient-to-r from-indigo-500/70 via-purple-500/60 to-pink-400/60" />
+          <CardContent className="p-6 space-y-4">
+            <h3 className="text-xl font-semibold text-slate-900">Get in Touch</h3>
             <div className="flex flex-wrap items-center gap-3">
-              <Button variant="outline" size="sm" className="bg-white/90 text-slate-900 border-white/40"><Github className="h-4 w-4 mr-2" /> GitHub</Button>
-              <Button variant="outline" size="sm" className="bg-white/90 text-slate-900 border-white/40"><Twitter className="h-4 w-4 mr-2" /> Twitter</Button>
-              <Button variant="outline" size="sm" className="bg-white/90 text-slate-900 border-white/40"><Mail className="h-4 w-4 mr-2" /> Email</Button>
+              <Button variant="outline" size="sm" className="bg-white/85 text-slate-900 border border-border/60"><Github className="h-4 w-4 mr-2" /> GitHub</Button>
+              <Button variant="outline" size="sm" className="bg-white/85 text-slate-900 border border-border/60"><Twitter className="h-4 w-4 mr-2" /> Twitter</Button>
+              <Button variant="outline" size="sm" className="bg-white/85 text-slate-900 border border-border/60"><Mail className="h-4 w-4 mr-2" /> Email</Button>
             </div>
           </CardContent>
         </Card>
@@ -269,23 +265,22 @@ export function AboutPage() {
 
       {/* FAQ */}
       <section>
-        <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 opacity-90" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
-          <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
-            <h3 className="text-xl font-semibold mb-4 text-white">FAQ</h3>
+        <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-white text-slate-900 shadow-lg shadow-slate-900/10">
+          <div className="h-1 w-full bg-gradient-to-r from-amber-500/70 via-orange-500/60 to-rose-400/60" />
+          <CardContent className="p-6 space-y-3">
+            <h3 className="text-xl font-semibold text-slate-900">FAQ</h3>
             <div className="space-y-3">
               <div>
-                <div className="font-semibold text-white">Is the data live?</div>
-                <p className="text-sm text-white/80">Yes, latest rates are fetched from CurrencyAPI; historical trends from exchangerate.host.</p>
+                <div className="font-semibold text-slate-900">Is the data live?</div>
+                <p className="text-sm text-slate-800/85">Yes, latest rates are fetched from CurrencyAPI; historical trends from exchangerate.host.</p>
               </div>
               <div>
-                <div className="font-semibold text-white">Do you support mobile?</div>
-                <p className="text-sm text-white/80">The UI is mobile-first with responsive layouts and optimized charts.</p>
+                <div className="font-semibold text-slate-900">Do you support mobile?</div>
+                <p className="text-sm text-slate-800/85">The UI is mobile-first with responsive layouts and optimized charts.</p>
               </div>
               <div>
-                <div className="font-semibold text-white">How do I report an issue?</div>
-                <p className="text-sm text-white/80">Reach out via GitHub or email; we respond quickly to production-impacting issues.</p>
+                <div className="font-semibold text-slate-900">How do I report an issue?</div>
+                <p className="text-sm text-slate-800/85">Reach out via GitHub or email; we respond quickly to production-impacting issues.</p>
               </div>
             </div>
           </CardContent>

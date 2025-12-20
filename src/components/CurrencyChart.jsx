@@ -50,20 +50,19 @@ export default function CurrencyChart() {
   };
 
   return (
-    <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-cyan-500 to-teal-400 opacity-90" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.16),transparent_30%)]" />
+    <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+      <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
 
-      <CardHeader className="relative z-10 p-6 border-b border-white/15">
+      <CardHeader className="space-y-2 p-6 pb-4 bg-white/70 backdrop-blur-sm border-b border-border/60">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <CardTitle className="text-xl font-semibold text-white flex items-center gap-2">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm text-sm font-semibold">
+            <CardTitle className="text-xl font-semibold text-foreground flex items-center gap-2">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-semibold">
                 <Activity className="w-4 h-4" />
               </span>
               Historical Exchange Rates
             </CardTitle>
-            <p className="text-xs sm:text-sm text-white/70 mt-2">
+            <p className="text-xs sm:text-sm text-muted-foreground mt-2">
               Track trends between popular pairs over time
             </p>
           </div>
@@ -71,9 +70,9 @@ export default function CurrencyChart() {
           <div className="flex flex-wrap gap-3">
             {/* From currency */}
             <div className="flex items-center gap-2">
-              <span className="text-sm text-white/80">From:</span>
+              <span className="text-sm text-muted-foreground">From:</span>
               <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                <SelectTrigger className="w-32 bg-white/90 text-slate-900 border-white/40">
+                <SelectTrigger className="w-32 bg-white border border-border/60 text-foreground">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -94,9 +93,9 @@ export default function CurrencyChart() {
 
             {/* To currency */}
             <div className="flex items-center gap-2">
-              <span className="text-sm text-white/80">To:</span>
+              <span className="text-sm text-muted-foreground">To:</span>
               <Select value={toCurrency} onValueChange={setToCurrency}>
-                <SelectTrigger className="w-32 bg-white/90 text-slate-900 border-white/40">
+                <SelectTrigger className="w-32 bg-white border border-border/60 text-foreground">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -117,9 +116,9 @@ export default function CurrencyChart() {
 
             {/* Timeframe */}
             <div className="flex items-center gap-2">
-              <span className="text-sm text-white/80">Period:</span>
+              <span className="text-sm text-muted-foreground">Period:</span>
               <Select value={timeframe} onValueChange={setTimeframe}>
-                <SelectTrigger className="w-32 bg-white/90 text-slate-900 border-white/40">
+                <SelectTrigger className="w-32 bg-white border border-border/60 text-foreground">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -134,19 +133,19 @@ export default function CurrencyChart() {
         </div>
       </CardHeader>
 
-      <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0 min-w-0">
+      <CardContent className="p-6 bg-white/70 backdrop-blur-sm min-w-0">
         <div className="min-w-0 h-64 sm:h-80">
           <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
             <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.15)" />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(15,23,42,0.08)" />
               <XAxis
                 dataKey="dateFormatted"
-                tick={{ fontSize: 12, fill: "#e2e8f0" }}
+                tick={{ fontSize: 12, fill: "#0f172a" }}
                 axisLine={false}
                 tickLine={false}
               />
               <YAxis
-                tick={{ fontSize: 12, fill: "#e2e8f0" }}
+                tick={{ fontSize: 12, fill: "#0f172a" }}
                 axisLine={false}
                 tickLine={false}
                 domain={["dataMin - 0.01", "dataMax + 0.01"]}
@@ -164,10 +163,10 @@ export default function CurrencyChart() {
               <Line
                 type="monotone"
                 dataKey="rate"
-                stroke="#e0f2fe"
+                stroke="#2563eb"
                 strokeWidth={2.5}
                 dot={false}
-                activeDot={{ r: 4, fill: "#e0f2fe" }}
+                activeDot={{ r: 4, fill: "#2563eb" }}
                 isAnimationActive={!loading}
               />
             </LineChart>
@@ -176,35 +175,35 @@ export default function CurrencyChart() {
 
         {/* Stats */}
         <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div className="bg-white/10 border border-white/15 rounded-xl p-3">
-            <div className="text-sm text-white/70">Current Rate</div>
-            <div className="font-semibold text-white">
+          <div className="bg-white border border-border/60 rounded-xl p-3 shadow-sm">
+            <div className="text-sm text-muted-foreground">Current Rate</div>
+            <div className="font-semibold text-foreground">
               {chartData[chartData.length - 1]?.rate?.toFixed(4) ?? "-"}
             </div>
           </div>
 
-          <div className="bg-white/10 border border-white/15 rounded-xl p-3">
-            <div className="text-sm text-white/70">Highest</div>
-            <div className="font-semibold text-emerald-200">
+          <div className="bg-white border border-border/60 rounded-xl p-3 shadow-sm">
+            <div className="text-sm text-muted-foreground">Highest</div>
+            <div className="font-semibold text-emerald-600">
               {chartData.length ? Math.max(...chartData.map((d) => d.rate)).toFixed(4) : "-"}
             </div>
           </div>
 
-          <div className="bg-white/10 border border-white/15 rounded-xl p-3">
-            <div className="text-sm text-white/70">Lowest</div>
-            <div className="font-semibold text-rose-200">
+          <div className="bg-white border border-border/60 rounded-xl p-3 shadow-sm">
+            <div className="text-sm text-muted-foreground">Lowest</div>
+            <div className="font-semibold text-rose-600">
               {chartData.length ? Math.min(...chartData.map((d) => d.rate)).toFixed(4) : "-"}
             </div>
           </div>
 
-          <div className="bg-white/10 border border-white/15 rounded-xl p-3">
-            <div className="text-sm text-white/70">Change</div>
+          <div className="bg-white border border-border/60 rounded-xl p-3 shadow-sm">
+            <div className="text-sm text-muted-foreground">Change</div>
             <div
               className={`font-semibold ${
                 chartData[chartData.length - 1]?.rate >
                 chartData[0]?.rate
-                  ? "text-emerald-200"
-                  : "text-rose-200"
+                  ? "text-emerald-600"
+                  : "text-rose-600"
               }`}
             >
               {chartData.length > 1 && chartData[0]?.rate

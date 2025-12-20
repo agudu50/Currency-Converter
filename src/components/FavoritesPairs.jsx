@@ -38,18 +38,17 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
 
   if (!favorites || favorites.length === 0) {
     return (
-      <Card className="relative overflow-hidden border-0 shadow-xl bg-slate-950 text-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-fuchsia-500 to-amber-400 opacity-90" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.2),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.15),transparent_32%)]" />
-        <CardHeader className="relative z-10 pb-3 border-b border-white/15">
-          <CardTitle className="text-lg sm:text-2xl text-white flex items-center gap-2">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm text-sm font-semibold">★</span>
+      <Card className="relative overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+        <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
+        <CardHeader className="space-y-2 pb-4 bg-white/70 backdrop-blur-sm border-b border-border/60">
+          <CardTitle className="text-lg sm:text-2xl flex items-center gap-2 text-foreground">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-semibold">★</span>
             Favorite Currency Pairs
           </CardTitle>
         </CardHeader>
-        <CardContent className="relative z-10 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0 p-6 text-center">
-          <p className="text-white/80">No favorite pairs yet.</p>
-          <p className="text-sm mt-1 text-white/70">
+        <CardContent className="bg-white/70 backdrop-blur-sm p-6 text-center">
+          <p className="text-muted-foreground">No favorite pairs yet.</p>
+          <p className="text-sm mt-1 text-muted-foreground">
             Click the star icon in the converter to add favorites.
           </p>
         </CardContent>
@@ -58,14 +57,13 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
   }
 
   return (
-    <Card className="relative overflow-hidden border-0 shadow-xl bg-slate-950 text-white">
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-fuchsia-500 to-amber-400 opacity-90" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.2),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.15),transparent_32%)]" />
+    <Card className="relative overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+      <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
 
-      <CardHeader className="relative z-10 border-b border-white/15 pb-4">
+      <CardHeader className="space-y-2 pb-4 bg-white/70 backdrop-blur-sm border-b border-border/60">
         <div className="flex items-center justify-between flex-col sm:flex-row gap-2">
-          <CardTitle className="text-lg sm:text-2xl text-white flex items-center gap-2">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm text-sm font-semibold">★</span>
+          <CardTitle className="text-lg sm:text-2xl flex items-center gap-2 text-foreground">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-semibold">★</span>
             Favorite Currency Pairs
           </CardTitle>
           <Button
@@ -73,28 +71,28 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
             size="icon"
             onClick={refreshRates}
             disabled={refreshing}
-            className={`text-white/80 hover:text-white bg-white/10 hover:bg-white/20 ${refreshing ? "animate-spin" : ""}`}
+            className="text-primary hover:text-primary bg-primary/10 hover:bg-primary/20"
             title="Refresh rates"
           >
-            <RefreshCw className="h-4 w-4" />
+            <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
           </Button>
         </div>
       </CardHeader>
 
-      <CardContent className="relative z-10 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0">
+      <CardContent className="bg-white/70 backdrop-blur-sm">
         <div className="grid gap-2 sm:gap-3">
           {favorites.map((pair, index) => {
             return (
               <div
                 key={`${pair.from}-${pair.to}-${index}`}
-                className="flex items-center justify-between p-3 sm:p-4 bg-white/10 border border-white/15 rounded-xl hover:bg-white/15 transition-colors flex-col sm:flex-row gap-3"
+                className="flex items-center justify-between p-3 sm:p-4 bg-white border border-border/60 rounded-xl hover:border-primary/60 hover:shadow-md transition-colors flex-col sm:flex-row gap-3"
               >
-                <div className="flex items-center gap-2 sm:gap-3 text-white">
+                <div className="flex items-center gap-2 sm:gap-3 text-foreground">
                   <div className="flex items-center gap-1">
                     <span className="text-base sm:text-lg">{getCurrencyFlag(pair.from)}</span>
                     <span className="font-semibold text-sm sm:text-base">{pair.from}</span>
                   </div>
-                  <span className="text-white/70 text-sm">→</span>
+                  <span className="text-muted-foreground text-sm">→</span>
                   <div className="flex items-center gap-1">
                     <span className="text-base sm:text-lg">{getCurrencyFlag(pair.to)}</span>
                     <span className="font-semibold text-sm sm:text-base">{pair.to}</span>
@@ -102,14 +100,14 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
                 </div>
 
                 <div className="flex items-center gap-2 sm:gap-3">
-                  <Badge variant="secondary" className="font-mono text-xs sm:text-sm bg-white/20 text-white border border-white/30">
+                  <Badge variant="secondary" className="font-mono text-xs sm:text-sm bg-primary/10 text-primary border border-primary/20">
                     <LiveRate from={pair.from} to={pair.to} />
                   </Badge>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => onRemoveFavorite(index)}
-                    className="h-7 w-7 text-white/80 hover:text-amber-200 bg-white/10 hover:bg-white/20"
+                    className="h-7 w-7 text-muted-foreground hover:text-destructive bg-muted/60 hover:bg-muted"
                     title="Remove favorite"
                   >
                     <X className="h-3.5 w-3.5" />
@@ -120,7 +118,7 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
           })}
         </div>
 
-        <div className="mt-4 text-xs text-white/70 text-center">
+        <div className="mt-4 text-xs text-muted-foreground text-center">
           Rates update automatically every minute
         </div>
       </CardContent>
@@ -139,6 +137,6 @@ function LiveRate({ from, to }) {
     load();
     return () => { active = false; };
   }, [from, to]);
-  if (rate == null) return <span className="text-white/70">…</span>;
+  if (rate == null) return <span className="text-muted-foreground">…</span>;
   return <span>{formatCurrency(rate, to)}</span>;
 }

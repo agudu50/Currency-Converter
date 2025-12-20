@@ -81,14 +81,13 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
   };
 
   return (
-    <Card className="relative w-full max-w-2xl mx-auto overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-blue-500 to-cyan-400 opacity-90" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.25),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.18),transparent_30%)]" />
+    <Card className="relative w-full max-w-2xl mx-auto overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+      <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
 
-      <CardHeader className="relative z-10 border-b border-white/15 pb-4">
+      <CardHeader className="space-y-2 border-b border-border/60 pb-4 bg-white/70 backdrop-blur-sm">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg sm:text-2xl text-white flex items-center gap-2">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm text-sm font-semibold">⇄</span>
+          <CardTitle className="text-lg sm:text-2xl text-foreground flex items-center gap-2">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-semibold">⇄</span>
             Currency Converter
           </CardTitle>
           <div className="flex items-center gap-2">
@@ -97,16 +96,16 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
               size="icon"
               onClick={loadExchangeRates}
               disabled={loading}
-              className={`text-white/80 hover:text-white bg-white/10 hover:bg-white/20 ${loading ? 'animate-spin' : ''}`}
+              className="text-primary hover:text-primary bg-primary/10 hover:bg-primary/20"
               title="Refresh rates"
             >
-              <RefreshCw className="h-4 w-4" />
+              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
             </Button>
             <Button
               variant="ghost"
               size="icon"
               onClick={addToFavorites}
-              className="text-white/80 hover:text-amber-200 bg-white/10 hover:bg-white/20"
+              className="text-amber-700 hover:text-amber-800 bg-amber-100/60 hover:bg-amber-100"
               title="Add to favorites"
             >
               <Star className="h-4 w-4" />
@@ -114,23 +113,23 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
           </div>
         </div>
         {lastUpdated && (
-          <p className="text-xs text-white/70 mt-2">
+          <p className="text-xs text-muted-foreground mt-2">
             Last updated: {lastUpdated.toLocaleTimeString()}
           </p>
         )}
       </CardHeader>
 
-      <CardContent className="relative z-10 space-y-4 sm:space-y-6 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0">
+      <CardContent className="space-y-4 sm:space-y-6 bg-white/70 backdrop-blur-sm">
         {/* Amount Input */}
         <div className="space-y-2">
-          <Label htmlFor="amount" className="text-sm text-white/90">Amount</Label>
+          <Label htmlFor="amount" className="text-sm text-foreground">Amount</Label>
           <Input
             id="amount"
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Enter amount"
-            className="text-lg sm:text-xl h-11 sm:h-14 text-center bg-white/90 text-slate-900 border-white/40 focus:border-white focus:ring-white/60"
+            className="text-lg sm:text-xl h-11 sm:h-14 text-center bg-white border border-border/60 text-foreground focus:border-primary focus:ring-primary/20"
           />
         </div>
 
@@ -138,9 +137,9 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
         <div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-4">
           {/* From */}
           <div className="flex-1 space-y-2 w-full">
-            <Label className="text-sm text-white/90">From</Label>
+            <Label className="text-sm text-foreground">From</Label>
             <Select value={fromCurrency} onValueChange={setFromCurrency}>
-              <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 bg-white/90 text-slate-900 border-white/40">
+              <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 bg-white border border-border/60 text-foreground">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -151,7 +150,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
                     <div className="flex items-center gap-2">
                       <span>{currency.flag}</span>
                       <span>{currency.code}</span>
-                      <span className="text-slate-500 text-xs sm:text-sm">- {currency.name}</span>
+                      <span className="text-muted-foreground text-xs sm:text-sm">- {currency.name}</span>
                     </div>
                   </SelectItem>
                   ));
@@ -165,16 +164,16 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
             variant="outline"
             size="icon"
             onClick={swapCurrencies}
-            className="rounded-full h-11 w-11 sm:h-12 sm:w-12 flex-shrink-0 border-2 border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white transition-colors sm:mb-0 mt-3"
+            className="rounded-full h-11 w-11 sm:h-12 sm:w-12 flex-shrink-0 border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white text-foreground hover:border-primary hover:text-primary transition-colors sm:mb-0 mt-3"
           >
             <ArrowUpDown className="h-5 w-5" />
           </Button>
 
           {/* To */}
           <div className="flex-1 space-y-2 w-full">
-            <Label className="text-sm text-white/90">To</Label>
+            <Label className="text-sm text-foreground">To</Label>
             <Select value={toCurrency} onValueChange={setToCurrency}>
-              <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 bg-white/90 text-slate-900 border-white/40">
+              <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 bg-white border border-border/60 text-foreground">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -185,7 +184,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
                     <div className="flex items-center gap-2">
                       <span>{currency.flag}</span>
                       <span>{currency.code}</span>
-                      <span className="text-slate-500 text-xs sm:text-sm">- {currency.name}</span>
+                      <span className="text-muted-foreground text-xs sm:text-sm">- {currency.name}</span>
                     </div>
                   </SelectItem>
                   ));
@@ -196,10 +195,10 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
         </div>
 
         {/* Result */}
-        <div className="bg-white/10 border border-white/15 rounded-xl p-4 sm:p-6 text-center text-white">
-          <div className="text-sm text-white/80 mb-2">{amount} {fromCurrency} equals</div>
+        <div className="bg-white/80 border border-border/70 rounded-xl p-4 sm:p-6 text-center text-foreground shadow-sm">
+          <div className="text-sm text-muted-foreground mb-2">{amount} {fromCurrency} equals</div>
           <div className="text-2xl sm:text-3xl font-bold">{formatCurrency(result, toCurrency)}</div>
-          <div className="text-xs sm:text-sm text-white/70 mt-2">
+          <div className="text-xs sm:text-sm text-muted-foreground mt-2">
             1 {fromCurrency} = {" "}
             {/* Compute live unit rate asynchronously */}
             <UnitRate from={fromCurrency} to={toCurrency} />
@@ -221,6 +220,6 @@ function UnitRate({ from, to }) {
     load();
     return () => { active = false; };
   }, [from, to]);
-  if (rate == null) return <span className="text-white/70">…</span>;
+  if (rate == null) return <span className="text-muted-foreground">…</span>;
   return <span>{formatCurrency(rate, to)}</span>;
 }
