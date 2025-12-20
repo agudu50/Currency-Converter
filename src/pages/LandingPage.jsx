@@ -245,14 +245,14 @@ export function LandingPage() {
           </div>          {/* Why Choose Section - Emerald/Teal Glass Card */}
           <section className="py-12">
             <div className="max-w-6xl mx-auto">
-              <Card className="relative overflow-hidden border border-border/70 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-white shadow-2xl backdrop-blur-md text-foreground">
+              <Card className="relative overflow-hidden rounded-3xl border border-border/70 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-white shadow-2xl backdrop-blur-md text-foreground">
                 <div className="absolute inset-0 pointer-events-none">
                   <div className="absolute -top-24 -left-10 h-64 w-64 bg-emerald-400/20 blur-3xl" />
                   <div className="absolute -bottom-16 right-0 h-64 w-64 bg-lime-300/25 blur-3xl" />
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.65),transparent_45%),radial-gradient(circle_at_80%_10%,rgba(255,255,255,0.35),transparent_40%)]" />
                 </div>
 
-                <div className="relative z-10 p-8 sm:p-10 border-b border-border/50">
+                <div className="relative z-10 p-8 sm:p-10 border-b border-border/50 rounded-t-3xl">
                   <h2 className="text-3xl md:text-4xl font-bold">Why Choose Our Platform?</h2>
                   <p className="text-lg text-muted-foreground mt-3 max-w-3xl">
                     Built for professionals and everyday users who need reliable, accurate currency data.
