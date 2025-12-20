@@ -89,7 +89,7 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
         </section>
       </div>
 
-      {/* Why Choose Section - Gradient Glass Card */}
+      {/* Choose Section - Gradient Glass Card */}
       <section className="py-12">
         <div className="max-w-6xl mx-auto">
           <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
