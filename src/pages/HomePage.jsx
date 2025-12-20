@@ -81,10 +81,10 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
 
       {/* Live Rates and Charts Grid */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-        <section>
+        <section className="min-w-0">
           <ExchangeRateTable />
         </section>
-        <section>
+        <section className="min-w-0">
           <CurrencyChart />
         </section>
       </div>

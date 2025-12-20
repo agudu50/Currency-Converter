@@ -22,7 +22,17 @@ export function MarketPage() {
     setLoading(true);
     try {
       await fetchExchangeRates("USD");
-      const historical = await fetchHistoricalRates("USD", "EUR", 30);
+      const tfDays = (tf => {
+        switch (tf) {
+          case "1D": return 1;
+          case "1W": return 7;
+          case "1M": return 30;
+          case "3M": return 90;
+          case "1Y": return 365;
+          default: return 30;
+        }
+      })(selectedTimeframe);
+      const historical = await fetchHistoricalRates("USD", "EUR", tfDays);
 
       // Major pairs
       const majorPairsConfig = [
@@ -87,7 +97,7 @@ export function MarketPage() {
 
   useEffect(() => {
     loadMarketData();
-  }, []);
+  }, [selectedTimeframe]);
 
   const getMarketData = () => {
     switch (selectedMarket) {
@@ -158,9 +168,9 @@ export function MarketPage() {
             ))}
           </div>
         </CardHeader>
-        <CardContent className="relative z-10 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0">
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
+        <CardContent className="relative z-10 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0 min-w-0">
+          <div className="min-w-0 h-64 sm:h-80">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <AreaChart data={marketOverview}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.15)" />
                 <XAxis dataKey="dateFormatted" tick={{ fontSize: 12, fill: '#e2e8f0' }} axisLine={false} tickLine={false} />

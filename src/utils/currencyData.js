@@ -323,7 +323,7 @@ export async function fetchHistoricalRates(fromCurrency, toCurrency, days = 30) 
     if (!entries.length) throw new Error('Historical API returned empty data');
     return entries;
   } catch (err) {
-    console.error('Historical fetch failed, using mock data:', err);
+    console.warn('Historical fetch fallback to mock data:', err?.message || err);
     return generateHistoricalData(fromCurrency, toCurrency, days);
   }
 }
@@ -361,7 +361,7 @@ export async function fetchHistoricalRatesBatch(baseCurrency, symbols = [], days
 
     return map;
   } catch (err) {
-    console.error('Batch historical fetch failed:', err);
+    console.warn('Batch historical fetch fallback to mock data:', err?.message || err);
     // Fallback: build mock series per symbol
     const map = new Map();
     symbols.forEach((s) => {

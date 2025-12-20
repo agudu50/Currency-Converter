@@ -16,7 +16,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { currencies, fetchHistoricalRates } from "../utils/currencyData";
+import { currencies, fetchHistoricalRates, getAvailableCurrencyCodes, fetchExchangeRates } from "../utils/currencyData";
 import { Activity } from "lucide-react";
 
 
@@ -27,6 +27,11 @@ export default function CurrencyChart() {
   const [timeframe, setTimeframe] = useState("30");
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // Ensure live codes are available for dropdowns
+  useEffect(() => {
+    fetchExchangeRates("USD").catch(() => {});
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -72,14 +77,17 @@ export default function CurrencyChart() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {currencies.slice(0, 8).map((currency) => (
+                    {(() => {
+                      const live = new Set(getAvailableCurrencyCodes());
+                      return currencies.filter(c => live.has(c.code)).slice(0, 20).map((currency) => (
                     <SelectItem key={currency.code} value={currency.code}>
                       <div className="flex items-center gap-2">
                         <span>{currency.flag}</span>
                         <span>{currency.code}</span>
                       </div>
                     </SelectItem>
-                  ))}
+                      ));
+                    })()}
                 </SelectContent>
               </Select>
             </div>
@@ -92,14 +100,17 @@ export default function CurrencyChart() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {currencies.slice(0, 8).map((currency) => (
+                  {(() => {
+                    const live = new Set(getAvailableCurrencyCodes());
+                    return currencies.filter(c => live.has(c.code)).slice(0, 20).map((currency) => (
                     <SelectItem key={currency.code} value={currency.code}>
                       <div className="flex items-center gap-2">
                         <span>{currency.flag}</span>
                         <span>{currency.code}</span>
                       </div>
                     </SelectItem>
-                  ))}
+                    ));
+                  })()}
                 </SelectContent>
               </Select>
             </div>
@@ -123,9 +134,9 @@ export default function CurrencyChart() {
         </div>
       </CardHeader>
 
-      <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0">
-        <div className="h-64 sm:h-80">
-          <ResponsiveContainer width="100%" height="100%">
+      <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0 min-w-0">
+        <div className="min-w-0 h-64 sm:h-80">
+          <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.15)" />
               <XAxis

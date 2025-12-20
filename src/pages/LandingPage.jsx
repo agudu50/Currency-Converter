@@ -108,8 +108,44 @@ export function LandingPage() {
 
             {/* Modern Ticker */}
             <div className="mt-12 max-w-4xl mx-auto">
-              <div className="bg-white/80 backdrop-blur-md border border-slate-200/60 shadow-xl rounded-2xl p-1 overflow-hidden">
-                <div className="flex justify-around items-center py-4 divide-x divide-slate-100">
+              <style>{`
+                @keyframes ticker-scroll {
+                  0% { transform: translateX(0); }
+                  100% { transform: translateX(-50%); }
+                }
+                .ticker-animate {
+                  animation: ticker-scroll 25s linear infinite;
+                }
+                .ticker-animate:hover {
+                  animation-play-state: paused;
+                }
+                @media (min-width: 768px) {
+                  .ticker-animate {
+                    animation: none !important;
+                  }
+                }
+              `}</style>
+              <div className="bg-white/80 backdrop-blur-md border border-slate-200/60 shadow-xl rounded-2xl overflow-hidden">
+                {/* Mobile: Scrolling Animation */}
+                <div className="md:hidden overflow-hidden">
+                  <div className="ticker-animate flex w-max gap-1">
+                    {[...rates, ...rates].map((r, i) => (
+                      <div key={i} className="flex-shrink-0 px-6 py-4 min-w-max flex flex-col items-center">
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">{r.pair}</div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg font-bold text-slate-800 tabular-nums">{r.rate}</span>
+                          {r.trend === 'up' ? 
+                            <ArrowUpRight className="w-4 h-4 text-emerald-500" /> : 
+                            <ArrowDownRight className="w-4 h-4 text-rose-500" />
+                          }
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Desktop: Static Grid */}
+                <div className="hidden md:flex justify-around items-center py-4 divide-x divide-slate-100">
                   {rates.map((r, i) => (
                     <div key={i} className="flex-1 px-4 flex flex-col items-center group cursor-pointer hover:bg-slate-50 transition-colors rounded-lg py-2">
                       <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">{r.pair}</div>
