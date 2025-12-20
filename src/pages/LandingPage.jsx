@@ -259,7 +259,7 @@ export function LandingPage() {
                   </p>
                 </div>
 
-                <div className="relative z-10 grid md:grid-cols-2 gap-4 sm:gap-6 p-8 sm:p-10 bg-white/70 backdrop-blur-md rounded-b-3xl border border-border/60 border-t-0">
+                <div className="relative z-10 grid md:grid-cols-2 gap-4 sm:gap-6 p-8 sm:p-10 bg-white/100 backdrop-blur-md rounded-b-4xl overflow-hidden border-x border-b border-border/60 border-t-0">
                   {[ 
                     { icon: Zap, title: "Real-Time Rates", desc: "Get live exchange rates updated every minute from global financial markets and major banks." },
                     { icon: BarChart3, title: "Advanced Analytics", desc: "Analyze currency trends with interactive charts, historical data, and technical indicators." },
