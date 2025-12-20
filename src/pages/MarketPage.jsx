@@ -16,12 +16,45 @@ export function MarketPage() {
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(null);
   const [marketOverview, setMarketOverview] = useState([]);
+  const [liveFailed, setLiveFailed] = useState(false);
+  const CG_API_KEY = import.meta.env.VITE_COINGECKO_API_KEY || null;
+
+  const fetchLiveCrypto = async () => {
+    const endpoint = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum&price_change_percentage=24h&precision=4";
+    const res = await fetch(endpoint, {
+      headers: CG_API_KEY ? { "x-cg-demo-api-key": CG_API_KEY } : {},
+    });
+    if (!res.ok) throw new Error(`Crypto API error ${res.status}`);
+    const data = await res.json();
+
+    const formatNumber = (value, maximumFractionDigits = 2) =>
+      new Intl.NumberFormat("en-US", { maximumFractionDigits }).format(value);
+
+    const formatCompact = (value) =>
+      new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(value);
+
+    return data.map((coin) => {
+      const pct = coin.price_change_percentage_24h ?? 0;
+      const changeValue = coin.current_price * (pct / 100);
+      const trend = pct >= 0 ? "up" : "down";
+
+      return {
+        pair: `${coin.symbol?.toUpperCase() || "CRYPTO"}/USD`,
+        price: formatNumber(coin.current_price, coin.current_price > 500 ? 0 : 2),
+        change: `${pct >= 0 ? "+" : ""}${formatNumber(changeValue, 2)}`,
+        changePercent: `${pct >= 0 ? "+" : ""}${formatNumber(pct, 2)}%`,
+        trend,
+        volume: formatCompact(coin.total_volume || 0),
+      };
+    });
+  };
 
   // Load exchange rates
   const loadMarketData = async () => {
     setLoading(true);
+    setLiveFailed(false);
     try {
-      await fetchExchangeRates("USD");
+      await fetchExchangeRates("USD", { requireLive: true });
       const tfDays = (tf => {
         switch (tf) {
           case "1D": return 1;
@@ -42,7 +75,7 @@ export function MarketPage() {
         { pair: "USD/CHF", from: "USD", to: "CHF" },
       ];
       const majorData = await Promise.all(majorPairsConfig.map(async (item) => {
-        const rate = await convertCurrencyAsync(1, item.from, item.to);
+        const rate = await convertCurrencyAsync(1, item.from, item.to, { requireLive: true });
         const prevRate = rate * (1 + (Math.random() - 0.5) * 0.01); // Simulated previous rate
         const change = rate - prevRate;
         const changePercent = ((change / prevRate) * 100).toFixed(2);
@@ -56,12 +89,17 @@ export function MarketPage() {
         };
       }));
       setMajorPairs(majorData);
-
-      // Crypto pairs (mock data)
-      setCryptoPairs([
-        { pair: "BTC/USD", price: "43,250", change: "+1,250", changePercent: "+2.98%", trend: "up", volume: "15.2B" },
-        { pair: "ETH/USD", price: "2,680", change: "-45.20", changePercent: "-1.66%", trend: "down", volume: "8.9B" },
-      ]);
+      // Crypto pairs (live)
+      try {
+        const liveCrypto = await fetchLiveCrypto();
+        setCryptoPairs(liveCrypto);
+      } catch (cryptoErr) {
+        console.warn("Live crypto fetch failed, using fallback", cryptoErr);
+        setCryptoPairs([
+          { pair: "BTC/USD", price: "43,250", change: "+1,250", changePercent: "+2.98%", trend: "up", volume: "15.2B" },
+          { pair: "ETH/USD", price: "2,680", change: "-45.20", changePercent: "-1.66%", trend: "down", volume: "8.9B" },
+        ]);
+      }
 
       // Exotic pairs
       const exoticPairsConfig = [
@@ -71,7 +109,7 @@ export function MarketPage() {
         { pair: "USD/BRL", from: "USD", to: "BRL" },
       ];
       const exoticData = await Promise.all(exoticPairsConfig.map(async (item) => {
-        const rate = await convertCurrencyAsync(1, item.from, item.to);
+        const rate = await convertCurrencyAsync(1, item.from, item.to, { requireLive: true });
         const prevRate = rate * (1 + (Math.random() - 0.5) * 0.01);
         const change = rate - prevRate;
         const changePercent = ((change / prevRate) * 100).toFixed(2);
@@ -90,6 +128,77 @@ export function MarketPage() {
       setLastUpdated(new Date());
     } catch (error) {
       console.error("Error loading market data:", error);
+      // Fallback to cached/mock data so the card still shows content
+      try {
+        await fetchExchangeRates("USD");
+        const tfDays = (tf => {
+          switch (tf) {
+            case "1D": return 1;
+            case "1W": return 7;
+            case "1M": return 30;
+            case "3M": return 90;
+            case "1Y": return 365;
+            default: return 30;
+          }
+        })(selectedTimeframe);
+        const historical = await fetchHistoricalRates("USD", "EUR", tfDays);
+
+        const majorPairsConfig = [
+          { pair: "EUR/USD", from: "EUR", to: "USD" },
+          { pair: "GBP/USD", from: "GBP", to: "USD" },
+          { pair: "USD/JPY", from: "USD", to: "JPY" },
+          { pair: "USD/CHF", from: "USD", to: "CHF" },
+        ];
+        const majorData = await Promise.all(majorPairsConfig.map(async (item) => {
+          const rate = await convertCurrencyAsync(1, item.from, item.to);
+          const prevRate = rate * (1 + (Math.random() - 0.5) * 0.01);
+          const change = rate - prevRate;
+          const changePercent = ((change / prevRate) * 100).toFixed(2);
+          return {
+            pair: item.pair,
+            price: rate.toFixed(4),
+            change: change >= 0 ? `+${change.toFixed(4)}` : change.toFixed(4),
+            changePercent: change >= 0 ? `+${changePercent}%` : `${changePercent}%`,
+            trend: change >= 0 ? "up" : "down",
+            volume: `${(Math.random() * 2 + 0.5).toFixed(1)}B`,
+          };
+        }));
+        setMajorPairs(majorData);
+
+        // Crypto pairs (mock) to keep the section populated in fallback mode
+        setCryptoPairs([
+          { pair: "BTC/USD", price: "43,250", change: "+1,250", changePercent: "+2.98%", trend: "up", volume: "15.2B" },
+          { pair: "ETH/USD", price: "2,680", change: "-45.20", changePercent: "-1.66%", trend: "down", volume: "8.9B" },
+        ]);
+
+        const exoticPairsConfig = [
+          { pair: "USD/TRY", from: "USD", to: "TRY" },
+          { pair: "USD/ZAR", from: "USD", to: "ZAR" },
+          { pair: "USD/MXN", from: "USD", to: "MXN" },
+          { pair: "USD/BRL", from: "USD", to: "BRL" },
+        ];
+        const exoticData = await Promise.all(exoticPairsConfig.map(async (item) => {
+          const rate = await convertCurrencyAsync(1, item.from, item.to);
+          const prevRate = rate * (1 + (Math.random() - 0.5) * 0.01);
+          const change = rate - prevRate;
+          const changePercent = ((change / prevRate) * 100).toFixed(2);
+          return {
+            pair: item.pair,
+            price: rate.toFixed(4),
+            change: change >= 0 ? `+${change.toFixed(4)}` : change.toFixed(4),
+            changePercent: change >= 0 ? `+${changePercent}%` : `${changePercent}%`,
+            trend: change >= 0 ? "up" : "down",
+            volume: `${(Math.random() * 500 + 100).toFixed(0)}M`,
+          };
+        }));
+        setExoticPairs(exoticData);
+
+        setMarketOverview(historical);
+        setLastUpdated(new Date());
+        setLiveFailed(true);
+      } catch (fallbackError) {
+        console.error("Fallback market data failed:", fallbackError);
+      }
     } finally {
       setLoading(false);
     }

@@ -158,7 +158,9 @@ let inflightRequests = new Map();
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
 
 // Fetch exchange rates from API
-export async function fetchExchangeRates(baseCurrency = 'USD') {
+// options.requireLive: if true, do NOT fall back to mock data; throw on failure
+export async function fetchExchangeRates(baseCurrency = 'USD', options = {}) {
+  const { requireLive = false } = options;
   const now = Date.now();
   
   // Return cached data if still valid and same base currency
@@ -205,7 +207,10 @@ export async function fetchExchangeRates(baseCurrency = 'USD') {
       throw new Error('API request failed: missing data');
     } catch (error) {
       console.error('Error fetching exchange rates:', error);
-      // Return mock rates as fallback
+      if (requireLive) {
+        throw error;
+      }
+      // Return mock rates as fallback when live is not required
       return getMockExchangeRates();
     } finally {
       // Remove this request from in-flight tracking
@@ -265,8 +270,10 @@ export function convertCurrency(amount, fromCurrency, toCurrency) {
 }
 
 // Convert currency (async - recommended)
-export async function convertCurrencyAsync(amount, fromCurrency, toCurrency) {
-  const rates = await fetchExchangeRates('USD');
+// options.requireLive: if true, forces live rates (throws on failure instead of mock)
+export async function convertCurrencyAsync(amount, fromCurrency, toCurrency, options = {}) {
+  const { requireLive = false } = options;
+  const rates = await fetchExchangeRates('USD', { requireLive });
   const fromRate = rates[fromCurrency] || 1;
   const toRate = rates[toCurrency] || 1;
   const usdAmount = amount / fromRate;
