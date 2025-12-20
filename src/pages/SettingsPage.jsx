@@ -83,12 +83,44 @@ export function SettingsPage() {
       </div>
 
       <Tabs defaultValue="profile" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
-          <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="preferences">Preferences</TabsTrigger>
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
-          <TabsTrigger value="privacy">Privacy</TabsTrigger>
-          <TabsTrigger value="account">Account</TabsTrigger>
+        <TabsList
+          className="w-full flex gap-2 md:gap-3 overflow-x-auto md:overflow-visible rounded-xl bg-white/80 border border-border/60 p-2 shadow-sm [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:justify-center"
+        >
+          <TabsTrigger
+            value="profile"
+            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm md:text-base whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500/15 data-[state=active]:via-sky-500/10 data-[state=active]:to-cyan-400/10 data-[state=active]:text-foreground data-[state=active]:border data-[state=active]:border-primary/50"
+          >
+            <User className="h-4 w-4" />
+            Profile
+          </TabsTrigger>
+          <TabsTrigger
+            value="preferences"
+            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm md:text-base whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500/15 data-[state=active]:via-sky-500/10 data-[state=active]:to-cyan-400/10 data-[state=active]:text-foreground data-[state=active]:border data-[state=active]:border-primary/50"
+          >
+            <Palette className="h-4 w-4" />
+            Preferences
+          </TabsTrigger>
+          <TabsTrigger
+            value="notifications"
+            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm md:text-base whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500/15 data-[state=active]:via-sky-500/10 data-[state=active]:to-cyan-400/10 data-[state=active]:text-foreground data-[state=active]:border data-[state=active]:border-primary/50"
+          >
+            <Bell className="h-4 w-4" />
+            Notifications
+          </TabsTrigger>
+          <TabsTrigger
+            value="privacy"
+            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm md:text-base whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500/15 data-[state=active]:via-sky-500/10 data-[state=active]:to-cyan-400/10 data-[state=active]:text-foreground data-[state=active]:border data-[state=active]:border-primary/50"
+          >
+            <Shield className="h-4 w-4" />
+            Privacy
+          </TabsTrigger>
+          <TabsTrigger
+            value="account"
+            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm md:text-base whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500/15 data-[state=active]:via-sky-500/10 data-[state=active]:to-cyan-400/10 data-[state=active]:text-foreground data-[state=active]:border data-[state=active]:border-primary/50"
+          >
+            <Globe className="h-4 w-4" />
+            Account
+          </TabsTrigger>
         </TabsList>
 
         {/* Profile Settings */}

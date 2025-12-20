@@ -255,25 +255,51 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
         ))}
       </section>
 
-      {/* Choose - Light Gradient Card */}
+      {/* Choose - Elevated Glass Card */}
       <section className="py-12">
         <div className="max-w-6xl mx-auto">
-          <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
-            <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
+          <Card className="relative overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-2xl backdrop-blur-md text-foreground">
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute -top-24 -left-10 h-64 w-64 bg-primary/15 blur-3xl" />
+              <div className="absolute -bottom-16 right-0 h-64 w-64 bg-cyan-400/15 blur-3xl" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.6),transparent_45%),radial-gradient(circle_at_80%_10%,rgba(255,255,255,0.35),transparent_40%)]" />
+            </div>
 
-            <CardContent className="p-8 sm:p-10 space-y-8">
-              <div className="space-y-3 max-w-4xl">
-                <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold">
-                  Why Choose Us
+            <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70 relative z-10" />
+
+            <CardContent className="relative z-10 p-8 sm:p-10 space-y-10">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                <div className="space-y-3 max-w-3xl">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-semibold shadow-sm">
+                    Why Choose Us
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold leading-tight">Why Choose Our Platform?</h2>
+                  <p className="text-lg text-muted-foreground">
+                    Built for professionals and everyday users who need reliable, accurate currency data.
+                  </p>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-bold leading-tight">Why Choose Our Platform?</h2>
-                <p className="text-lg text-muted-foreground max-w-3xl">
-                  Built for professionals and everyday users who need reliable, accurate currency data.
-                </p>
+                <div className="grid grid-cols-2 gap-3 text-sm text-foreground/80 bg-white/70 border border-border/60 rounded-2xl p-4 shadow-sm backdrop-blur">
+                  <div className="space-y-1">
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground">Latency</div>
+                    <div className="text-xl font-semibold">&lt; 300ms</div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground">Pairs tracked</div>
+                    <div className="text-xl font-semibold">180+</div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground">Uptime</div>
+                    <div className="text-xl font-semibold">99.9%</div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground">Updates</div>
+                    <div className="text-xl font-semibold">Every 60s</div>
+                  </div>
+                </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
-                {[ 
+                {[
                   { icon: Zap, title: "Real-Time Rates", desc: "Get live exchange rates updated every minute from global financial markets and major banks." },
                   { icon: BarChart3, title: "Advanced Analytics", desc: "Analyze currency trends with interactive charts, historical data, and technical indicators." },
                   { icon: Star, title: "Smart Favorites", desc: "Save your most used currency pairs for quick access and get personalized insights." },
@@ -283,9 +309,9 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
                 ].map((item, idx) => (
                   <div
                     key={idx}
-                    className="group flex gap-4 p-4 sm:p-5 rounded-2xl border border-border/60 bg-white shadow-sm hover:border-primary/60 hover:shadow-md transition-colors"
+                    className="group flex gap-4 p-5 sm:p-6 rounded-2xl border border-border/60 bg-white/80 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all"
                   >
-                    <div className="h-12 w-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500/15 via-blue-500/10 to-cyan-400/15 text-primary flex items-center justify-center shadow-inner">
                       <item.icon className="h-6 w-6" />
                     </div>
                     <div className="space-y-1">

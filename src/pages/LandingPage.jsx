@@ -242,23 +242,24 @@ export function LandingPage() {
                 ))}
               </div>
             </section>
-          </div>
-
-          {/* Why Choose Section - Gradient Glass Card */}
+          </div>          {/* Why Choose Section - Emerald/Teal Glass Card */}
           <section className="py-12">
             <div className="max-w-6xl mx-auto">
-              <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-                <div className="absolute inset-0 bg-gradient-to-br from-sky-500 via-indigo-600 to-purple-700 opacity-90" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.20),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.16),transparent_30%)]" />
+              <Card className="relative overflow-hidden border border-border/70 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-white shadow-2xl backdrop-blur-md text-foreground">
+                <div className="absolute inset-0 pointer-events-none">
+                  <div className="absolute -top-24 -left-10 h-64 w-64 bg-emerald-400/20 blur-3xl" />
+                  <div className="absolute -bottom-16 right-0 h-64 w-64 bg-lime-300/25 blur-3xl" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.65),transparent_45%),radial-gradient(circle_at_80%_10%,rgba(255,255,255,0.35),transparent_40%)]" />
+                </div>
 
-                <div className="relative z-10 p-8 sm:p-10 border-b border-white/15">
-                  <h2 className="text-3xl md:text-4xl font-bold text-white">Why Choose Our Platform?</h2>
-                  <p className="text-white/80 text-lg mt-3 max-w-3xl">
+                <div className="relative z-10 p-8 sm:p-10 border-b border-border/50">
+                  <h2 className="text-3xl md:text-4xl font-bold">Why Choose Our Platform?</h2>
+                  <p className="text-lg text-muted-foreground mt-3 max-w-3xl">
                     Built for professionals and everyday users who need reliable, accurate currency data.
                   </p>
                 </div>
 
-                <div className="relative z-10 grid md:grid-cols-2 gap-4 sm:gap-6 p-8 sm:p-10 bg-white/5 backdrop-blur-sm rounded-b-3xl border border-white/10 border-t-0">
+                <div className="relative z-10 grid md:grid-cols-2 gap-4 sm:gap-6 p-8 sm:p-10 bg-white/70 backdrop-blur-md rounded-b-3xl border border-border/60 border-t-0">
                   {[ 
                     { icon: Zap, title: "Real-Time Rates", desc: "Get live exchange rates updated every minute from global financial markets and major banks." },
                     { icon: BarChart3, title: "Advanced Analytics", desc: "Analyze currency trends with interactive charts, historical data, and technical indicators." },
@@ -269,14 +270,14 @@ export function LandingPage() {
                   ].map((item, idx) => (
                     <div
                       key={idx}
-                      className="group flex gap-4 p-4 sm:p-5 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors"
+                      className="group flex gap-4 p-5 sm:p-6 rounded-2xl border border-border/60 bg-white/80 shadow-sm hover:border-emerald-400/70 hover:shadow-lg transition-all"
                     >
-                      <div className="h-12 w-12 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center text-white">
+                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-lime-300/20 text-emerald-700 flex items-center justify-center shadow-inner">
                         <item.icon className="h-6 w-6" />
                       </div>
                       <div className="space-y-1">
-                        <div className="font-semibold text-lg text-white">{item.title}</div>
-                        <p className="text-sm text-white/80 leading-relaxed">{item.desc}</p>
+                        <div className="font-semibold text-lg text-foreground">{item.title}</div>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                       </div>
                     </div>
                   ))}
