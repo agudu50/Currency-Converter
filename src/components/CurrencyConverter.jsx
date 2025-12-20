@@ -134,9 +134,9 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
         </div>
 
         {/* Currency Selectors */}
-        <div className="flex flex-col sm:flex-row gap-4 items-start">
+        <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start">
           {/* From */}
-          <div className="flex-1 space-y-2">
+          <div className="flex-1 space-y-2 w-full">
             <Label className="text-sm text-foreground">From</Label>
             <Select value={fromCurrency} onValueChange={setFromCurrency}>
               <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 bg-white border border-border/60 text-foreground">
@@ -164,13 +164,13 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
             variant="outline"
             size="icon"
             onClick={swapCurrencies}
-            className="rounded-full h-11 w-11 sm:h-12 sm:w-12 flex-shrink-0 border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white text-foreground hover:border-primary hover:text-primary transition-colors self-end"
+            className="rounded-full h-11 w-11 sm:h-12 sm:w-12 flex-shrink-0 border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white text-foreground hover:border-primary hover:text-primary transition-colors sm:self-end"
           >
             <ArrowUpDown className="h-5 w-5" />
           </Button>
 
           {/* To */}
-          <div className="flex-1 space-y-2">
+          <div className="flex-1 space-y-2 w-full">
             <Label className="text-sm text-foreground">To</Label>
             <Select value={toCurrency} onValueChange={setToCurrency}>
               <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 bg-white border border-border/60 text-foreground">

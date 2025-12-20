@@ -278,7 +278,7 @@ export function getAvailableCurrencyCodes() {
   // If we have fetched rates, use those
   if (ratesCache.rates && Object.keys(ratesCache.rates).length > 0) {
     const codes = Object.keys(ratesCache.rates);
-    // Ensure base USD is included for safety
+    
     if (!codes.includes('USD')) codes.push('USD');
     return codes;
   }
