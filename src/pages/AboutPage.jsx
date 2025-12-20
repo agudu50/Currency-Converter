@@ -21,24 +21,32 @@ export function AboutPage() {
       title: "Real-Time Data",
       description:
         "Live exchange rates updated every minute from major financial markets worldwide.",
+      accent: "from-indigo-500/70 via-blue-500/60 to-cyan-400/60",
+      bg: "from-indigo-500/10 via-blue-500/5 to-white",
     },
     {
       icon: <Globe className="h-6 w-6" />,
       title: "Global Coverage",
       description:
         "Support for 20+ major currencies including exotic pairs and emerging markets.",
+      accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60",
+      bg: "from-emerald-500/10 via-teal-500/5 to-white",
     },
     {
       icon: <Shield className="h-6 w-6" />,
       title: "Bank-Grade Security",
       description:
         "Enterprise-level security with encrypted connections and secure data handling.",
+      accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60",
+      bg: "from-purple-500/10 via-pink-500/5 to-white",
     },
     {
       icon: <Award className="h-6 w-6" />,
       title: "99.9% Uptime",
       description:
         "Reliable service with guaranteed uptime and redundant infrastructure.",
+      accent: "from-amber-500/70 via-orange-500/60 to-rose-400/60",
+      bg: "from-amber-500/10 via-orange-500/5 to-white",
     },
   ];
 
@@ -70,10 +78,34 @@ export function AboutPage() {
   ];
 
   const stats = [
-    { label: "Active Users", value: "1M+", icon: Users },
-    { label: "Daily Conversions", value: "10M+", icon: TrendingUp },
-    { label: "Countries Served", value: "150+", icon: Globe },
-    { label: "API Calls/Day", value: "100M+", icon: Zap },
+    {
+      label: "Active Users",
+      value: "1M+",
+      icon: Users,
+      accent: "from-indigo-500/70 via-blue-500/60 to-cyan-400/60",
+      bg: "from-indigo-500/10 via-blue-500/5 to-white",
+    },
+    {
+      label: "Daily Conversions",
+      value: "10M+",
+      icon: TrendingUp,
+      accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60",
+      bg: "from-emerald-500/10 via-teal-500/5 to-white",
+    },
+    {
+      label: "Countries Served",
+      value: "150+",
+      icon: Globe,
+      accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60",
+      bg: "from-purple-500/10 via-pink-500/5 to-white",
+    },
+    {
+      label: "API Calls/Day",
+      value: "100M+",
+      icon: Zap,
+      accent: "from-amber-500/70 via-orange-500/60 to-rose-400/60",
+      bg: "from-amber-500/10 via-orange-500/5 to-white",
+    },
   ];
 
   return (
@@ -104,18 +136,17 @@ export function AboutPage() {
         {stats.map((stat, index) => (
           <Card
             key={index}
-            className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white text-center"
+            className={`overflow-hidden border border-border/60 bg-gradient-to-br ${stat.bg} text-slate-900 shadow-lg shadow-slate-900/10 text-center`}
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-blue-600 to-cyan-400 opacity-90" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
-            <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
+            <div className={`h-1 w-full bg-gradient-to-r ${stat.accent}`} />
+            <CardContent className="relative p-6 space-y-3">
               {(() => { const Icon = stat.icon; return (
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm mb-3" aria-label={`${stat.label} icon`}>
-                  {Icon ? <Icon className="h-6 w-6 text-white" /> : null}
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/80 text-slate-900 shadow-sm mb-1" aria-label={`${stat.label} icon`}>
+                  {Icon ? <Icon className="h-6 w-6" /> : null}
                 </div>
               ); })()}
               <div className="text-3xl font-extrabold tracking-tight">{stat.value}</div>
-              <div className="text-sm text-white/75">{stat.label}</div>
+              <div className="text-sm text-slate-800/80">{stat.label}</div>
             </CardContent>
           </Card>
         ))}
@@ -124,15 +155,17 @@ export function AboutPage() {
       {/* Platform Features */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {features.map((f, i) => (
-          <Card key={i} className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-blue-600 to-cyan-400 opacity-90" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
-            <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm mb-3">
+          <Card
+            key={i}
+            className={`overflow-hidden border border-border/60 bg-gradient-to-br ${f.bg} text-slate-900 shadow-lg shadow-slate-900/10`}
+          >
+            <div className={`h-1 w-full bg-gradient-to-r ${f.accent}`} />
+            <CardContent className="relative p-6 space-y-3">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/80 text-slate-900 shadow-sm">
                 {f.icon}
               </div>
-              <div className="font-semibold text-white mb-1">{f.title}</div>
-              <p className="text-sm text-white/80">{f.description}</p>
+              <div className="font-semibold text-slate-900 mb-1">{f.title}</div>
+              <p className="text-sm text-slate-800/80">{f.description}</p>
             </CardContent>
           </Card>
         ))}
@@ -140,23 +173,31 @@ export function AboutPage() {
 
       {/* Team */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {team.map((member, index) => (
-          <Card
-            key={index}
-            className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white text-center"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-fuchsia-500 to-pink-500 opacity-90" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
-            <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
-              <div className="text-6xl mb-4">{member.image}</div>
-              <h3 className="font-semibold text-white">{member.name}</h3>
-              <div className="mt-1">
-                <Badge variant="secondary" className="bg-white/15 text-white border border-white/25">{member.role}</Badge>
-              </div>
-              <p className="text-sm text-white/75 mt-2">{member.bio}</p>
-            </CardContent>
-          </Card>
-        ))}
+        {team.map((member, index) => {
+          const palettes = [
+            { accent: "from-indigo-500/70 via-blue-500/60 to-cyan-400/60", bg: "from-indigo-500/10 via-blue-500/5 to-white" },
+            { accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60", bg: "from-emerald-500/10 via-teal-500/5 to-white" },
+            { accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60", bg: "from-purple-500/10 via-pink-500/5 to-white" },
+            { accent: "from-amber-500/70 via-orange-500/60 to-rose-400/60", bg: "from-amber-500/10 via-orange-500/5 to-white" },
+          ];
+          const palette = palettes[index % palettes.length];
+          return (
+            <Card
+              key={index}
+              className={`overflow-hidden border border-border/60 bg-gradient-to-br ${palette.bg} text-slate-900 shadow-lg shadow-slate-900/10 text-center`}
+            >
+              <div className={`h-1 w-full bg-gradient-to-r ${palette.accent}`} />
+              <CardContent className="relative p-6 space-y-3">
+                <div className="text-6xl mb-2">{member.image}</div>
+                <h3 className="font-semibold text-slate-900">{member.name}</h3>
+                <div className="mt-1">
+                  <Badge variant="secondary" className="bg-white/80 text-slate-900 border border-border/60">{member.role}</Badge>
+                </div>
+                <p className="text-sm text-slate-800/80 mt-1">{member.bio}</p>
+              </CardContent>
+            </Card>
+          );
+        })}
       </section>
 
       {/* Mission & Vision */}

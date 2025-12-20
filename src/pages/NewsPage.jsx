@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-import { Clock, TrendingUp, Globe, Calendar, ExternalLink } from "lucide-react";
+import { Clock, TrendingUp, Globe, Calendar, ExternalLink, Bell, Activity, AlertTriangle } from "lucide-react";
 
 export function NewsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -134,6 +134,47 @@ export function NewsPage() {
           Stay updated with the latest market-moving news and expert analysis
         </p>
       </div>
+
+      {/* Alert Types */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        {[ 
+          {
+            title: "Price Alerts",
+            desc: "Get notified when a currency reaches your target price.",
+            icon: Bell,
+            accent: "from-indigo-500/70 via-blue-500/60 to-cyan-400/60",
+            bg: "from-indigo-500/10 via-blue-500/5 to-white",
+          },
+          {
+            title: "Trend Alerts",
+            desc: "Track significant price movements and trend changes.",
+            icon: TrendingUp,
+            accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60",
+            bg: "from-emerald-500/10 via-teal-500/5 to-white",
+          },
+          {
+            title: "Volatility Alerts",
+            desc: "Monitor unusual market volatility and rapid price changes.",
+            icon: AlertTriangle,
+            accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60",
+            bg: "from-purple-500/10 via-pink-500/5 to-white",
+          },
+        ].map((item, idx) => (
+          <Card
+            key={idx}
+            className={`border border-border/60 bg-gradient-to-br ${item.bg} shadow-lg shadow-slate-900/10 overflow-hidden`}
+          >
+            <div className={`h-1 w-full bg-gradient-to-r ${item.accent}`} />
+            <CardContent className="p-5 sm:p-6 space-y-3">
+              <div className="h-11 w-11 rounded-xl bg-white/80 text-slate-900 flex items-center justify-center shadow-sm">
+                <item.icon className="h-5 w-5" />
+              </div>
+              <div className="text-xl font-semibold text-slate-900">{item.title}</div>
+              <p className="text-sm text-slate-800/80 leading-relaxed">{item.desc}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </section>
 
       {/* Market Alerts */}
       <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">

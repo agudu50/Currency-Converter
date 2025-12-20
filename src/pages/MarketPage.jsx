@@ -123,22 +123,52 @@ export function MarketPage() {
       {/* Market Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[ 
-          { title: "Market Cap", value: "$7.2T", sub: "+2.3% today", icon: DollarSign, gradient: "from-emerald-500 via-green-500 to-teal-400" },
-          { title: "24h Volume", value: "$156B", sub: "+5.7% from yesterday", icon: Activity, gradient: "from-blue-500 via-indigo-500 to-cyan-400" },
-          { title: "Active Pairs", value: "180+", sub: "Major & Exotic", icon: Euro, gradient: "from-purple-500 via-fuchsia-500 to-pink-400" },
-          { title: "Volatility Index", value: "12.4", sub: "Moderate", icon: TrendingUp, gradient: "from-amber-500 via-orange-500 to-rose-400" },
+          {
+            title: "Market Cap",
+            value: "$7.2T",
+            sub: "+2.3% today",
+            icon: DollarSign,
+            accent: "from-indigo-500/70 via-blue-500/60 to-cyan-400/60",
+            bg: "from-indigo-500/10 via-blue-500/5 to-white",
+          },
+          {
+            title: "24h Volume",
+            value: "$156B",
+            sub: "+5.7% from yesterday",
+            icon: Activity,
+            accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60",
+            bg: "from-emerald-500/10 via-teal-500/5 to-white",
+          },
+          {
+            title: "Active Pairs",
+            value: "180+",
+            sub: "Major & Exotic",
+            icon: Euro,
+            accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60",
+            bg: "from-purple-500/10 via-pink-500/5 to-white",
+          },
+          {
+            title: "Volatility Index",
+            value: "12.4",
+            sub: "Moderate",
+            icon: TrendingUp,
+            accent: "from-amber-500/70 via-orange-500/60 to-rose-400/60",
+            bg: "from-amber-500/10 via-orange-500/5 to-white",
+          },
         ].map((item, idx) => (
-          <Card key={idx} className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-            <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-90`} />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.25),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.18),transparent_30%)]" />
-            <CardContent className="relative p-6 flex items-center justify-between bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl">
+          <Card
+            key={idx}
+            className={`overflow-hidden border border-border/50 bg-gradient-to-br ${item.bg} text-slate-900 shadow-lg shadow-slate-900/10`}
+          >
+            <div className={`h-1 w-full bg-gradient-to-r ${item.accent}`} />
+            <CardContent className="relative p-5 sm:p-6 flex items-center justify-between gap-4">
               <div className="space-y-1">
-                <p className="text-sm text-white/80">{item.title}</p>
-                <p className="text-2xl font-bold text-white">{item.value}</p>
-                <p className="text-sm text-white/80">{item.sub}</p>
+                <p className="text-sm text-slate-800/90">{item.title}</p>
+                <p className="text-2xl font-bold text-slate-900 drop-shadow-sm">{item.value}</p>
+                <p className="text-sm text-slate-800/80">{item.sub}</p>
               </div>
               {(() => { const Icon = item.icon; return (
-                <div className="p-3 rounded-full bg-white/15 backdrop-blur-sm text-white" aria-label={`${item.title} icon`}>
+                <div className="p-3 rounded-full bg-white/75 text-slate-900 shadow-sm" aria-label={`${item.title} icon`}>
                   {Icon ? <Icon className="h-6 w-6" /> : null}
                 </div>
               ); })()}

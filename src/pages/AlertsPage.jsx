@@ -111,50 +111,43 @@ export function AlertsPage() {
 
       {/* Alert Types Info */}
       <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-        <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-green-500 to-teal-500 opacity-90" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
-          
-          <div className="relative z-10 p-6 text-center bg-white/5 backdrop-blur-sm border border-white/10">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm mx-auto mb-4">
-              <TrendingUp className="h-6 w-6 text-white" />
+        {[ 
+          {
+            title: "Price Alerts",
+            desc: "Get notified when a currency reaches your target price",
+            icon: TrendingUp,
+            accent: "from-indigo-500/70 via-blue-500/60 to-cyan-400/60",
+            bg: "from-indigo-500/10 via-blue-500/5 to-white",
+          },
+          {
+            title: "Trend Alerts",
+            desc: "Track significant price movements and trend changes",
+            icon: TrendingDown,
+            accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60",
+            bg: "from-emerald-500/10 via-teal-500/5 to-white",
+          },
+          {
+            title: "Volatility Alerts",
+            desc: "Monitor unusual market volatility and rapid price changes",
+            icon: AlertTriangle,
+            accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60",
+            bg: "from-purple-500/10 via-pink-500/5 to-white",
+          },
+        ].map((item, idx) => (
+          <Card
+            key={idx}
+            className={`overflow-hidden border border-border/60 bg-gradient-to-br ${item.bg} shadow-lg shadow-slate-900/10`}
+          >
+            <div className={`h-1 w-full bg-gradient-to-r ${item.accent}`} />
+            <div className="p-6 text-center space-y-3">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/80 text-slate-900 shadow-sm">
+                <item.icon className="h-6 w-6" />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-900">{item.title}</h3>
+              <p className="text-sm text-slate-800/80 leading-relaxed">{item.desc}</p>
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-white">Price Alerts</h3>
-            <p className="text-sm text-white/80">
-              Get notified when a currency reaches your target price
-            </p>
-          </div>
-        </Card>
-        
-        <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-          <div className="absolute inset-0 bg-gradient-to-br from-rose-500 via-pink-500 to-red-500 opacity-90" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
-          
-          <div className="relative z-10 p-6 text-center bg-white/5 backdrop-blur-sm border border-white/10">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm mx-auto mb-4">
-              <TrendingDown className="h-6 w-6 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2 text-white">Trend Alerts</h3>
-            <p className="text-sm text-white/80">
-              Track significant price movements and trend changes
-            </p>
-          </div>
-        </Card>
-        
-        <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-500 via-orange-500 to-yellow-500 opacity-90" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
-          
-          <div className="relative z-10 p-6 text-center bg-white/5 backdrop-blur-sm border border-white/10">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm mx-auto mb-4">
-              <AlertTriangle className="h-6 w-6 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2 text-white">Volatility Alerts</h3>
-            <p className="text-sm text-white/80">
-              Monitor unusual market volatility and rapid price changes
-            </p>
-          </div>
-        </Card>
+          </Card>
+        ))}
       </section>
     </div>
   );
