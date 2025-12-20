@@ -5,7 +5,19 @@ import CurrencyChart from "../components/CurrencyChart";
 import FavoritesPairs from "../components/FavoritesPairs";
 import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
-import { ArrowRight, Zap, BarChart3, Star, Globe, Shield, Clock } from "lucide-react";
+import {
+  ArrowRight,
+  Zap,
+  BarChart3,
+  Star,
+  Globe,
+  Shield,
+  Clock,
+  Bell,
+  Smartphone,
+  Activity,
+  Settings as SettingsIcon,
+} from "lucide-react";
 import { useRouter } from "../components/Router";
 
 export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
@@ -41,27 +53,91 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
       {/* Quick Stats */}
       <section className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         {[ 
-          { value: "20+", label: "Currencies Supported", from: "from-indigo-500", to: "to-blue-500", text: "text-indigo-50", icon: "🌐" },
-          { value: "24/7", label: "Live Updates", from: "from-emerald-500", to: "to-teal-400", text: "text-emerald-50", icon: "⚡" },
-          { value: "99.9%", label: "Uptime", from: "from-amber-500", to: "to-orange-400", text: "text-amber-50", icon: "🛡️" },
-          { value: "1M+", label: "Conversions Daily", from: "from-purple-500", to: "to-pink-500", text: "text-purple-50", icon: "📈" },
+          {
+            value: "20+",
+            label: "Currencies Supported",
+            icon: "🌐",
+            accent: "from-indigo-500/70 via-blue-500/60 to-cyan-400/60",
+            bg: "from-indigo-500/10 via-blue-500/5 to-white",
+          },
+          {
+            value: "24/7",
+            label: "Live Updates",
+            icon: "⚡",
+            accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60",
+            bg: "from-emerald-500/10 via-teal-500/5 to-white",
+          },
+          {
+            value: "99.9%",
+            label: "Uptime",
+            icon: "🛡️",
+            accent: "from-amber-500/70 via-orange-500/60 to-yellow-400/60",
+            bg: "from-amber-500/10 via-orange-500/5 to-white",
+          },
+          {
+            value: "1M+",
+            label: "Conversions Daily",
+            icon: "📈",
+            accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60",
+            bg: "from-purple-500/10 via-pink-500/5 to-white",
+          },
         ].map((stat, idx) => (
           <Card
             key={idx}
-            className="relative overflow-hidden p-4 sm:p-6 text-center border-0 shadow-lg shadow-slate-900/5"
+            className={`overflow-hidden text-center border border-border/60 bg-gradient-to-br ${stat.bg} shadow-lg shadow-slate-900/5`}
           >
-            <div className={`absolute inset-0 bg-gradient-to-br ${stat.from} ${stat.to} opacity-90`} />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.25),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.15),transparent_30%)]" />
-            <div className="relative space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm text-xs font-semibold text-white shadow-sm">
+            <div className={`h-1 w-full bg-gradient-to-r ${stat.accent}`} />
+            <CardContent className="relative space-y-2 p-4 sm:p-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/60 text-xs font-semibold text-slate-900 shadow-sm">
                 <span>{stat.icon}</span>
                 <span>{stat.label}</span>
               </div>
-              <div className={`text-2xl sm:text-3xl font-extrabold drop-shadow-sm text-white`}>
+              <div className="text-2xl sm:text-3xl font-extrabold text-foreground drop-shadow-sm">
                 {stat.value}
               </div>
-              <div className="text-xs sm:text-sm text-white/90">{stat.label}</div>
-            </div>
+              <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
+            </CardContent>
+          </Card>
+        ))}
+      </section>
+
+      {/* Home Highlights */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        {[ 
+          {
+            title: "Convert in seconds",
+            desc: "Swap between 20+ currencies with live rates and instant math you can trust.",
+            icon: Zap,
+            accent: "from-amber-500/70 via-orange-400/60 to-yellow-300/60",
+            bg: "from-amber-500/10 via-orange-400/5 to-white",
+          },
+          {
+            title: "Track what matters",
+            desc: "Pin your pairs, monitor volatility, and glance at intraday moves without opening a new tab.",
+            icon: Activity,
+            accent: "from-sky-500/70 via-cyan-400/60 to-emerald-300/60",
+            bg: "from-sky-500/10 via-cyan-400/5 to-white",
+          },
+          {
+            title: "Stay notified",
+            desc: "Set smart alerts for target rates and receive heads-up before markets move.",
+            icon: Bell,
+            accent: "from-indigo-500/70 via-purple-500/60 to-pink-400/60",
+            bg: "from-indigo-500/10 via-purple-500/5 to-white",
+          },
+        ].map((item, idx) => (
+          <Card
+            key={idx}
+            className={`border border-border/60 bg-gradient-to-br ${item.bg} backdrop-blur-sm shadow-lg overflow-hidden`}
+          >
+            <div className={`h-1 w-full bg-gradient-to-r ${item.accent}`} />
+            <CardContent className="p-5 sm:p-6 space-y-3">
+              <div className="h-11 w-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                <item.icon className="h-5 w-5" />
+              </div>
+              <div className="text-xl font-semibold text-foreground">{item.title}</div>
+              <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+            </CardContent>
           </Card>
         ))}
       </section>
@@ -79,6 +155,55 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
         />
       </section>
 
+      {/* Workflows */}
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+        {[ 
+          {
+            title: "Monitor markets",
+            desc: "Start with the live table to compare base currencies, spreads, and intraday deltas at a glance.",
+            cta: "View markets",
+            action: () => navigateTo("market"),
+            accent: "from-sky-500/20 to-sky-600/10",
+            bg: "from-sky-500/10 via-cyan-400/5 to-white",
+          },
+          {
+            title: "Automate alerts",
+            desc: "Set thresholds for your favorite pairs so you get notified when opportunity knocks.",
+            cta: "Create alert",
+            action: () => navigateTo("alerts"),
+            accent: "from-emerald-500/20 to-emerald-600/10",
+            bg: "from-emerald-500/10 via-lime-400/5 to-white",
+          },
+          {
+            title: "Personalize dashboard",
+            desc: "Arrange favorites, tweak chart defaults, and save your preferred base currency in settings.",
+            cta: "Open settings",
+            action: () => navigateTo("settings"),
+            accent: "from-indigo-500/20 to-indigo-600/10",
+            bg: "from-indigo-500/10 via-purple-500/5 to-white",
+          },
+        ].map((item, idx) => (
+          <Card
+            key={idx}
+            className={`border border-border/70 bg-gradient-to-br ${item.bg} shadow-lg overflow-hidden`}
+          >
+            <div className={`h-1 w-full bg-gradient-to-r ${item.accent}`} />
+            <CardContent className="p-5 sm:p-6 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="text-lg font-semibold text-foreground">{item.title}</div>
+                <Button variant="ghost" size="icon" className="rounded-full" onClick={item.action}>
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+              <Button variant="outline" className="w-full" onClick={item.action}>
+                {item.cta}
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </section>
+
       {/* Live Rates and Charts Grid */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
         <section className="min-w-0">
@@ -88,6 +213,47 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
           <CurrencyChart />
         </section>
       </div>
+
+      {/* Mobile & Reliability */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        {[ 
+          {
+            title: "Mobile ready",
+            desc: "Use the same dashboard on phone or tablet with responsive layouts and quick actions.",
+            icon: Smartphone,
+            accent: "from-sky-500/70 via-sky-400/60 to-cyan-300/60",
+            bg: "from-sky-500/10 via-cyan-500/5 to-white",
+          },
+          {
+            title: "Performance first",
+            desc: "Optimized charts, cached requests, and lean UI keep things fast even on slow networks.",
+            icon: Activity,
+            accent: "from-emerald-500/70 via-lime-400/60 to-amber-300/60",
+            bg: "from-emerald-500/10 via-lime-500/5 to-white",
+          },
+          {
+            title: "Secure by default",
+            desc: "Encrypted requests, safe storage for preferences, and strict data handling.",
+            icon: Shield,
+            accent: "from-indigo-500/70 via-purple-500/60 to-pink-400/60",
+            bg: "from-indigo-500/10 via-purple-500/5 to-white",
+          },
+        ].map((item, idx) => (
+          <Card
+            key={idx}
+            className={`border border-border/60 bg-gradient-to-br ${item.bg} shadow-lg overflow-hidden`}
+          >
+            <div className={`h-1 w-full bg-gradient-to-r ${item.accent}`} />
+            <CardContent className="p-5 sm:p-6 space-y-3">
+              <div className="h-11 w-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                <item.icon className="h-5 w-5" />
+              </div>
+              <div className="text-xl font-semibold text-foreground">{item.title}</div>
+              <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </section>
 
       {/* Choose Section - Gradient Glass Card */}
       <section className="py-12">
@@ -128,6 +294,32 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
             </div>
           </Card>
         </div>
+      </section>
+
+      {/* Final CTA */}
+      <section>
+        <Card className="border border-border/70 bg-gradient-to-r from-indigo-600 via-sky-600 to-teal-500 text-white overflow-hidden">
+          <CardContent className="p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
+                <SettingsIcon className="h-4 w-4" />
+                Tailor your workspace
+              </div>
+              <div className="text-2xl sm:text-3xl font-bold">Launch your home setup</div>
+              <p className="text-sm sm:text-base text-white/90 max-w-2xl">
+                Save your base currency, reorder favorites, and toggle alerts so the homepage is tuned to how you work.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 md:ml-auto w-full sm:w-auto">
+              <Button variant="secondary" className="w-full sm:w-auto hover:bg-white/60" onClick={() => navigateTo("settings")}>
+                Go to settings
+              </Button>
+              <Button variant="outline" className="w-full sm:w-auto border-white/50 text-black hover:bg-white/60" onClick={() => navigateTo("market")}>
+                View markets
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </section>
     </div>
   );

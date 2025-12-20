@@ -248,8 +248,8 @@ export function LandingPage() {
           <section className="py-12">
             <div className="max-w-6xl mx-auto">
               <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-amber-400 opacity-90" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+                <div className="absolute inset-0 bg-gradient-to-br from-sky-500 via-indigo-600 to-purple-700 opacity-90" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.20),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.16),transparent_30%)]" />
 
                 <div className="relative z-10 p-8 sm:p-10 border-b border-white/15">
                   <h2 className="text-3xl md:text-4xl font-bold text-white">Why Choose Our Platform?</h2>
