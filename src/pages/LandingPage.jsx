@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { useRouter } from "../components/Router";
@@ -15,8 +15,6 @@ import {
   ArrowDownRight
 } from "lucide-react";
 
-const ExchangeRateTable = lazy(() => import("../components/ExchangeRateTable"));
-const CurrencyChart = lazy(() => import("../components/CurrencyChart"));
 import { fetchExchangeRates, convertCurrencyAsync } from "../utils/currencyData";
 
 
@@ -187,115 +185,63 @@ export function LandingPage() {
             ))}
           </section>
 
-          {/* Main Functional Area */}
-          <div className="grid lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-8">
-              <div className="bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-100 overflow-hidden">
-                <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50">
-                  <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-indigo-500" /> Market Highlights
-                  </h2>
-                </div>
-                <div className="p-6 space-y-4">
-                  {/* Top Movers */}
-                  <div className="space-y-3">
-                    <h3 className="text-sm font-semibold text-slate-600 uppercase tracking-wide">Top Movers Today</h3>
-                    {[
-                      { pair: "USD/JPY", change: "+2.34%", value: "¥144.52", trend: "up" },
-                      { pair: "EUR/GBP", change: "+1.87%", value: "£0.87", trend: "up" },
-                      { pair: "AUD/CAD", change: "-1.52%", value: "C$0.92", trend: "down" },
-                    ].map((item, i) => (
-                      <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors">
-                        <div className="flex items-center gap-3">
-                          <div className={`w-10 h-10 rounded-lg ${item.trend === 'up' ? 'bg-emerald-100' : 'bg-rose-100'} flex items-center justify-center`}>
-                            {item.trend === 'up' ? 
-                              <ArrowUpRight className="w-5 h-5 text-emerald-600" /> : 
-                              <ArrowDownRight className="w-5 h-5 text-rose-600" />
-                            }
-                          </div>
-                          <div>
-                            <div className="font-semibold text-slate-800">{item.pair}</div>
-                            <div className="text-sm text-slate-500">{item.value}</div>
-                          </div>
-                        </div>
-                        <div className={`font-bold ${item.trend === 'up' ? 'text-emerald-600' : 'text-rose-600'}`}>
-                          {item.change}
-                        </div>
-                      </div>
-                    ))}
+          {/* Landing Content */}
+          <div className="grid grid-cols-1 gap-8">
+            {/* Key Features */}
+            <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { title: "Real-Time Rates", desc: "Live FX data from trusted providers.", icon: <Zap className="h-5 w-5" /> },
+                { title: "Global Coverage", desc: "20+ major and exotic currencies.", icon: <Globe className="h-5 w-5" /> },
+                { title: "Secure & Reliable", desc: "Encrypted, resilient, and monitored.", icon: <Shield className="h-5 w-5" /> },
+                { title: "Trends & Insights", desc: "Historical charts and analytics.", icon: <BarChart3 className="h-5 w-5" /> },
+              ].map((f, i) => (
+                <Card key={i} className="p-6 border-none shadow-lg shadow-slate-200/50 bg-white">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="h-10 w-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                      {f.icon}
+                    </div>
+                    <div className="font-semibold text-slate-800">{f.title}</div>
                   </div>
+                  <p className="text-sm text-slate-600">{f.desc}</p>
+                </Card>
+              ))}
+            </section>
 
-                  {/* Quick Action */}
-                  <div className="pt-4 border-t border-slate-100">
-                    <Button 
-                      onClick={() => navigateTo('market')} 
-                      className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white"
-                    >
-                      View Full Market Analysis <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
+            {/* How It Works */}
+            <section className="bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-100 overflow-hidden">
+              <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50">
+                <h2 className="text-xl font-bold text-slate-800">How It Works</h2>
               </div>
-              
-              <Suspense fallback={<div className="p-6 text-sm text-muted-foreground">Loading chart…</div>}>
-                <CurrencyChart />
-              </Suspense>
-            </div>
-
-            <div className="space-y-8">
-              {/* Trading Insights Card */}
-              <div className="bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-100 overflow-hidden">
-                <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-purple-50 via-pink-50 to-purple-50">
-                  <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-                    <Star className="w-5 h-5 text-purple-500" /> Trading Insights
-                  </h2>
-                </div>
-                <div className="p-6 space-y-4">
-                  {/* Popular Pairs */}
-                  <div>
-                    <h3 className="text-sm font-semibold text-slate-600 uppercase tracking-wide mb-3">Most Traded Pairs</h3>
-                    <div className="space-y-2">
-                      {[
-                        { pair: "EUR/USD", volume: "High", badge: "Trending" },
-                        { pair: "GBP/USD", volume: "Medium", badge: "Popular" },
-                        { pair: "USD/JPY", volume: "High", badge: "Active" },
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-center justify-between p-3 rounded-xl border border-slate-100 hover:border-purple-200 hover:bg-purple-50/50 transition-all cursor-pointer group">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 text-white flex items-center justify-center text-xs font-bold">
-                              {item.pair.slice(0, 2)}
-                            </div>
-                            <div>
-                              <div className="font-semibold text-slate-800 group-hover:text-purple-600 transition-colors">{item.pair}</div>
-                              <div className="text-xs text-slate-500">{item.volume} Volume</div>
-                            </div>
-                          </div>
-                          <span className="text-xs font-semibold px-2 py-1 rounded-full bg-purple-100 text-purple-600">
-                            {item.badge}
-                          </span>
-                        </div>
-                      ))}
+              <div className="p-6 grid sm:grid-cols-3 gap-4">
+                {[
+                  { step: "1", title: "Choose Currencies", desc: "Pick your base and quote." },
+                  { step: "2", title: "Enter Amount", desc: "Type any value to convert." },
+                  { step: "3", title: "Get Results", desc: "Instant, accurate conversion." },
+                ].map((s, i) => (
+                  <div key={i} className="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="h-6 w-6 rounded-full bg-indigo-600 text-white text-xs flex items-center justify-center">{s.step}</span>
+                      <span className="font-semibold text-slate-800">{s.title}</span>
                     </div>
+                    <p className="text-sm text-slate-600">{s.desc}</p>
                   </div>
-
-                  {/* Market Sentiment */}
-                  <div className="pt-4 border-t border-slate-100">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-semibold text-slate-600">Market Sentiment</span>
-                      <span className="text-sm font-bold text-emerald-600">Bullish 62%</span>
-                    </div>
-                    <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400" style={{ width: '62%' }}></div>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
-              
-              {/* Live Exchange Rates Card */}
-              <Suspense fallback={<div className="p-6 text-sm text-muted-foreground">Loading rates…</div>}>
-                <ExchangeRateTable />
-              </Suspense>
-            </div>
+            </section>
+
+            {/* Trusted By */}
+            <section className="bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-100 overflow-hidden">
+              <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50">
+                <h2 className="text-xl font-bold text-slate-800">Trusted By</h2>
+              </div>
+              <div className="p-6 flex flex-wrap gap-3">
+                {["FinTech Startups", "Trading Desks", "Travel Apps", "SMBs"].map((t, i) => (
+                  <span key={i} className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </section>
           </div>
 
           {/* Why Choose Section - Gradient Glass Card */}

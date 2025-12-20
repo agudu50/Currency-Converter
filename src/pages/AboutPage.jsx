@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardContent, } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import {
@@ -121,6 +121,23 @@ export function AboutPage() {
         ))}
       </section>
 
+      {/* Platform Features */}
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {features.map((f, i) => (
+          <Card key={i} className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-blue-600 to-cyan-400 opacity-90" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+            <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm mb-3">
+                {f.icon}
+              </div>
+              <div className="font-semibold text-white mb-1">{f.title}</div>
+              <p className="text-sm text-white/80">{f.description}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </section>
+
       {/* Team */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {team.map((member, index) => (
@@ -140,6 +157,98 @@ export function AboutPage() {
             </CardContent>
           </Card>
         ))}
+      </section>
+
+      {/* Mission & Vision */}
+      <section>
+        <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-fuchsia-500 to-pink-500 opacity-90" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+          <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
+            <h3 className="text-xl font-semibold mb-3 text-white">Our Mission</h3>
+            <p className="text-sm text-white/80 leading-relaxed">
+              We make currency exchange transparent and accessible for everyone—from individual travelers to global businesses—by providing accurate live rates, intuitive tools, and secure experiences.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-3 mt-4">
+              {["Real-time market insights", "Bank-grade security", "Global coverage", "Mobile-first design"].map((item, idx) => (
+                <div key={idx} className="p-3 rounded-xl bg-white/10 border border-white/15 text-sm text-white/85">
+                  • {item}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Technology & Integrations */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-blue-600 to-cyan-400 opacity-90" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+          <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
+            <h3 className="text-xl font-semibold mb-3 text-white">Technology</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {["React 19", "Vite 7", "Tailwind CSS", "Radix UI", "Recharts", "CurrencyAPI", "exchangerate.host", "Vercel"].map((t, i) => (
+                <Badge key={i} variant="secondary" className="bg-white/15 text-white border border-white/25">{t}</Badge>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-400 opacity-90" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+          <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
+            <h3 className="text-xl font-semibold mb-3 text-white">Security & Compliance</h3>
+            <ul className="text-sm text-white/80 space-y-2">
+              <li>• Encrypted transport (HTTPS)</li>
+              <li>• Strict API key handling via environment variables</li>
+              <li>• Privacy-first analytics (opt-in)</li>
+              <li>• Regular dependency updates</li>
+            </ul>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Contact & Community */}
+      <section>
+        <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 opacity-90" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+          <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
+            <h3 className="text-xl font-semibold mb-4 text-white">Get in Touch</h3>
+            <div className="flex flex-wrap items-center gap-3">
+              <Button variant="outline" size="sm" className="bg-white/90 text-slate-900 border-white/40"><Github className="h-4 w-4 mr-2" /> GitHub</Button>
+              <Button variant="outline" size="sm" className="bg-white/90 text-slate-900 border-white/40"><Twitter className="h-4 w-4 mr-2" /> Twitter</Button>
+              <Button variant="outline" size="sm" className="bg-white/90 text-slate-900 border-white/40"><Mail className="h-4 w-4 mr-2" /> Email</Button>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* FAQ */}
+      <section>
+        <Card className="relative overflow-hidden border-0 shadow-xl shadow-slate-900/5 bg-slate-950 text-white">
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 opacity-90" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,255,255,0.22),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(255,255,255,0.18),transparent_30%)]" />
+          <CardContent className="relative z-10 p-6 bg-white/5 backdrop-blur-sm border border-white/10">
+            <h3 className="text-xl font-semibold mb-4 text-white">FAQ</h3>
+            <div className="space-y-3">
+              <div>
+                <div className="font-semibold text-white">Is the data live?</div>
+                <p className="text-sm text-white/80">Yes, latest rates are fetched from CurrencyAPI; historical trends from exchangerate.host.</p>
+              </div>
+              <div>
+                <div className="font-semibold text-white">Do you support mobile?</div>
+                <p className="text-sm text-white/80">The UI is mobile-first with responsive layouts and optimized charts.</p>
+              </div>
+              <div>
+                <div className="font-semibold text-white">How do I report an issue?</div>
+                <p className="text-sm text-white/80">Reach out via GitHub or email; we respond quickly to production-impacting issues.</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </section>
 
       {/* CTA */}
