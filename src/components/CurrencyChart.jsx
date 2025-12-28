@@ -50,10 +50,10 @@ export default function CurrencyChart() {
   };
 
   return (
-    <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+    <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background shadow-lg backdrop-blur-sm text-foreground">
       <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
 
-      <CardHeader className="space-y-2 p-6 pb-4 bg-white/70 backdrop-blur-sm border-b border-border/60">
+      <CardHeader className="space-y-2 p-6 pb-4 bg-card/70 backdrop-blur-sm border-b border-border/60">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
             <CardTitle className="text-xl font-semibold text-foreground flex items-center gap-2">
@@ -72,7 +72,7 @@ export default function CurrencyChart() {
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">From:</span>
               <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                <SelectTrigger className="w-32 bg-white border border-border/60 text-foreground">
+                <SelectTrigger className="w-32 bg-input-background border border-border/60 text-foreground">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -95,7 +95,7 @@ export default function CurrencyChart() {
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">To:</span>
               <Select value={toCurrency} onValueChange={setToCurrency}>
-                <SelectTrigger className="w-32 bg-white border border-border/60 text-foreground">
+                <SelectTrigger className="w-32 bg-input-background border border-border/60 text-foreground">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -118,7 +118,7 @@ export default function CurrencyChart() {
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">Period:</span>
               <Select value={timeframe} onValueChange={setTimeframe}>
-                <SelectTrigger className="w-32 bg-white border border-border/60 text-foreground">
+                <SelectTrigger className="w-32 bg-input-background border border-border/60 text-foreground">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -133,8 +133,8 @@ export default function CurrencyChart() {
         </div>
       </CardHeader>
 
-      <CardContent className="p-6 bg-white/70 backdrop-blur-sm min-w-0">
-        <div className="min-w-0 h-64 sm:h-80">
+      <CardContent className="p-6 bg-card/70 backdrop-blur-sm min-w-0">
+          <div className="min-w-0 h-64 sm:h-80">
           <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(15,23,42,0.08)" />
@@ -175,28 +175,28 @@ export default function CurrencyChart() {
 
         {/* Stats */}
         <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div className="bg-white border border-border/60 rounded-xl p-3 shadow-sm">
+          <div className="bg-card border border-border/60 rounded-xl p-3 shadow-sm">
             <div className="text-sm text-muted-foreground">Current Rate</div>
             <div className="font-semibold text-foreground">
               {chartData[chartData.length - 1]?.rate?.toFixed(4) ?? "-"}
             </div>
           </div>
 
-          <div className="bg-white border border-border/60 rounded-xl p-3 shadow-sm">
+          <div className="bg-card border border-border/60 rounded-xl p-3 shadow-sm">
             <div className="text-sm text-muted-foreground">Highest</div>
             <div className="font-semibold text-emerald-600">
               {chartData.length ? Math.max(...chartData.map((d) => d.rate)).toFixed(4) : "-"}
             </div>
           </div>
 
-          <div className="bg-white border border-border/60 rounded-xl p-3 shadow-sm">
+          <div className="bg-card border border-border/60 rounded-xl p-3 shadow-sm">
             <div className="text-sm text-muted-foreground">Lowest</div>
             <div className="font-semibold text-rose-600">
               {chartData.length ? Math.min(...chartData.map((d) => d.rate)).toFixed(4) : "-"}
             </div>
           </div>
 
-          <div className="bg-white border border-border/60 rounded-xl p-3 shadow-sm">
+          <div className="bg-card border border-border/60 rounded-xl p-3 shadow-sm">
             <div className="text-sm text-muted-foreground">Change</div>
             <div
               className={`font-semibold ${

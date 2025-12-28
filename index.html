@@ -7,6 +7,14 @@
     <title>currency-converter</title>
   </head>
   <body>
+    <script>
+      try {
+        const stored = localStorage.getItem('theme') || 'system';
+        const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const shouldDark = stored === 'dark' || (stored === 'system' && systemDark);
+        document.documentElement.classList.toggle('dark', shouldDark);
+      } catch {}
+    </script>
     <div id="root"></div>
     <script type="module" src="./src/main.jsx"></script>
   </body>

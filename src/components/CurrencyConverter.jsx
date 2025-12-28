@@ -81,10 +81,10 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
   };
 
   return (
-    <Card className="relative w-full max-w-2xl mx-auto overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+    <Card className="relative w-full max-w-2xl mx-auto overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background shadow-lg backdrop-blur-sm text-foreground">
       <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
 
-      <CardHeader className="space-y-2 border-b border-border/60 pb-4 bg-white/70 backdrop-blur-sm">
+      <CardHeader className="space-y-2 border-b border-border/60 pb-4 bg-card/70 backdrop-blur-sm">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg sm:text-2xl text-foreground flex items-center gap-2">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-semibold">⇄</span>
@@ -119,7 +119,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
         )}
       </CardHeader>
 
-      <CardContent className="space-y-4 sm:space-y-6 bg-white/70 backdrop-blur-sm p-6">
+      <CardContent className="space-y-4 sm:space-y-6 bg-card/70 backdrop-blur-sm p-6">
         {/* Amount Input */}
         <div className="space-y-2">
           <Label htmlFor="amount" className="text-sm text-foreground">Amount</Label>
@@ -129,7 +129,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Enter amount"
-            className="text-lg sm:text-xl h-11 sm:h-14 text-center bg-white border border-border/60 text-foreground focus:border-primary focus:ring-primary/20"
+            className="text-lg sm:text-xl h-11 sm:h-14 text-center bg-input-background border border-border/60 text-foreground focus:border-primary focus:ring-primary/20"
           />
         </div>
 
@@ -139,7 +139,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
           <div className="flex-1 space-y-2 w-full">
             <Label className="text-sm text-foreground">From</Label>
             <Select value={fromCurrency} onValueChange={setFromCurrency}>
-              <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 bg-white border border-border/60 text-foreground">
+              <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 bg-input-background border border-border/60 text-foreground">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="max-h-80">
@@ -164,7 +164,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
             variant="outline"
             size="icon"
             onClick={swapCurrencies}
-            className="rounded-full h-11 w-11 sm:h-12 sm:w-12 flex-shrink-0 border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white text-foreground hover:border-primary hover:text-primary transition-colors sm:self-end"
+            className="rounded-full h-11 w-11 sm:h-12 sm:w-12 flex-shrink-0 border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background text-foreground hover:border-primary hover:text-primary transition-colors sm:self-end"
           >
             <ArrowUpDown className="h-5 w-5" />
           </Button>
@@ -173,7 +173,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
           <div className="flex-1 space-y-2 w-full">
             <Label className="text-sm text-foreground">To</Label>
             <Select value={toCurrency} onValueChange={setToCurrency}>
-              <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 bg-white border border-border/60 text-foreground">
+              <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 bg-input-background border border-border/60 text-foreground">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="max-h-80">
@@ -195,7 +195,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
         </div>
 
         {/* Result */}
-        <div className="bg-white/80 border border-border/70 rounded-xl p-4 sm:p-6 text-center text-foreground shadow-sm">
+        <div className="bg-card/80 border border-border/70 rounded-xl p-4 sm:p-6 text-center text-foreground shadow-sm">
           <div className="text-sm text-muted-foreground mb-2">{amount} {fromCurrency} equals</div>
           <div className="text-2xl sm:text-3xl font-bold">{formatCurrency(result, toCurrency)}</div>
           <div className="text-xs sm:text-sm text-muted-foreground mt-2">
@@ -248,7 +248,7 @@ function MultiCurrencyCard({ amount, from, to }) {
   const currencyName = currencyObj ? currencyObj.name.split(' ')[0] : to;
   
   return (
-    <div className="bg-white border border-border/60 rounded-lg p-3 text-center hover:border-primary/60 hover:shadow-sm transition-colors">
+    <div className="bg-card border border-border/60 rounded-lg p-3 text-center hover:border-primary/60 hover:shadow-sm transition-colors">
       <div className="text-xs text-muted-foreground mb-1">{to}</div>
       <div className="text-lg font-semibold text-foreground">{formatCurrency(result, to)}</div>
       <div className="text-xs text-muted-foreground mt-1">{currencyObj?.flag || ''} {currencyName}</div>

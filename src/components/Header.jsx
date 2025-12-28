@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Moon, Sun, TrendingUp, Menu, X } from "lucide-react";
 import { useRouter } from "./Router"; // make sure this hook is JS-compatible
+import { useTheme } from "../context/theme.jsx";
 
 export default function Header() {
+  const { resolvedTheme, toggleTheme } = useTheme();
   const [isDark, setIsDark] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { currentPage, navigateTo } = useRouter();
 
-  const toggleDarkMode = () => {
-    setIsDark(!isDark);
-    document.documentElement.classList.toggle('dark');
-  };
+  useEffect(() => {
+    setIsDark(resolvedTheme === 'dark');
+  }, [resolvedTheme]);
 
   const navItems = [
     { id: 'home', label: 'Home', page: 'home' },
@@ -56,7 +57,7 @@ export default function Header() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={toggleDarkMode}
+            onClick={toggleTheme}
             className="rounded-full h-9 w-9 sm:h-10 sm:w-10"
           >
             {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}

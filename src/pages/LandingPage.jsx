@@ -56,7 +56,7 @@ export function LandingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen  selection:bg-indigo-500/30">
+    <div className="min-h-screen bg-background selection:bg-indigo-500/30">
       
       {/* Abstract Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -77,14 +77,14 @@ export function LandingPage() {
               Live Market Data
             </div>
 
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-slate-900">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground">
               Currency Exchange <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500">
                 Reimagined.
               </span>
             </h1>
 
-            <p className="text-lg sm:text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Experience the fastest way to convert currencies, analyze trends, and manage your global portfolio with bank-grade security.
             </p>
 
@@ -98,7 +98,7 @@ export function LandingPage() {
               <Button 
                 onClick={() => navigateTo('market')} 
                 variant="outline"
-                className="h-12 px-8 text-lg border-2 border-slate-200 hover:bg-white hover:text-indigo-600 rounded-xl bg-white/50 backdrop-blur-sm"
+                className="h-12 px-8 text-lg border-2 border-border hover:bg-muted hover:text-indigo-600 rounded-xl bg-card/50 backdrop-blur-sm"
               >
                 View Live Market
               </Button>
@@ -123,7 +123,7 @@ export function LandingPage() {
                   }
                 }
               `}</style>
-              <div className="bg-white/80 backdrop-blur-md border border-slate-200/60 shadow-xl rounded-2xl overflow-hidden">
+              <div className="bg-card/80 backdrop-blur-md border border-border/60 shadow-xl rounded-2xl overflow-hidden">
                 {/* Mobile: Scrolling Animation */}
                 <div className="md:hidden overflow-hidden">
                   <div className="ticker-animate flex w-max gap-1">
@@ -143,12 +143,12 @@ export function LandingPage() {
                 </div>
 
                 {/* Desktop: Static Grid */}
-                <div className="hidden md:flex justify-around items-center py-4 divide-x divide-slate-100">
+                <div className="hidden md:flex justify-around items-center py-4 divide-x divide-border/50">
                   {rates.map((r, i) => (
-                    <div key={i} className="flex-1 px-4 flex flex-col items-center group cursor-pointer hover:bg-slate-50 transition-colors rounded-lg py-2">
+                    <div key={i} className="flex-1 px-4 flex flex-col items-center group cursor-pointer hover:bg-muted transition-colors rounded-lg py-2">
                       <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">{r.pair}</div>
                       <div className="flex items-center gap-2">
-                        <span className="text-lg font-bold text-slate-800 tabular-nums">{r.rate}</span>
+                        <span className="text-lg font-bold text-foreground tabular-nums">{r.rate}</span>
                         {r.trend === 'up' ? 
                           <ArrowUpRight className="w-4 h-4 text-emerald-500" /> : 
                           <ArrowDownRight className="w-4 h-4 text-rose-500" />
@@ -172,7 +172,7 @@ export function LandingPage() {
               { label: "Global Support", value: "24/7", color: "text-emerald-600", bg: "bg-emerald-50" },
               { label: "Data Accuracy", value: "99.9%", color: "text-amber-600", bg: "bg-amber-50" }
             ].map((stat, idx) => (
-              <Card key={idx} className="p-6 border-none shadow-lg shadow-slate-200/50 bg-white hover:-translate-y-1 transition-transform duration-300">
+              <Card key={idx} className="p-6 border-none shadow-lg bg-card hover:-translate-y-1 transition-transform duration-300">
                 <div className="flex flex-col items-center sm:items-start">
                   <div className={`text-3xl sm:text-4xl font-extrabold ${stat.color} mb-2 tracking-tight`}>
                     {stat.value}
@@ -200,17 +200,17 @@ export function LandingPage() {
                     <div className="h-10 w-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
                       {f.icon}
                     </div>
-                    <div className="font-semibold text-slate-800">{f.title}</div>
+                    <div className="font-semibold text-foreground">{f.title}</div>
                   </div>
-                  <p className="text-sm text-slate-600">{f.desc}</p>
+                  <p className="text-sm text-muted-foreground">{f.desc}</p>
                 </Card>
               ))}
             </section>
 
             {/* How It Works */}
-            <section className="bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-100 overflow-hidden">
+            <section className="bg-card rounded-3xl shadow-xl border border-border overflow-hidden">
               <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50">
-                <h2 className="text-xl font-bold text-slate-800">How It Works</h2>
+                <h2 className="text-xl font-bold text-foreground">How It Works</h2>
               </div>
               <div className="p-6 grid sm:grid-cols-3 gap-4">
                 {[
@@ -218,25 +218,25 @@ export function LandingPage() {
                   { step: "2", title: "Enter Amount", desc: "Type any value to convert." },
                   { step: "3", title: "Get Results", desc: "Instant, accurate conversion." },
                 ].map((s, i) => (
-                  <div key={i} className="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                  <div key={i} className="p-4 rounded-xl bg-muted border border-border/60">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="h-6 w-6 rounded-full bg-indigo-600 text-white text-xs flex items-center justify-center">{s.step}</span>
-                      <span className="font-semibold text-slate-800">{s.title}</span>
+                      <span className="font-semibold text-foreground">{s.title}</span>
                     </div>
-                    <p className="text-sm text-slate-600">{s.desc}</p>
+                    <p className="text-sm text-muted-foreground">{s.desc}</p>
                   </div>
                 ))}
               </div>
             </section>
 
             {/* Trusted By */}
-            <section className="bg-white rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-100 overflow-hidden">
+            <section className="bg-card rounded-3xl shadow-xl border border-border overflow-hidden">
               <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50">
-                <h2 className="text-xl font-bold text-slate-800">Trusted By</h2>
+                <h2 className="text-xl font-bold text-foreground">Trusted By</h2>
               </div>
               <div className="p-6 flex flex-wrap gap-3">
                 {["FinTech Startups", "Trading Desks", "Travel Apps", "SMBs"].map((t, i) => (
-                  <span key={i} className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200">
+                  <span key={i} className="px-3 py-1 rounded-full bg-muted text-foreground text-xs font-medium border border-border/60">
                     {t}
                   </span>
                 ))}
@@ -245,7 +245,7 @@ export function LandingPage() {
           </div>          {/* Why Choose Section - Emerald/Teal Glass Card */}
           <section className="py-12">
             <div className="max-w-6xl mx-auto">
-              <Card className="relative overflow-hidden rounded-3xl border border-border/70 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-white shadow-2xl backdrop-blur-md text-foreground">
+              <Card className="relative overflow-hidden rounded-3xl border border-border/70 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-background shadow-2xl backdrop-blur-md text-foreground">
                 <div className="absolute inset-0 pointer-events-none">
                   <div className="absolute -top-24 -left-10 h-64 w-64 bg-emerald-400/20 blur-3xl" />
                   <div className="absolute -bottom-16 right-0 h-64 w-64 bg-lime-300/25 blur-3xl" />
@@ -259,7 +259,7 @@ export function LandingPage() {
                   </p>
                 </div>
 
-                <div className="relative z-10 grid md:grid-cols-2 gap-4 sm:gap-6 p-8 sm:p-10 bg-white/100 backdrop-blur-md rounded-b-4xl overflow-hidden border-x border-b border-border/60 border-t-0">
+                <div className="relative z-10 grid md:grid-cols-2 gap-4 sm:gap-6 p-8 sm:p-10 bg-card/100 backdrop-blur-md rounded-b-4xl overflow-hidden border-x border-b border-border/60 border-t-0">
                   {[ 
                     { icon: Zap, title: "Real-Time Rates", desc: "Get live exchange rates updated every minute from global financial markets and major banks." },
                     { icon: BarChart3, title: "Advanced Analytics", desc: "Analyze currency trends with interactive charts, historical data, and technical indicators." },
@@ -270,7 +270,7 @@ export function LandingPage() {
                   ].map((item, idx) => (
                     <div
                       key={idx}
-                      className="group flex gap-4 p-5 sm:p-6 rounded-2xl border border-border/60 bg-white/80 shadow-sm hover:border-emerald-400/70 hover:shadow-lg transition-all"
+                      className="group flex gap-4 p-5 sm:p-6 rounded-2xl border border-border/60 bg-card/80 shadow-sm hover:border-emerald-400/70 hover:shadow-lg transition-all"
                     >
                       <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-lime-300/20 text-emerald-700 flex items-center justify-center shadow-inner">
                         <item.icon className="h-6 w-6" />

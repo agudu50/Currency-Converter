@@ -123,14 +123,14 @@ export function AlertsPage() {
             desc: "Track significant price movements and trend changes",
             icon: TrendingDown,
             accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60",
-            bg: "from-emerald-500/10 via-teal-500/5 to-white",
+            bg: "from-emerald-500/10 via-teal-500/5 to-background",
           },
           {
             title: "Volatility Alerts",
             desc: "Monitor unusual market volatility and rapid price changes",
             icon: AlertTriangle,
             accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60",
-            bg: "from-purple-500/10 via-pink-500/5 to-white",
+            bg: "from-purple-500/10 via-pink-500/5 to-background",
           },
         ].map((item, idx) => (
           <Card
@@ -139,11 +139,11 @@ export function AlertsPage() {
           >
             <div className={`h-1 w-full bg-gradient-to-r ${item.accent}`} />
             <div className="p-6 text-center space-y-3">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/80 text-slate-900 shadow-sm">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-card/80 text-foreground shadow-sm">
                 <item.icon className="h-6 w-6" />
               </div>
-              <h3 className="text-xl font-semibold text-slate-900">{item.title}</h3>
-              <p className="text-sm text-slate-800/80 leading-relaxed">{item.desc}</p>
+              <h3 className="text-xl font-semibold text-foreground">{item.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
             </div>
           </Card>
         ))}

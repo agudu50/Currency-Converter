@@ -58,28 +58,28 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
             label: "Currencies Supported",
             icon: "🌐",
             accent: "from-indigo-500/70 via-blue-500/60 to-cyan-400/60",
-            bg: "from-indigo-500/10 via-blue-500/5 to-white",
+            bg: "from-indigo-500/10 via-blue-500/5 to-background",
           },
           {
             value: "24/7",
             label: "Live Updates",
             icon: "⚡",
             accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60",
-            bg: "from-emerald-500/10 via-teal-500/5 to-white",
+            bg: "from-emerald-500/10 via-teal-500/5 to-background",
           },
           {
             value: "99.9%",
             label: "Uptime",
             icon: "🛡️",
             accent: "from-amber-500/70 via-orange-500/60 to-yellow-400/60",
-            bg: "from-amber-500/10 via-orange-500/5 to-white",
+            bg: "from-amber-500/10 via-orange-500/5 to-background",
           },
           {
             value: "1M+",
             label: "Conversions Daily",
             icon: "📈",
             accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60",
-            bg: "from-purple-500/10 via-pink-500/5 to-white",
+            bg: "from-purple-500/10 via-pink-500/5 to-background",
           },
         ].map((stat, idx) => (
           <Card
@@ -88,7 +88,7 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
           >
             <div className={`h-1 w-full bg-gradient-to-r ${stat.accent}`} />
             <CardContent className="relative space-y-2 p-4 sm:p-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/60 text-xs font-semibold text-slate-900 shadow-sm">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-card/60 text-xs font-semibold text-foreground shadow-sm">
                 <span>{stat.icon}</span>
                 <span>{stat.label}</span>
               </div>
@@ -109,21 +109,21 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
             desc: "Swap between 20+ currencies with live rates and instant math you can trust.",
             icon: Zap,
             accent: "from-amber-500/70 via-orange-400/60 to-yellow-300/60",
-            bg: "from-amber-500/10 via-orange-400/5 to-white",
+            bg: "from-amber-500/10 via-orange-400/5 to-background",
           },
           {
             title: "Track what matters",
             desc: "Pin your pairs, monitor volatility, and glance at intraday moves without opening a new tab.",
             icon: Activity,
             accent: "from-sky-500/70 via-cyan-400/60 to-emerald-300/60",
-            bg: "from-sky-500/10 via-cyan-400/5 to-white",
+            bg: "from-sky-500/10 via-cyan-400/5 to-background",
           },
           {
             title: "Stay notified",
             desc: "Set smart alerts for target rates and receive heads-up before markets move.",
             icon: Bell,
             accent: "from-indigo-500/70 via-purple-500/60 to-pink-400/60",
-            bg: "from-indigo-500/10 via-purple-500/5 to-white",
+            bg: "from-indigo-500/10 via-purple-500/5 to-background",
           },
         ].map((item, idx) => (
           <Card
@@ -164,7 +164,7 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
             cta: "View markets",
             action: () => navigateTo("market"),
             accent: "from-sky-500/20 to-sky-600/10",
-            bg: "from-sky-500/10 via-cyan-400/5 to-white",
+            bg: "from-sky-500/10 via-cyan-400/5 to-background",
           },
           {
             title: "Automate alerts",
@@ -172,7 +172,7 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
             cta: "Create alert",
             action: () => navigateTo("alerts"),
             accent: "from-emerald-500/20 to-emerald-600/10",
-            bg: "from-emerald-500/10 via-lime-400/5 to-white",
+            bg: "from-emerald-500/10 via-lime-400/5 to-background",
           },
           {
             title: "Personalize dashboard",
@@ -180,7 +180,7 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
             cta: "Open settings",
             action: () => navigateTo("settings"),
             accent: "from-indigo-500/20 to-indigo-600/10",
-            bg: "from-indigo-500/10 via-purple-500/5 to-white",
+            bg: "from-indigo-500/10 via-purple-500/5 to-background",
           },
         ].map((item, idx) => (
           <Card
@@ -258,7 +258,7 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
       {/* Choose - Elevated Glass Card */}
       <section className="py-12">
         <div className="max-w-6xl mx-auto">
-          <Card className="relative overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-2xl backdrop-blur-md text-foreground">
+          <Card className="relative overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background shadow-2xl backdrop-blur-md text-foreground">
             <div className="absolute inset-0 pointer-events-none">
               <div className="absolute -top-24 -left-10 h-64 w-64 bg-primary/15 blur-3xl" />
               <div className="absolute -bottom-16 right-0 h-64 w-64 bg-cyan-400/15 blur-3xl" />
@@ -278,7 +278,7 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
                     Built for professionals and everyday users who need reliable, accurate currency data.
                   </p>
                 </div>
-                <div className="grid grid-cols-2 gap-3 text-sm text-foreground/80 bg-white/70 border border-border/60 rounded-2xl p-4 shadow-sm backdrop-blur">
+                <div className="grid grid-cols-2 gap-3 text-sm text-foreground/80 bg-card/70 border border-border/60 rounded-2xl p-4 shadow-sm backdrop-blur">
                   <div className="space-y-1">
                     <div className="text-xs uppercase tracking-wide text-muted-foreground">Latency</div>
                     <div className="text-xl font-semibold">&lt; 300ms</div>
@@ -309,7 +309,7 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
                 ].map((item, idx) => (
                   <div
                     key={idx}
-                    className="group flex gap-4 p-5 sm:p-6 rounded-2xl border border-border/60 bg-white/80 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all"
+                    className="group flex gap-4 p-5 sm:p-6 rounded-2xl border border-border/60 bg-card/80 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all"
                   >
                     <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500/15 via-blue-500/10 to-cyan-400/15 text-primary flex items-center justify-center shadow-inner">
                       <item.icon className="h-6 w-6" />
@@ -331,7 +331,7 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
         <Card className="border border-border/70 bg-gradient-to-r from-indigo-600 via-sky-600 to-teal-500 text-white overflow-hidden">
           <CardContent className="p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
+              <div className="inline-flex items-center gap-2 rounded-full bg-card/15 px-3 py-1 text-xs font-semibold text-foreground">
                 <SettingsIcon className="h-4 w-4" />
                 Tailor your workspace
               </div>
@@ -341,10 +341,10 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 md:ml-auto w-full sm:w-auto">
-              <Button variant="secondary" className="w-full sm:w-auto hover:bg-white/60" onClick={() => navigateTo("settings")}>
+              <Button variant="secondary" className="w-full sm:w-auto hover:bg-muted" onClick={() => navigateTo("settings")}>
                 Go to settings
               </Button>
-              <Button variant="outline" className="w-full sm:w-auto border-white/50 text-black hover:bg-white/60" onClick={() => navigateTo("market")}>
+              <Button variant="outline" className="w-full sm:w-auto border-border text-foreground hover:bg-muted" onClick={() => navigateTo("market")}>
                 View markets
               </Button>
             </div>

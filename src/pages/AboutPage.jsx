@@ -136,17 +136,17 @@ export function AboutPage() {
         {stats.map((stat, index) => (
           <Card
             key={index}
-            className={`overflow-hidden border border-border/60 bg-gradient-to-br ${stat.bg} text-slate-900 shadow-lg shadow-slate-900/10 text-center`}
+            className={`overflow-hidden border border-border/60 bg-gradient-to-br ${stat.bg} text-foreground shadow-lg text-center`}
           >
             <div className={`h-1 w-full bg-gradient-to-r ${stat.accent}`} />
             <CardContent className="relative p-6 space-y-3">
               {(() => { const Icon = stat.icon; return (
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/80 text-slate-900 shadow-sm mb-1" aria-label={`${stat.label} icon`}>
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-card/80 text-foreground shadow-sm mb-1" aria-label={`${stat.label} icon`}>
                   {Icon ? <Icon className="h-6 w-6" /> : null}
                 </div>
               ); })()}
               <div className="text-3xl font-extrabold tracking-tight">{stat.value}</div>
-              <div className="text-sm text-slate-800/80">{stat.label}</div>
+              <div className="text-sm text-muted-foreground">{stat.label}</div>
             </CardContent>
           </Card>
         ))}
@@ -157,15 +157,15 @@ export function AboutPage() {
         {features.map((f, i) => (
           <Card
             key={i}
-            className={`overflow-hidden border border-border/60 bg-gradient-to-br ${f.bg} text-slate-900 shadow-lg shadow-slate-900/10`}
+            className={`overflow-hidden border border-border/60 bg-gradient-to-br ${f.bg} text-foreground shadow-lg`}
           >
             <div className={`h-1 w-full bg-gradient-to-r ${f.accent}`} />
             <CardContent className="relative p-6 space-y-3">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/80 text-slate-900 shadow-sm">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-card/80 text-foreground shadow-sm">
                 {f.icon}
               </div>
-              <div className="font-semibold text-slate-900 mb-1">{f.title}</div>
-              <p className="text-sm text-slate-800/80">{f.description}</p>
+              <div className="font-semibold text-foreground mb-1">{f.title}</div>
+              <p className="text-sm text-muted-foreground">{f.description}</p>
             </CardContent>
           </Card>
         ))}
@@ -175,25 +175,25 @@ export function AboutPage() {
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {team.map((member, index) => {
           const palettes = [
-            { accent: "from-indigo-500/70 via-blue-500/60 to-cyan-400/60", bg: "from-indigo-500/10 via-blue-500/5 to-white" },
-            { accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60", bg: "from-emerald-500/10 via-teal-500/5 to-white" },
-            { accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60", bg: "from-purple-500/10 via-pink-500/5 to-white" },
-            { accent: "from-amber-500/70 via-orange-500/60 to-rose-400/60", bg: "from-amber-500/10 via-orange-500/5 to-white" },
+            { accent: "from-indigo-500/70 via-blue-500/60 to-cyan-400/60", bg: "from-indigo-500/10 via-blue-500/5 to-background" },
+            { accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60", bg: "from-emerald-500/10 via-teal-500/5 to-background" },
+            { accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60", bg: "from-purple-500/10 via-pink-500/5 to-background" },
+            { accent: "from-amber-500/70 via-orange-500/60 to-rose-400/60", bg: "from-amber-500/10 via-orange-500/5 to-background" },
           ];
           const palette = palettes[index % palettes.length];
           return (
             <Card
               key={index}
-              className={`overflow-hidden border border-border/60 bg-gradient-to-br ${palette.bg} text-slate-900 shadow-lg shadow-slate-900/10 text-center`}
+              className={`overflow-hidden border border-border/60 bg-gradient-to-br ${palette.bg} text-foreground shadow-lg text-center`}
             >
               <div className={`h-1 w-full bg-gradient-to-r ${palette.accent}`} />
               <CardContent className="relative p-6 space-y-3">
                 <div className="text-6xl mb-2">{member.image}</div>
-                <h3 className="font-semibold text-slate-900">{member.name}</h3>
+                <h3 className="font-semibold text-foreground">{member.name}</h3>
                 <div className="mt-1">
-                  <Badge variant="secondary" className="bg-white/80 text-slate-900 border border-border/60">{member.role}</Badge>
+                  <Badge variant="secondary" className="bg-card/80 text-foreground border border-border/60">{member.role}</Badge>
                 </div>
-                <p className="text-sm text-slate-800/80 mt-1">{member.bio}</p>
+                <p className="text-sm text-muted-foreground mt-1">{member.bio}</p>
               </CardContent>
             </Card>
           );
@@ -202,16 +202,16 @@ export function AboutPage() {
 
       {/* Mission & Vision */}
       <section>
-        <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white text-slate-900 shadow-lg shadow-slate-900/10">
+        <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background text-foreground shadow-lg">
           <div className="h-1 w-full bg-gradient-to-r from-indigo-500/70 via-blue-500/60 to-cyan-400/60" />
           <CardContent className="p-6 space-y-4">
-            <h3 className="text-xl font-semibold text-slate-900">Our Mission</h3>
+            <h3 className="text-xl font-semibold text-foreground">Our Mission</h3>
             <p className="text-sm text-slate-800/85 leading-relaxed">
               We make currency exchange transparent and accessible for everyone—from individual travelers to global businesses—by providing accurate live rates, intuitive tools, and secure experiences.
             </p>
             <div className="grid sm:grid-cols-2 gap-3">
               {["Real-time market insights", "Bank-grade security", "Global coverage", "Mobile-first design"].map((item, idx) => (
-                <div key={idx} className="p-3 rounded-xl bg-white/80 text-slate-900 border border-border/60 text-sm font-medium">
+                <div key={idx} className="p-3 rounded-xl bg-card/80 text-foreground border border-border/60 text-sm font-medium">
                   • {item}
                 </div>
               ))}
@@ -222,23 +222,23 @@ export function AboutPage() {
 
       {/* Technology & Integrations */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white text-slate-900 shadow-lg shadow-slate-900/10">
+        <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background text-foreground shadow-lg">
           <div className="h-1 w-full bg-gradient-to-r from-indigo-500/70 via-blue-500/60 to-cyan-400/60" />
           <CardContent className="p-6 space-y-4">
             <h3 className="text-xl font-semibold text-slate-900">Technology</h3>
             <div className="grid grid-cols-2 gap-3">
               {["React 19", "Vite 7", "Tailwind CSS", "Radix UI", "Recharts", "CurrencyAPI", "exchangerate.host", "Vercel"].map((t, i) => (
-                <Badge key={i} variant="secondary" className="bg-white/80 text-slate-900 border border-border/60">{t}</Badge>
+                <Badge key={i} variant="secondary" className="bg-card/80 text-foreground border border-border/60">{t}</Badge>
               ))}
             </div>
           </CardContent>
         </Card>
 
-        <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-white text-slate-900 shadow-lg shadow-slate-900/10">
+        <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-background text-foreground shadow-lg">
           <div className="h-1 w-full bg-gradient-to-r from-emerald-500/70 via-teal-400/60 to-lime-300/60" />
           <CardContent className="p-6 space-y-4">
-            <h3 className="text-xl font-semibold text-slate-900">Security & Compliance</h3>
-            <ul className="text-sm text-slate-800/85 space-y-2">
+            <h3 className="text-xl font-semibold text-foreground">Security & Compliance</h3>
+            <ul className="text-sm text-muted-foreground space-y-2">
               <li>• Encrypted transport (HTTPS)</li>
               <li>• Strict API key handling via environment variables</li>
               <li>• Privacy-first analytics (opt-in)</li>
@@ -250,14 +250,14 @@ export function AboutPage() {
 
       {/* Contact & Community */}
       <section>
-        <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-white text-slate-900 shadow-lg shadow-slate-900/10">
+        <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-background text-foreground shadow-lg">
           <div className="h-1 w-full bg-gradient-to-r from-indigo-500/70 via-purple-500/60 to-pink-400/60" />
           <CardContent className="p-6 space-y-4">
             <h3 className="text-xl font-semibold text-slate-900">Get in Touch</h3>
             <div className="flex flex-wrap items-center gap-3">
-              <Button variant="outline" size="sm" className="bg-white/85 text-slate-900 border border-border/60"><Github className="h-4 w-4 mr-2" /> GitHub</Button>
-              <Button variant="outline" size="sm" className="bg-white/85 text-slate-900 border border-border/60"><Twitter className="h-4 w-4 mr-2" /> Twitter</Button>
-              <Button variant="outline" size="sm" className="bg-white/85 text-slate-900 border border-border/60"><Mail className="h-4 w-4 mr-2" /> Email</Button>
+              <Button variant="outline" size="sm" className="bg-card/85 text-foreground border border-border/60"><Github className="h-4 w-4 mr-2" /> GitHub</Button>
+              <Button variant="outline" size="sm" className="bg-card/85 text-foreground border border-border/60"><Twitter className="h-4 w-4 mr-2" /> Twitter</Button>
+              <Button variant="outline" size="sm" className="bg-card/85 text-foreground border border-border/60"><Mail className="h-4 w-4 mr-2" /> Email</Button>
             </div>
           </CardContent>
         </Card>
@@ -265,22 +265,22 @@ export function AboutPage() {
 
       {/* FAQ */}
       <section>
-        <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-white text-slate-900 shadow-lg shadow-slate-900/10">
+        <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-background text-foreground shadow-lg">
           <div className="h-1 w-full bg-gradient-to-r from-amber-500/70 via-orange-500/60 to-rose-400/60" />
           <CardContent className="p-6 space-y-3">
-            <h3 className="text-xl font-semibold text-slate-900">FAQ</h3>
+            <h3 className="text-xl font-semibold text-foreground">FAQ</h3>
             <div className="space-y-3">
               <div>
-                <div className="font-semibold text-slate-900">Is the data live?</div>
-                <p className="text-sm text-slate-800/85">Yes, latest rates are fetched from CurrencyAPI; historical trends from exchangerate.host.</p>
+                <div className="font-semibold text-foreground">Is the data live?</div>
+                <p className="text-sm text-muted-foreground">Yes, latest rates are fetched from CurrencyAPI; historical trends from exchangerate.host.</p>
               </div>
               <div>
-                <div className="font-semibold text-slate-900">Do you support mobile?</div>
-                <p className="text-sm text-slate-800/85">The UI is mobile-first with responsive layouts and optimized charts.</p>
+                <div className="font-semibold text-foreground">Do you support mobile?</div>
+                <p className="text-sm text-muted-foreground">The UI is mobile-first with responsive layouts and optimized charts.</p>
               </div>
               <div>
-                <div className="font-semibold text-slate-900">How do I report an issue?</div>
-                <p className="text-sm text-slate-800/85">Reach out via GitHub or email; we respond quickly to production-impacting issues.</p>
+                <div className="font-semibold text-foreground">How do I report an issue?</div>
+                <p className="text-sm text-muted-foreground">Reach out via GitHub or email; we respond quickly to production-impacting issues.</p>
               </div>
             </div>
           </CardContent>

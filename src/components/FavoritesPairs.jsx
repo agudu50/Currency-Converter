@@ -60,7 +60,7 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
     <Card className="relative overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
       <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
 
-      <CardHeader className="space-y-2 pb-4 bg-white/70 backdrop-blur-sm border-b border-border/60">
+      <CardHeader className="space-y-2 pb-4 bg-card/70 backdrop-blur-sm border-b border-border/60">
         <div className="flex items-center justify-between flex-col sm:flex-row gap-2">
           <CardTitle className="text-lg sm:text-2xl flex items-center gap-2 text-foreground">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-semibold">★</span>
@@ -79,13 +79,13 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
         </div>
       </CardHeader>
 
-      <CardContent className="bg-white/70 backdrop-blur-sm">
+      <CardContent className="bg-card/70 backdrop-blur-sm">
         <div className="grid gap-2 sm:gap-3">
           {favorites.map((pair, index) => {
             return (
               <div
                 key={`${pair.from}-${pair.to}-${index}`}
-                className="flex items-center justify-between p-3 sm:p-4 bg-white border border-border/60 rounded-xl hover:border-primary/60 hover:shadow-md transition-colors flex-col sm:flex-row gap-3"
+                className="flex items-center justify-between p-3 sm:p-4 bg-card border border-border/60 rounded-xl hover:border-primary/60 hover:shadow-md transition-colors flex-col sm:flex-row gap-3"
               >
                 <div className="flex items-center gap-2 sm:gap-3 text-foreground">
                   <div className="flex items-center gap-1">

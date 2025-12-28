@@ -83,10 +83,10 @@ export default function ExchangeRateTable() {
   };
 
   return (
-    <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
+    <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background shadow-lg backdrop-blur-sm text-foreground">
       <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
 
-      <CardHeader className="space-y-2 p-6 pb-4 bg-white/70 backdrop-blur-sm border-b border-border/60">
+      <CardHeader className="space-y-2 p-6 pb-4 bg-card/70 backdrop-blur-sm border-b border-border/60">
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="text-xl font-semibold text-foreground flex items-center gap-2">
@@ -113,7 +113,7 @@ export default function ExchangeRateTable() {
         </div>
       </CardHeader>
 
-      <CardContent className="p-6 bg-white/70 backdrop-blur-sm">
+      <CardContent className="p-6 bg-card/70 backdrop-blur-sm">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
@@ -127,7 +127,7 @@ export default function ExchangeRateTable() {
 
             <TableBody>
               {rateData.map((currency) => (
-                <TableRow key={currency.code} className="border-border/30 hover:border-primary/50 bg-white">
+                <TableRow key={currency.code} className="border-border/30 hover:border-primary/50 bg-card">
                   <TableCell className="text-foreground">
                     <div className="flex items-center gap-2 sm:gap-3">
                       <span className="text-base sm:text-lg">{currency.flag}</span>
