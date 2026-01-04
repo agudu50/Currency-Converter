@@ -11,7 +11,7 @@ export default class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    // Log to console; in production, you could send to logging service
+   
     console.error('ErrorBoundary caught:', error, errorInfo);
   }
 

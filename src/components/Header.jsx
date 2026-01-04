@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Moon, Sun, TrendingUp, Menu, X } from "lucide-react";
-import { useRouter } from "./Router"; // make sure this hook is JS-compatible
+import { useRouter } from "./Router";
 import { useTheme } from "../context/theme.jsx";
 
 export default function Header() {

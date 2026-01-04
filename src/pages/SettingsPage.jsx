@@ -15,9 +15,9 @@ export function SettingsPage() {
   const { theme, setTheme } = useTheme();
   const [settings, setSettings] = useState({
     // Profile
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
+    firstName: "Tony",
+    lastName: "Tech",
+    email: "tony.tech@gmail.com",
     timezone: "UTC-5",
     
     // Preferences

@@ -10,7 +10,6 @@ import {
   Shield, 
   Star, 
   Clock, 
-  TrendingUp, 
   ArrowUpRight,
   ArrowDownRight
 } from "lucide-react";

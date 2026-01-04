@@ -23,7 +23,7 @@ window.addEventListener('unhandledrejection', (event) => {
   </div>`;
 });
 
-// App already includes the Router provider
+
 const rootElement = document.getElementById('root');
 console.log('root element:', rootElement);
 
