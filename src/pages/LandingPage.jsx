@@ -262,17 +262,17 @@ export function LandingPage() {
           </div>          {/* Why Choose Section - Emerald/Teal Glass Card */}
           <section className="py-12">
             <div className="max-w-6xl mx-auto">
-              <Card className="relative overflow-hidden rounded-3xl border border-border/70 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-background shadow-2xl backdrop-blur-md text-foreground">
+              <Card className="relative overflow-hidden rounded-3xl border border-border/70 bg-gradient-to-br from-emerald-500/10 via-teal-900/5 to-background shadow-2xl backdrop-blur-md text-foreground">
                 <div className="h-1 w-full bg-gradient-to-r from-emerald-500/70 via-teal-400/60 to-lime-300/60" />
                 <div className="absolute inset-0 pointer-events-none">
-                  <div className="absolute -top-24 -left-10 h-64 w-64 bg-emerald-400/20 blur-3xl" />
+                  <div className="absolute -top-24 -left-10 h-64 w-64 bg-emerald-300/25 blur-3xl" />
                   <div className="absolute -bottom-16 right-0 h-64 w-64 bg-lime-300/25 blur-3xl" />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.65),transparent_45%),radial-gradient(circle_at_80%_10%,rgba(255,255,255,0.35),transparent_40%)]" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_50%,rgba(255,255,255,0.45),transparent_35%),radial-gradient(circle_at_20%_70%,rgba(255,255,255,0.3),transparent_20%)]" />
                 </div>
 
-                <div className="relative z-10 p-8 sm:p-10 border-b border-border/50 rounded-t-3xl">
-                  <h2 className="text-3xl md:text-4xl font-bold">Why Choose Our Platform?</h2>
-                  <p className="text-lg text-muted-foreground mt-3 max-w-3xl">
+                <div className="relative z-10 p-8 sm:p-10  rounded-t-3xl">
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground">Why Choose Our Platform?</h2>
+                  <p className="text-lg text-foreground/80 mt-3 max-w-3xl">
                     Built for professionals and everyday users who need reliable, accurate currency data.
                   </p>
                 </div>
@@ -295,7 +295,7 @@ export function LandingPage() {
                       </div>
                       <div className="space-y-1">
                         <div className="font-semibold text-lg text-foreground">{item.title}</div>
-                        <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                        <p className="text-sm text-foreground/75 leading-relaxed">{item.desc}</p>
                       </div>
                     </div>
                   ))}
