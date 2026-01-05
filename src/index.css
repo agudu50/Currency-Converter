@@ -4,7 +4,6 @@
 
 @layer components {
   @supports selector(:is(.dark *)) {
-    .dark { }
   }
 }
 
@@ -130,12 +129,13 @@
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: var(--border);
     outline-color: var(--ring);
   }
 
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
   }
 }
 
