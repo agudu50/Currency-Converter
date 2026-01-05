@@ -130,7 +130,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Enter amount"
-            className="text-lg sm:text-xl h-11 sm:h-14 text-center bg-input-background border border-border/60 text-foreground focus:border-primary focus:ring-primary/20"
+            className="text-lg sm:text-xl h-11 sm:h-14 text-center border border-border/60 bg-white text-slate-900 dark:!bg-slate-900 dark:!text-white focus:border-primary focus:ring-primary/20"
           />
         </div>
 
@@ -140,7 +140,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
           <div className="flex-1 space-y-2 w-full">
             <Label className="text-sm text-foreground">From</Label>
             <Select value={fromCurrency} onValueChange={setFromCurrency}>
-              <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 bg-input-background border border-border/60 text-foreground">
+              <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 border border-border/60 bg-white text-slate-900 dark:!bg-slate-900 dark:!text-white">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="max-h-80">
@@ -174,7 +174,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
           <div className="flex-1 space-y-2 w-full">
             <Label className="text-sm text-foreground">To</Label>
             <Select value={toCurrency} onValueChange={setToCurrency}>
-              <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 bg-input-background border border-border/60 text-foreground">
+              <SelectTrigger className="text-sm sm:text-lg h-11 sm:h-12 border border-border/60 bg-white text-slate-900 dark:!bg-slate-900 dark:!text-white">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="max-h-80">
