@@ -26,6 +26,7 @@ export default function ExchangeRateTable() {
   const [rateData, setRateData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     loadRates();
@@ -48,8 +49,9 @@ export default function ExchangeRateTable() {
 
   const loadRates = async () => {
     setLoading(true);
+    setError(null);
     try {
-      await fetchExchangeRates(baseCurrency);
+      await fetchExchangeRates(baseCurrency, { requireLive: true });
       const available = new Set(getAvailableCurrencyCodes());
 
       // Filter to currencies present in live rates, then take top 12
@@ -62,7 +64,7 @@ export default function ExchangeRateTable() {
       const historicalMap = await fetchHistoricalRatesBatch(baseCurrency, symbols, 7);
 
       const data = await Promise.all(topCurrencies.map(async (currency) => {
-        const rate = await convertCurrencyAsync(1, baseCurrency, currency.code);
+        const rate = await convertCurrencyAsync(1, baseCurrency, currency.code, { requireLive: true });
         const historicalData = historicalMap.get(currency.code) || [];
         const { trend, change } = calculateTrend(historicalData);
         return {
@@ -75,8 +77,10 @@ export default function ExchangeRateTable() {
       }));
       setRateData(data);
       setLastUpdated(new Date());
+      setError(null);
     } catch (error) {
       console.error('Failed to load rates:', error);
+      setError(error.message || 'Failed to load exchange rates');
     } finally {
       setLoading(false);
     }
@@ -114,6 +118,16 @@ export default function ExchangeRateTable() {
       </CardHeader>
 
       <CardContent className="p-6 bg-card/70 backdrop-blur-sm">
+        {error ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="text-rose-500 mb-2">Failed to load exchange rates</div>
+            <div className="text-sm text-muted-foreground mb-4">{error}</div>
+            <Button onClick={loadRates} variant="default" size="sm">
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Retry
+            </Button>
+          </div>
+        ) : (
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
@@ -171,6 +185,7 @@ export default function ExchangeRateTable() {
             </TableBody>
           </Table>
         </div>
+        )}
       </CardContent>
     </Card>
   );

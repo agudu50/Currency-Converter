@@ -34,10 +34,10 @@ export function LandingPage() {
     let active = true;
     const load = async () => {
       try {
-        await fetchExchangeRates('USD');
+        await fetchExchangeRates('USD', { requireLive: true });
         const updated = await Promise.all(
           tickerPairs.map(async (r) => {
-            const rate = await convertCurrencyAsync(1, r.base, r.quote);
+            const rate = await convertCurrencyAsync(1, r.base, r.quote, { requireLive: true });
             const prev = rates.find(x => x.pair === r.pair)?.rate || 0;
             const trend = rate > prev ? 'up' : 'down';
             return { ...r, rate: Number(rate.toFixed(4)), trend };
@@ -166,18 +166,25 @@ export function LandingPage() {
           {/* Quick Stats - Glass Cards */}
           <section className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { label: "Active Traders", value: "20M+", color: "text-blue-600", bg: "bg-blue-50" },
-              { label: "Currency Pairs", value: "200+", color: "text-purple-600", bg: "bg-purple-50" },
-              { label: "Global Support", value: "24/7", color: "text-emerald-600", bg: "bg-emerald-50" },
-              { label: "Data Accuracy", value: "99.9%", color: "text-amber-600", bg: "bg-amber-50" }
+              { label: "Active Traders", value: "20M+", accent: "from-indigo-500/70 via-blue-500/60 to-cyan-400/60",
+            bg: "from-indigo-500/10 via-blue-500/5 to-background" },
+              { label: "Currency Pairs", value: "200+", accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60",
+            bg: "from-emerald-500/10 via-teal-500/5 to-background" },
+              { label: "Global Support", value: "24/7",   accent: "from-amber-500/70 via-orange-500/60 to-yellow-400/60",
+            bg: "from-amber-500/10 via-orange-500/5 to-background" },
+              { label: "Data Accuracy", value: "99.9%",  accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60",
+            bg: "from-purple-500/10 via-pink-500/5 to-background" }
             ].map((stat, idx) => (
-              <Card key={idx} className="p-6 border-none shadow-lg bg-card hover:-translate-y-1 transition-transform duration-300">
-                <div className="flex flex-col items-center sm:items-start">
-                  <div className={`text-3xl sm:text-4xl font-extrabold ${stat.color} mb-2 tracking-tight`}>
-                    {stat.value}
-                  </div>
-                  <div className={`px-2 py-1 rounded-md text-xs font-bold uppercase tracking-wide ${stat.bg} ${stat.color.replace('text', 'bg').replace('600', '100')}/10`}>
-                    {stat.label}
+              <Card key={idx} className={`border border-border/70 bg-gradient-to-br ${stat.bg} shadow-lg overflow-hidden hover:-translate-y-1 transition-transform duration-300`}>
+                <div className={`h-1 w-full bg-gradient-to-r ${stat.accent}`} />
+                <div className="p-6">
+                  <div className="flex flex-col items-center sm:items-start">
+                    <div className="text-3xl sm:text-4xl font-extrabold text-foreground mb-2 tracking-tight">
+                      {stat.value}
+                    </div>
+                    <div className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                      {stat.label}
+                    </div>
                   </div>
                 </div>
               </Card>
@@ -189,35 +196,45 @@ export function LandingPage() {
             {/* Key Features */}
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { title: "Real-Time Rates", desc: "Live FX data from trusted providers.", icon: <Zap className="h-5 w-5" /> },
-                { title: "Global Coverage", desc: "20+ major and exotic currencies.", icon: <Globe className="h-5 w-5" /> },
-                { title: "Secure & Reliable", desc: "Encrypted, resilient, and monitored.", icon: <Shield className="h-5 w-5" /> },
-                { title: "Trends & Insights", desc: "Historical charts and analytics.", icon: <BarChart3 className="h-5 w-5" /> },
+                { title: "Real-Time Rates", desc: "Live FX data from trusted providers.", icon: <Zap className="h-5 w-5" />, accent: "from-indigo-500/70 via-blue-500/60 to-cyan-400/60",
+            bg: "from-indigo-500/10 via-blue-500/5 to-background" },
+                { title: "Global Coverage", desc: "20+ major and exotic currencies.", icon: <Globe className="h-5 w-5" />,  accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60" },
+                { title: "Secure & Reliable", desc: "Encrypted, resilient, and monitored.", icon: <Shield className="h-5 w-5" />,  accent: "from-amber-500/70 via-orange-500/60 to-yellow-400/60",
+            bg: "from-amber-500/10 via-orange-500/5 to-background" },
+                { title: "Trends & Insights", desc: "Historical charts and analytics.", icon: <BarChart3 className="h-5 w-5" />, accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60",
+            bg: "from-purple-500/10 via-pink-500/5 to-background"  },
               ].map((f, i) => (
-                <Card key={i} className="p-6 border-none shadow-lg shadow-slate-200/50 bg-white">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="h-10 w-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                      {f.icon}
+                <Card key={i} className={`border border-border/70 bg-gradient-to-br ${f.bg} shadow-lg overflow-hidden`}>
+                  <div className={`h-1 w-full bg-gradient-to-r ${f.accent}`} />
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                        {f.icon}
+                      </div>
+                      <div className="font-semibold text-foreground">{f.title}</div>
                     </div>
-                    <div className="font-semibold text-foreground">{f.title}</div>
+                    <p className="text-sm text-muted-foreground">{f.desc}</p>
                   </div>
-                  <p className="text-sm text-muted-foreground">{f.desc}</p>
                 </Card>
               ))}
             </section>
 
             {/* How It Works */}
-            <section className="bg-card rounded-3xl shadow-xl border border-border overflow-hidden">
-              <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50">
+            <section className="border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background rounded-3xl shadow-xl overflow-hidden">
+              <div className="h-1 w-full bg-gradient-to-r from-indigo-500/70 via-blue-500/60 to-cyan-400/60" />
+              <div className="p-6 border-b border-border/60 bg-card/70 backdrop-blur-sm">
                 <h2 className="text-xl font-bold text-foreground">How It Works</h2>
               </div>
-              <div className="p-6 grid sm:grid-cols-3 gap-4">
+              <div className="p-6 grid sm:grid-cols-3 gap-4 bg-card/60 backdrop-blur-sm">
                 {[
                   { step: "1", title: "Choose Currencies", desc: "Pick your base and quote." },
                   { step: "2", title: "Enter Amount", desc: "Type any value to convert." },
                   { step: "3", title: "Get Results", desc: "Instant, accurate conversion." },
                 ].map((s, i) => (
-                  <div key={i} className="p-4 rounded-xl bg-muted border border-border/60">
+                  <div
+                    key={i}
+                    className="p-4 rounded-xl border border-border/60 bg-card/70 hover:border-indigo-400/60 transition-colors"
+                  >
                     <div className="flex items-center gap-2 mb-1">
                       <span className="h-6 w-6 rounded-full bg-indigo-600 text-white text-xs flex items-center justify-center">{s.step}</span>
                       <span className="font-semibold text-foreground">{s.title}</span>
@@ -229,13 +246,14 @@ export function LandingPage() {
             </section>
 
             {/* Trusted By */}
-            <section className="bg-card rounded-3xl shadow-xl border border-border overflow-hidden">
-              <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-50">
+            <section className="border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background rounded-3xl shadow-xl overflow-hidden">
+              <div className="h-1 w-full bg-gradient-to-r from-indigo-500/70 via-blue-500/60 to-cyan-400/60" />
+              <div className="p-6 border-b border-border/60 bg-card/70 backdrop-blur-sm">
                 <h2 className="text-xl font-bold text-foreground">Trusted By</h2>
               </div>
-              <div className="p-6 flex flex-wrap gap-3">
+              <div className="p-6 flex flex-wrap gap-3 bg-card/60 backdrop-blur-sm">
                 {["FinTech Startups", "Trading Desks", "Travel Apps", "SMBs"].map((t, i) => (
-                  <span key={i} className="px-3 py-1 rounded-full bg-muted text-foreground text-xs font-medium border border-border/60">
+                  <span key={i} className="px-3 py-1 rounded-full border border-border/60 bg-card/80 text-foreground text-xs font-medium">
                     {t}
                   </span>
                 ))}
@@ -245,6 +263,7 @@ export function LandingPage() {
           <section className="py-12">
             <div className="max-w-6xl mx-auto">
               <Card className="relative overflow-hidden rounded-3xl border border-border/70 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-background shadow-2xl backdrop-blur-md text-foreground">
+                <div className="h-1 w-full bg-gradient-to-r from-emerald-500/70 via-teal-400/60 to-lime-300/60" />
                 <div className="absolute inset-0 pointer-events-none">
                   <div className="absolute -top-24 -left-10 h-64 w-64 bg-emerald-400/20 blur-3xl" />
                   <div className="absolute -bottom-16 right-0 h-64 w-64 bg-lime-300/25 blur-3xl" />

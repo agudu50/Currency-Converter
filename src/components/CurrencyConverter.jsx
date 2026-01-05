@@ -42,7 +42,8 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
         const converted = await convertCurrencyAsync(
           numAmount,
           fromCurrency,
-          toCurrency
+          toCurrency,
+          { requireLive: true }
         );
         if (active) setResult(converted);
       }
@@ -54,12 +55,12 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
   const loadExchangeRates = async () => {
     setLoading(true);
     try {
-      await fetchExchangeRates('USD');
+      await fetchExchangeRates('USD', { requireLive: true });
       setLastUpdated(new Date());
       // Recalculate current conversion with fresh rates
       if (amount && fromCurrency && toCurrency) {
         const numAmount = parseFloat(amount) || 0;
-        const converted = await convertCurrencyAsync(numAmount, fromCurrency, toCurrency);
+        const converted = await convertCurrencyAsync(numAmount, fromCurrency, toCurrency, { requireLive: true });
         setResult(converted);
       }
     } catch (error) {
@@ -231,13 +232,22 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
 
 function MultiCurrencyCard({ amount, from, to }) {
   const [result, setResult] = useState(0);
+  const [error, setError] = useState(false);
   useEffect(() => {
     let active = true;
     const run = async () => {
-      if (amount && from && to) {
-        const numAmount = parseFloat(amount) || 0;
-        const converted = await convertCurrencyAsync(numAmount, from, to);
-        if (active) setResult(converted);
+      try {
+        if (amount && from && to) {
+          const numAmount = parseFloat(amount) || 0;
+          const converted = await convertCurrencyAsync(numAmount, from, to, { requireLive: true });
+          if (active) {
+            setResult(converted);
+            setError(false);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to convert currency:', err);
+        if (active) setError(true);
       }
     };
     run();
@@ -246,6 +256,15 @@ function MultiCurrencyCard({ amount, from, to }) {
 
   const currencyObj = currencies.find(c => c.code === to);
   const currencyName = currencyObj ? currencyObj.name.split(' ')[0] : to;
+  
+  if (error) {
+    return (
+      <div className="bg-card border border-border/60 rounded-lg p-3 text-center">
+        <div className="text-xs text-muted-foreground mb-1">{to}</div>
+        <div className="text-sm text-rose-500">Error</div>
+      </div>
+    );
+  }
   
   return (
     <div className="bg-card border border-border/60 rounded-lg p-3 text-center hover:border-primary/60 hover:shadow-sm transition-colors">
@@ -258,15 +277,25 @@ function MultiCurrencyCard({ amount, from, to }) {
 
 function UnitRate({ from, to }) {
   const [rate, setRate] = useState(null);
+  const [error, setError] = useState(false);
   useEffect(() => {
     let active = true;
     const load = async () => {
-      const r = await convertCurrencyAsync(1, from, to);
-      if (active) setRate(r);
+      try {
+        const r = await convertCurrencyAsync(1, from, to, { requireLive: true });
+        if (active) {
+          setRate(r);
+          setError(false);
+        }
+      } catch (err) {
+        console.error('Failed to load unit rate:', err);
+        if (active) setError(true);
+      }
     };
     load();
     return () => { active = false; };
   }, [from, to]);
+  if (error) return <span className="text-rose-500 text-xs">Error</span>;
   if (rate == null) return <span className="text-muted-foreground">…</span>;
   return <span>{formatCurrency(rate, to)}</span>;
 }

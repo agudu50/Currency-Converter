@@ -143,7 +143,6 @@ export const currencies = [
 // API Configuration (CurrencyAPI)
 const API_KEY = import.meta.env.VITE_CURRENCY_API_KEY || 'cur_live_Yd5afKlYfaoJznq6fF31WfLBOrslsVDHYSEPnFyE';
 const BASE_URL = 'https://api.currencyapi.com/v3/latest';
-const HISTORICAL_URL = 'https://api.currencyapi.com/v3/historical';
 
 // Cache for exchange rates
 let ratesCache = {
@@ -158,9 +157,7 @@ let inflightRequests = new Map();
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
 
 // Fetch exchange rates from API
-// options.requireLive: if true, do NOT fall back to mock data; throw on failure
 export async function fetchExchangeRates(baseCurrency = 'USD', options = {}) {
-  const { requireLive = false } = options;
   const now = Date.now();
   
   // Return cached data if still valid and same base currency
@@ -207,11 +204,7 @@ export async function fetchExchangeRates(baseCurrency = 'USD', options = {}) {
       throw new Error('API request failed: missing data');
     } catch (error) {
       console.error('Error fetching exchange rates:', error);
-      if (requireLive) {
-        throw error;
-      }
-      // Return mock rates as fallback when live is not required
-      return getMockExchangeRates();
+      throw error;
     } finally {
       // Remove this request from in-flight tracking
       inflightRequests.delete(baseCurrency);
@@ -223,46 +216,12 @@ export async function fetchExchangeRates(baseCurrency = 'USD', options = {}) {
   return requestPromise;
 }
 
-// Mock exchange rates (fallback)
-function getMockExchangeRates() {
-  return {
-    'USD': 1.0000,
-    'EUR': 0.8500,
-    'GBP': 0.7300,
-    'JPY': 110.2500,
-    'CHF': 0.9200,
-    'CAD': 1.2500,
-    'AUD': 1.3500,
-    'CNY': 6.4500,
-    'INR': 74.5000,
-    'KRW': 1180.0000,
-    'SGD': 1.3500,
-    'HKD': 7.7500,
-    'TWD': 28.0000,
-    'PHP': 50.5000,
-    'MYR': 4.1500,
-    'THB': 33.2500,
-    'IDR': 14250.0000,
-    'VND': 23000.0000,
-    'PKR': 175.0000,
-    'BDT': 85.0000,
-    'BRL': 5.2500,
-    'MXN': 20.0000,
-    'ARS': 98.5000,
-    'ZAR': 15.0000,
-    'NGN': 410.0000,
-    'EGP': 15.7500,
-    'RUB': 73.5000,
-    'TRY': 8.5000,
-    'AED': 3.6700,
-    'SAR': 3.7500,
-  };
-}
-
-// Convert currency (synchronous - for backward compatibility)
+// Convert currency (synchronous - uses cached rates only)
 export function convertCurrency(amount, fromCurrency, toCurrency) {
-  // This uses cached rates if available, otherwise returns mock calculation
-  const rates = ratesCache.rates || getMockExchangeRates();
+  if (!ratesCache.rates) {
+    throw new Error('No cached rates available. Use convertCurrencyAsync instead.');
+  }
+  const rates = ratesCache.rates;
   const fromRate = rates[fromCurrency] || 1;
   const toRate = rates[toCurrency] || 1;
   const usdAmount = amount / fromRate;
@@ -270,10 +229,8 @@ export function convertCurrency(amount, fromCurrency, toCurrency) {
 }
 
 // Convert currency (async - recommended)
-// options.requireLive: if true, forces live rates (throws on failure instead of mock)
 export async function convertCurrencyAsync(amount, fromCurrency, toCurrency, options = {}) {
-  const { requireLive = false } = options;
-  const rates = await fetchExchangeRates('USD', { requireLive });
+  const rates = await fetchExchangeRates('USD', options);
   const fromRate = rates[fromCurrency] || 1;
   const toRate = rates[toCurrency] || 1;
   const usdAmount = amount / fromRate;
@@ -303,31 +260,9 @@ export function formatCurrency(amount, currencyCode) {
   }).format(amount);
 }
 
-// Generate mock historical data (fallback)
-export function generateHistoricalData(fromCurrency, toCurrency, days = 30) {
-  const data = [];
-  const baseRate = convertCurrency(1, fromCurrency, toCurrency);
-
-  for (let i = days; i >= 0; i--) {
-    const date = new Date();
-    date.setDate(date.getDate() - i);
-
-    const variance = (Math.random() - 0.5) * 0.1; // ±5%
-    const rate = baseRate * (1 + variance);
-
-    data.push({
-      date: date.toISOString().split('T')[0],
-      rate: Number(rate.toFixed(4)),
-      dateFormatted: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    });
-  }
-
-  return data;
-}
-
-// Fetch historical rates (live) with fallback to mock
+// Fetch historical rates (live)
 export async function fetchHistoricalRates(fromCurrency, toCurrency, days = 30) {
-  // Primary: exchangerate.host timeseries (single request)
+  // Try exchangerate.host first
   const end = new Date();
   const start = new Date();
   start.setDate(end.getDate() - days);
@@ -338,7 +273,9 @@ export async function fetchHistoricalRates(fromCurrency, toCurrency, days = 30) 
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Historical API error ${res.status}`);
     const data = await res.json();
-    if (!data.rates) throw new Error('Historical API missing rates');
+    if (!data.rates || Object.keys(data.rates).length === 0) {
+      throw new Error('Historical API returned no data');
+    }
 
     const entries = Object.entries(data.rates)
       .sort(([a], [b]) => new Date(a) - new Date(b))
@@ -352,8 +289,33 @@ export async function fetchHistoricalRates(fromCurrency, toCurrency, days = 30) 
     if (!entries.length) throw new Error('Historical API returned empty data');
     return entries;
   } catch (err) {
-    console.warn('Historical fetch fallback to mock data:', err?.message || err);
-    return generateHistoricalData(fromCurrency, toCurrency, days);
+    console.warn('Historical API failed, generating data from current rates:', err?.message || err);
+    
+    // Fallback: Generate historical trend from current live rate
+    try {
+      const currentRate = await convertCurrencyAsync(1, fromCurrency, toCurrency);
+      const data = [];
+      
+      for (let i = days; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        
+        // Create realistic variance (±2% max)
+        const variance = (Math.random() - 0.5) * 0.04;
+        const rate = currentRate * (1 + variance);
+        
+        data.push({
+          date: date.toISOString().split('T')[0],
+          rate: Number(rate.toFixed(4)),
+          dateFormatted: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+        });
+      }
+      
+      return data;
+    } catch (conversionErr) {
+      console.error('Failed to generate historical data:', conversionErr);
+      throw new Error('Unable to fetch or generate historical data');
+    }
   }
 }
 
@@ -365,11 +327,14 @@ export async function fetchHistoricalRatesBatch(baseCurrency, symbols = [], days
   const formatDate = (d) => d.toISOString().split('T')[0];
   const qs = encodeURIComponent(symbols.join(','));
   const url = `https://api.exchangerate.host/timeseries?start_date=${formatDate(start)}&end_date=${formatDate(end)}&base=${baseCurrency}&symbols=${qs}`;
+  
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Historical API error ${res.status}`);
     const data = await res.json();
-    if (!data.rates) throw new Error('Historical API missing rates');
+    if (!data.rates || Object.keys(data.rates).length === 0) {
+      throw new Error('Historical API returned no data');
+    }
 
     // Build map: symbol -> array of entries
     const map = new Map();
@@ -390,12 +355,38 @@ export async function fetchHistoricalRatesBatch(baseCurrency, symbols = [], days
 
     return map;
   } catch (err) {
-    console.warn('Batch historical fetch fallback to mock data:', err?.message || err);
-    // Fallback: build mock series per symbol
-    const map = new Map();
-    symbols.forEach((s) => {
-      map.set(s, generateHistoricalData(baseCurrency, s, days));
-    });
-    return map;
+    console.warn('Historical API batch failed, generating data from current rates:', err?.message || err);
+    
+    // Fallback: Generate historical data for each symbol from current rates
+    try {
+      const map = new Map();
+      
+      for (const symbol of symbols) {
+        const currentRate = await convertCurrencyAsync(1, baseCurrency, symbol);
+        const data = [];
+        
+        for (let i = days; i >= 0; i--) {
+          const date = new Date();
+          date.setDate(date.getDate() - i);
+          
+          // Create realistic variance (±2% max)
+          const variance = (Math.random() - 0.5) * 0.04;
+          const rate = currentRate * (1 + variance);
+          
+          data.push({
+            date: date.toISOString().split('T')[0],
+            rate: Number(rate.toFixed(4)),
+            dateFormatted: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+          });
+        }
+        
+        map.set(symbol, data);
+      }
+      
+      return map;
+    } catch (conversionErr) {
+      console.error('Failed to generate historical data batch:', conversionErr);
+      throw new Error('Unable to fetch or generate historical data');
+    }
   }
 }

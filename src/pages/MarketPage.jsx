@@ -126,79 +126,10 @@ export function MarketPage() {
 
       setMarketOverview(historical);
       setLastUpdated(new Date());
+      setLiveFailed(false);
     } catch (error) {
       console.error("Error loading market data:", error);
-      // Fallback to cached/mock data so the card still shows content
-      try {
-        await fetchExchangeRates("USD");
-        const tfDays = (tf => {
-          switch (tf) {
-            case "1D": return 1;
-            case "1W": return 7;
-            case "1M": return 30;
-            case "3M": return 90;
-            case "1Y": return 365;
-            default: return 30;
-          }
-        })(selectedTimeframe);
-        const historical = await fetchHistoricalRates("USD", "EUR", tfDays);
-
-        const majorPairsConfig = [
-          { pair: "EUR/USD", from: "EUR", to: "USD" },
-          { pair: "GBP/USD", from: "GBP", to: "USD" },
-          { pair: "USD/JPY", from: "USD", to: "JPY" },
-          { pair: "USD/CHF", from: "USD", to: "CHF" },
-        ];
-        const majorData = await Promise.all(majorPairsConfig.map(async (item) => {
-          const rate = await convertCurrencyAsync(1, item.from, item.to);
-          const prevRate = rate * (1 + (Math.random() - 0.5) * 0.01);
-          const change = rate - prevRate;
-          const changePercent = ((change / prevRate) * 100).toFixed(2);
-          return {
-            pair: item.pair,
-            price: rate.toFixed(4),
-            change: change >= 0 ? `+${change.toFixed(4)}` : change.toFixed(4),
-            changePercent: change >= 0 ? `+${changePercent}%` : `${changePercent}%`,
-            trend: change >= 0 ? "up" : "down",
-            volume: `${(Math.random() * 2 + 0.5).toFixed(1)}B`,
-          };
-        }));
-        setMajorPairs(majorData);
-
-        // Crypto pairs (mock) to keep the section populated in fallback mode
-        setCryptoPairs([
-          { pair: "BTC/USD", price: "43,250", change: "+1,250", changePercent: "+2.98%", trend: "up", volume: "15.2B" },
-          { pair: "ETH/USD", price: "2,680", change: "-45.20", changePercent: "-1.66%", trend: "down", volume: "8.9B" },
-        ]);
-
-        const exoticPairsConfig = [
-          { pair: "USD/TRY", from: "USD", to: "TRY" },
-          { pair: "USD/ZAR", from: "USD", to: "ZAR" },
-          { pair: "USD/MXN", from: "USD", to: "MXN" },
-          { pair: "USD/BRL", from: "USD", to: "BRL" },
-        ];
-        const exoticData = await Promise.all(exoticPairsConfig.map(async (item) => {
-          const rate = await convertCurrencyAsync(1, item.from, item.to);
-          const prevRate = rate * (1 + (Math.random() - 0.5) * 0.01);
-          const change = rate - prevRate;
-          const changePercent = ((change / prevRate) * 100).toFixed(2);
-          return {
-            pair: item.pair,
-            price: rate.toFixed(4),
-            change: change >= 0 ? `+${change.toFixed(4)}` : change.toFixed(4),
-            changePercent: change >= 0 ? `+${changePercent}%` : `${changePercent}%`,
-            trend: change >= 0 ? "up" : "down",
-            volume: `${(Math.random() * 500 + 100).toFixed(0)}M`,
-          };
-        }));
-        setExoticPairs(exoticData);
-
-        setMarketOverview(historical);
-        setLastUpdated(new Date());
-        setLiveFailed(true);
-      } catch (fallbackError) {
-        console.error("Fallback market data failed:", fallbackError);
-      }
+      setLiveFailed(true);
     } finally {
       setLoading(false);
     }
@@ -368,6 +299,20 @@ export function MarketPage() {
           {loading && !lastUpdated ? (
             <div className="flex items-center justify-center py-12">
               <RefreshCw className="h-8 w-8 animate-spin text-slate-500" />
+            </div>
+          ) : liveFailed ? (
+            <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+              <div className="text-rose-500 mb-4">
+                <Activity className="h-12 w-12" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground mb-2">Failed to Load Market Data</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Unable to fetch live exchange rates. Please check your internet connection and try again.
+              </p>
+              <Button onClick={loadMarketData} variant="default">
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Retry
+              </Button>
             </div>
           ) : (
             <div className="space-y-4">

@@ -30,7 +30,7 @@ export default function CurrencyChart() {
 
   // Ensure live codes are available for dropdowns
   useEffect(() => {
-    fetchExchangeRates("USD").catch(() => {});
+    fetchExchangeRates("USD", { requireLive: true }).catch(() => {});
   }, []);
 
   useEffect(() => {

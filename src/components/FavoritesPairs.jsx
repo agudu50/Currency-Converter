@@ -16,13 +16,13 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
 
   // Ensure we have live rates on mount
   useEffect(() => {
-    fetchExchangeRates('USD').catch((err) => console.error('Failed to fetch rates for favorites:', err));
+    fetchExchangeRates('USD', { requireLive: true }).catch((err) => console.error('Failed to fetch rates for favorites:', err));
   }, []);
 
   const refreshRates = async () => {
     setRefreshing(true);
     try {
-      await fetchExchangeRates('USD');
+      await fetchExchangeRates('USD', { requireLive: true });
       // Force component re-render to show new rates
       forceUpdate(prev => prev + 1);
     } catch (error) {
@@ -128,15 +128,25 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
 
 function LiveRate({ from, to }) {
   const [rate, setRate] = useState(null);
+  const [error, setError] = useState(false);
   useEffect(() => {
     let active = true;
     const load = async () => {
-      const r = await convertCurrencyAsync(1, from, to);
-      if (active) setRate(r);
+      try {
+        const r = await convertCurrencyAsync(1, from, to, { requireLive: true });
+        if (active) {
+          setRate(r);
+          setError(false);
+        }
+      } catch (err) {
+        console.error('Failed to load live rate:', err);
+        if (active) setError(true);
+      }
     };
     load();
     return () => { active = false; };
   }, [from, to]);
+  if (error) return <span className="text-rose-500 text-xs">Error</span>;
   if (rate == null) return <span className="text-muted-foreground">…</span>;
   return <span>{formatCurrency(rate, to)}</span>;
 }
