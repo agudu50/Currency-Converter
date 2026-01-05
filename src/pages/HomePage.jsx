@@ -189,10 +189,10 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
           >
             <div className={`h-1 w-full bg-gradient-to-r ${item.accent}`} />
             <CardContent className="p-5 sm:p-6 space-y-3">
-              <div className="flex items-center justify-between">
+              <div className="flex items-start justify-between gap-3">
                 <div className="text-lg font-semibold text-foreground">{item.title}</div>
-                <Button variant="ghost" size="icon" className="rounded-full" onClick={item.action}>
-                  <ArrowRight className="h-4 w-4" />
+                <Button variant="ghost" size="sm" className="rounded-full h-8 w-8 flex-shrink-0 sm:h-7 sm:w-7" onClick={item.action}>
+                  <ArrowRight className="h-3.5 w-3.5 sm:h-3 sm:w-3" />
                 </Button>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
