@@ -60,22 +60,10 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
         {/* Right Column: Analytics & Rates (Col span 7) */}
         <div className="lg:col-span-7 space-y-8">
           {/* Chart Section */}
-          <div className="border border-border bg-card rounded-2xl p-5 shadow-sm space-y-4">
-            <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-              <BarChart3 className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-              Trend Analysis
-            </h2>
-            <CurrencyChart />
-          </div>
+          <CurrencyChart />
 
           {/* Rates Table Section */}
-          <div className="border border-border bg-card rounded-2xl p-5 shadow-sm space-y-4">
-            <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-              <Globe className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-              Live Rates Dashboard
-            </h2>
-            <ExchangeRateTable />
-          </div>
+          <ExchangeRateTable />
         </div>
 
       </div>

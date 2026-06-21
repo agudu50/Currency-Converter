@@ -50,10 +50,8 @@ export default function CurrencyChart() {
   };
 
   return (
-    <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background shadow-lg backdrop-blur-sm text-foreground">
-      <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
-
-      <CardHeader className="space-y-2 p-6 pb-4 bg-card/70 backdrop-blur-sm border-b border-border/60">
+    <Card className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
+      <CardHeader className="space-y-2 p-6 pb-4 bg-card border-b border-border">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
             <CardTitle className="text-xl font-semibold text-foreground flex items-center gap-2">
@@ -133,19 +131,21 @@ export default function CurrencyChart() {
         </div>
       </CardHeader>
 
-      <CardContent className="p-6 bg-card/70 backdrop-blur-sm min-w-0">
+      <CardContent className="p-6 bg-card min-w-0">
           <div className="min-w-0 h-64 sm:h-80">
           <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(15,23,42,0.08)" />
               <XAxis
                 dataKey="dateFormatted"
-                tick={{ fontSize: 12, fill: "#0f172a" }}
+                tick={{ fontSize: 12, fill: "currentColor" }}
+                className="text-muted-foreground"
                 axisLine={false}
                 tickLine={false}
               />
               <YAxis
-                tick={{ fontSize: 12, fill: "#0f172a" }}
+                tick={{ fontSize: 12, fill: "currentColor" }}
+                className="text-muted-foreground"
                 axisLine={false}
                 tickLine={false}
                 domain={["dataMin - 0.01", "dataMax + 0.01"]}

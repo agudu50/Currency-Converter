@@ -38,15 +38,14 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
 
   if (!favorites || favorites.length === 0) {
     return (
-      <Card className="relative overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
-        <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
-        <CardHeader className="space-y-2 pb-4 bg-white/70 backdrop-blur-sm border-b border-border/60">
+      <Card className="relative overflow-hidden border border-border bg-card shadow-sm text-foreground">
+        <CardHeader className="space-y-2 pb-4 bg-card border-b border-border">
           <CardTitle className="text-lg sm:text-2xl flex items-center gap-2 text-foreground">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-semibold">★</span>
             Favorite Currency Pairs
           </CardTitle>
         </CardHeader>
-        <CardContent className="bg-white/70 backdrop-blur-sm p-6 text-center">
+        <CardContent className="bg-card p-6 text-center">
           <p className="text-muted-foreground">No favorite pairs yet.</p>
           <p className="text-sm mt-1 text-muted-foreground">
             Click the star icon in the converter to add favorites.
@@ -57,10 +56,8 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
   }
 
   return (
-    <Card className="relative overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
-      <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
-
-      <CardHeader className="space-y-2 pb-4 bg-card/70 backdrop-blur-sm border-b border-border/60">
+    <Card className="relative overflow-hidden border border-border bg-card shadow-sm text-foreground">
+      <CardHeader className="space-y-2 pb-4 bg-card border-b border-border">
         <div className="flex items-center justify-between flex-col sm:flex-row gap-2">
           <CardTitle className="text-lg sm:text-2xl flex items-center gap-2 text-foreground">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-semibold">★</span>
@@ -79,7 +76,7 @@ export default function FavoritesPairs({ favorites, onRemoveFavorite }) {
         </div>
       </CardHeader>
 
-      <CardContent className="bg-card/70 backdrop-blur-sm">
+      <CardContent className="bg-card">
         <div className="grid gap-2 sm:gap-3">
           {favorites.map((pair, index) => {
             return (
