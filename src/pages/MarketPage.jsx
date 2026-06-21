@@ -168,47 +168,38 @@ export function MarketPage() {
             value: "$7.2T",
             sub: "+2.3% today",
             icon: DollarSign,
-            accent: "from-indigo-500/70 via-blue-500/60 to-cyan-400/60",
-            bg: "from-indigo-500/10 via-blue-500/5 to-white",
           },
           {
             title: "24h Volume",
             value: "$156B",
             sub: "+5.7% from yesterday",
             icon: Activity,
-            accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60",
-            bg: "from-emerald-500/10 via-teal-500/5 to-white",
           },
           {
             title: "Active Pairs",
             value: "180+",
             sub: "Major & Exotic",
             icon: Euro,
-            accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60",
-            bg: "from-purple-500/10 via-pink-500/5 to-background",
           },
           {
             title: "Volatility Index",
             value: "12.4",
             sub: "Moderate",
             icon: TrendingUp,
-            accent: "from-amber-500/70 via-orange-500/60 to-rose-400/60",
-            bg: "from-amber-500/10 via-orange-500/5 to-background",
           },
         ].map((item, idx) => (
           <Card
             key={idx}
-            className={`overflow-hidden border border-border/50 bg-gradient-to-br ${item.bg} text-foreground shadow-lg`}
+            className="overflow-hidden border border-border bg-card text-foreground shadow-sm"
           >
-            <div className={`h-1 w-full bg-gradient-to-r ${item.accent}`} />
             <CardContent className="relative p-5 sm:p-6 flex items-center justify-between gap-4">
               <div className="space-y-1">
                 <p className="text-sm text-muted-foreground">{item.title}</p>
-                <p className="text-2xl font-bold text-foreground drop-shadow-sm">{item.value}</p>
+                <p className="text-2xl font-bold text-foreground">{item.value}</p>
                 <p className="text-sm text-muted-foreground">{item.sub}</p>
               </div>
               {(() => { const Icon = item.icon; return (
-                <div className="p-3 rounded-full bg-card/75 text-foreground shadow-sm" aria-label={`${item.title} icon`}>
+                <div className="p-3 rounded-full bg-primary/10 text-primary shadow-sm" aria-label={`${item.title} icon`}>
                   {Icon ? <Icon className="h-6 w-6" /> : null}
                 </div>
               ); })()}
@@ -218,10 +209,8 @@ export function MarketPage() {
       </div>
 
       {/* Market Chart */}
-      <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background shadow-lg backdrop-blur-sm text-foreground">
-        <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
-
-        <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-card/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+      <Card className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
+        <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-card border-b border-border p-6 pb-4">
           <CardTitle className="text-xl font-semibold text-foreground">Market Trend - USD/EUR</CardTitle>
           <div className="flex gap-2 flex-wrap">
             {["1D", "1W", "1M", "3M", "1Y"].map((timeframe) => (
@@ -242,13 +231,13 @@ export function MarketPage() {
           </div>
         </CardHeader>
 
-        <CardContent className="bg-card/70 backdrop-blur-sm min-w-0 p-6">
+        <CardContent className="bg-card min-w-0 p-6">
           <div className="min-w-0 h-64 sm:h-80">
             <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <AreaChart data={marketOverview}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(15,23,42,0.08)" />
-                <XAxis dataKey="dateFormatted" tick={{ fontSize: 12, fill: '#0f172a' }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 12, fill: '#0f172a' }} axisLine={false} tickLine={false} />
+                <XAxis dataKey="dateFormatted" tick={{ fontSize: 12, fill: 'currentColor' }} className="text-muted-foreground" axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 12, fill: 'currentColor' }} className="text-muted-foreground" axisLine={false} tickLine={false} />
                 <Tooltip
                   contentStyle={{ backgroundColor: 'rgba(255,255,255,0.95)', border: '1px solid rgba(15,23,42,0.1)', borderRadius: '10px', color: '#0f172a' }}
                   labelStyle={{ color: '#0f172a' }}
@@ -261,14 +250,12 @@ export function MarketPage() {
       </Card>
 
       {/* Currency Pairs Table */}
-      <Card className="overflow-hidden border border-border/60 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background text-foreground shadow-lg">
-        <div className="h-1 w-full bg-gradient-to-r from-indigo-500/70 via-blue-500/60 to-cyan-400/60" />
-
-        <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/60">
+      <Card className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
+        <CardHeader className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-card border-b border-border p-6 pb-4">
           <div>
-            <CardTitle className="text-slate-900">Live Currency Pairs</CardTitle>
+            <CardTitle className="text-foreground">Live Currency Pairs</CardTitle>
             {lastUpdated && (
-              <p className="text-sm text-slate-700 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Last updated: {lastUpdated.toLocaleTimeString()}
               </p>
             )}
@@ -295,7 +282,7 @@ export function MarketPage() {
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="border-t border-border/60 bg-card rounded-b-3xl">
+        <CardContent className="bg-card p-6">
           {loading && !lastUpdated ? (
             <div className="flex items-center justify-center py-12">
               <RefreshCw className="h-8 w-8 animate-spin text-slate-500" />
@@ -319,10 +306,10 @@ export function MarketPage() {
               {getMarketData().map((item, index) => (
                 <div
                   key={index}
-                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 bg-card/85 border border-border/60 rounded-xl hover:shadow-sm hover:-translate-y-[1px] transition-all text-foreground"
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 bg-card border border-border/60 rounded-xl hover:shadow-sm hover:-translate-y-[1px] transition-all text-foreground"
                 >
                   <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="w-12 h-12 bg-slate-900/5 rounded-full flex items-center justify-center text-slate-900 font-semibold text-sm">
+                    <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center text-foreground font-semibold text-sm">
                       {item.pair.split('/')[0]}
                     </div>
                     <div>
@@ -346,13 +333,12 @@ export function MarketPage() {
           )}
         </CardContent>
       </Card>
-
+ 
       {/* Market Analysis */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {[{
           title: "Top Gainers",
           icon: TrendingUp,
-          accent: "from-emerald-500/80 via-green-500/70 to-teal-400/70",
           items: [
             { pair: "NZD/USD", change: "+1.89%" },
             { pair: "AUD/JPY", change: "+1.45%" },
@@ -360,23 +346,20 @@ export function MarketPage() {
         }, {
           title: "Top Losers",
           icon: TrendingDown,
-          accent: "from-rose-500/80 via-red-500/70 to-orange-400/70",
           items: [
             { pair: "USD/TRY", change: "-2.34%" },
             { pair: "GBP/JPY", change: "-1.67%" },
           ],
         }].map((block, idx) => (
-          <Card key={idx} className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background shadow-lg backdrop-blur-sm text-foreground">
-            <div className={`h-1 w-full bg-gradient-to-r ${block.accent}`} />
-
-            <CardHeader className="flex items-center gap-2 bg-card/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+          <Card key={idx} className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
+            <CardHeader className="flex items-center gap-2 bg-card border-b border-border p-6 pb-4">
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <block.icon className="h-4 w-4" />
               </span>
               <CardTitle className="text-lg font-semibold text-foreground">{block.title}</CardTitle>
             </CardHeader>
-
-            <CardContent className="p-6 bg-card/70 backdrop-blur-sm space-y-3">
+ 
+            <CardContent className="p-6 bg-card space-y-3">
               {block.items.map((item, i) => {
                 const isNegative = item.change.trim().startsWith("-");
                 const badgeTone = isNegative
