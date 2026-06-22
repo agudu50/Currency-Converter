@@ -2,6 +2,13 @@ import React, { useEffect, useState, useRef } from "react";
 import { Card } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { useRouter } from "../components/Router";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
 import { 
   currencies, 
   fetchExchangeRates, 
@@ -388,18 +395,21 @@ export function LandingPage() {
                       {/* From Currency */}
                       <div className="col-span-4 space-y-1.5">
                         <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">From</label>
-                        <select
-                          value={fromCurrency}
-                          onChange={(e) => setFromCurrency(e.target.value)}
-                          className="w-full h-11 px-2.5 rounded-xl border border-border bg-input-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-foreground font-semibold text-sm appearance-none cursor-pointer"
-                          style={{ backgroundImage: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23717182\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>')", backgroundPosition: "right 10px center", backgroundSize: "16px", backgroundRepeat: "no-repeat" }}
-                        >
-                          {currencies.map(c => (
-                            <option key={c.code} value={c.code} className="bg-card text-foreground">
-                              {c.flag} {c.code}
-                            </option>
-                          ))}
-                        </select>
+                        <Select value={fromCurrency} onValueChange={setFromCurrency}>
+                          <SelectTrigger className="w-full h-11 border border-border bg-input-background text-foreground font-semibold text-sm">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="max-h-48" side="bottom">
+                            {currencies.map(c => (
+                              <SelectItem key={c.code} value={c.code}>
+                                <div className="flex items-center gap-2">
+                                  <span>{c.flag}</span>
+                                  <span>{c.code}</span>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
 
                       {/* Swap Button */}
@@ -417,18 +427,21 @@ export function LandingPage() {
                       {/* To Currency */}
                       <div className="col-span-4 space-y-1.5">
                         <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">To</label>
-                        <select
-                          value={toCurrency}
-                          onChange={(e) => setToCurrency(e.target.value)}
-                          className="w-full h-11 px-2.5 rounded-xl border border-border bg-input-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-foreground font-semibold text-sm appearance-none cursor-pointer"
-                          style={{ backgroundImage: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23717182\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>')", backgroundPosition: "right 10px center", backgroundSize: "16px", backgroundRepeat: "no-repeat" }}
-                        >
-                          {currencies.map(c => (
-                            <option key={c.code} value={c.code} className="bg-card text-foreground">
-                              {c.flag} {c.code}
-                            </option>
-                          ))}
-                        </select>
+                        <Select value={toCurrency} onValueChange={setToCurrency}>
+                          <SelectTrigger className="w-full h-11 border border-border bg-input-background text-foreground font-semibold text-sm">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="max-h-48" side="bottom">
+                            {currencies.map(c => (
+                              <SelectItem key={c.code} value={c.code}>
+                                <div className="flex items-center gap-2">
+                                  <span>{c.flag}</span>
+                                  <span>{c.code}</span>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
                   </div>
