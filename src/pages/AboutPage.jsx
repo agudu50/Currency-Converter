@@ -96,12 +96,13 @@ export function AboutPage() {
     <div className="space-y-12 animate-page-fade">
       {/* Hero Section */}
       <section className="text-center space-y-6 py-12 bg-muted/40 border border-border rounded-2xl">
-         <h1 className="text-3xl sm:text-6xl md:text-6xl font-extrabold tracking-tight text-foreground"> About <br />
-          Currency Exchange <br />
-          <span className="text-indigo-600 dark:text-indigo-400">
-            Reimagined.
-          </span>
-        </h1>
+          <h1 className="text-3xl sm:text-6xl md:text-6xl font-extrabold tracking-tight text-foreground leading-[1.15] sm:leading-[1.1]">
+            About Currency Exchange{" "}
+            <br className="hidden sm:inline" />
+            <span className="text-indigo-600 dark:text-indigo-400">
+              Reimagined.
+            </span>
+          </h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
           We're on a mission to make currency exchange transparent, accessible,
           and reliable for everyone worldwide.

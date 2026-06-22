@@ -302,8 +302,9 @@ export function LandingPage() {
                 Global FX Exchange
               </div>
 
-              <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground leading-[1.1]">
-                Currency Exchange <br />
+              <h1 className="text-3xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground leading-[1.15] sm:leading-[1.1]">
+                Currency Exchange{" "}
+                <br className="hidden sm:inline" />
                 <span className="text-indigo-600 dark:text-indigo-400">
                   Reimagined.
                 </span>
