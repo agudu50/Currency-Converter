@@ -72,7 +72,7 @@ export function SettingsPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-page-fade">
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div className="space-y-1">

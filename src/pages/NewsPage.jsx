@@ -126,7 +126,7 @@ export function NewsPage() {
     : newsArticles.filter(article => article.category === selectedCategory);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-page-fade">
       {/* Page Header */}
       <div className="space-y-2 sm:space-y-4">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">Currency News & Analysis</h1>
@@ -156,7 +156,7 @@ export function NewsPage() {
         ].map((item, idx) => (
           <Card
             key={idx}
-            className="border border-border bg-card shadow-sm overflow-hidden"
+            className="border border-border bg-card shadow-sm overflow-hidden hover-lift"
           >
             <CardContent className="p-5 sm:p-6 space-y-3">
               <div className="h-11 w-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center shadow-sm">
@@ -223,7 +223,7 @@ export function NewsPage() {
         <TabsContent value={selectedCategory} className="mt-6 sm:mt-8">
           <div className="grid gap-4 sm:gap-6">
             {filteredNews.map((article) => (
-              <Card key={article.id} className="overflow-hidden border border-border bg-card shadow-sm text-foreground hover:shadow-md transition-all duration-200">
+              <Card key={article.id} className="overflow-hidden border border-border bg-card shadow-sm text-foreground hover-lift">
                 <CardContent className="p-4 sm:p-6 bg-card">
                   <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                     <div className="flex-shrink-0 self-start">

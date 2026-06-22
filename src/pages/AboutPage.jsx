@@ -93,7 +93,7 @@ export function AboutPage() {
   ];
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 animate-page-fade">
       {/* Hero Section */}
       <section className="text-center space-y-6 py-12 bg-muted/40 border border-border rounded-2xl">
          <h1 className="text-3xl sm:text-6xl md:text-6xl font-extrabold tracking-tight text-foreground"> About <br />
@@ -120,7 +120,7 @@ export function AboutPage() {
         {stats.map((stat, index) => (
           <Card
             key={index}
-            className="overflow-hidden border border-border bg-card text-foreground shadow-sm text-center"
+            className="overflow-hidden border border-border bg-card text-foreground shadow-sm text-center hover-lift"
           >
             <CardContent className="relative p-6 space-y-3">
               {(() => { const Icon = stat.icon; return (
@@ -140,7 +140,7 @@ export function AboutPage() {
         {features.map((f, i) => (
           <Card
             key={i}
-            className="overflow-hidden border border-border bg-card text-foreground shadow-sm"
+            className="overflow-hidden border border-border bg-card text-foreground shadow-sm hover-lift"
           >
             <CardContent className="relative p-6 space-y-3">
               <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary shadow-sm">
@@ -159,7 +159,7 @@ export function AboutPage() {
           return (
             <Card
               key={index}
-              className="overflow-hidden border border-border bg-card text-foreground shadow-sm text-center"
+              className="overflow-hidden border border-border bg-card text-foreground shadow-sm text-center hover-lift"
             >
               <CardContent className="relative p-6 space-y-3">
                 <div className="text-6xl mb-2">{member.image}</div>

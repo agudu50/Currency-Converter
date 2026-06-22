@@ -151,7 +151,7 @@ export function MarketPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-page-fade">
       {/* Page Header */}
       <div className="space-y-4">
         <h1 className="text-3xl md:text-4xl font-bold">Market Overview</h1>
@@ -190,7 +190,7 @@ export function MarketPage() {
         ].map((item, idx) => (
           <Card
             key={idx}
-            className="overflow-hidden border border-border bg-card text-foreground shadow-sm"
+            className="overflow-hidden border border-border bg-card text-foreground shadow-sm hover-lift"
           >
             <CardContent className="relative p-5 sm:p-6 flex items-center justify-between gap-4">
               <div className="space-y-1">
@@ -351,7 +351,7 @@ export function MarketPage() {
             { pair: "GBP/JPY", change: "-1.67%" },
           ],
         }].map((block, idx) => (
-          <Card key={idx} className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
+          <Card key={idx} className="overflow-hidden border border-border bg-card shadow-sm text-foreground hover-lift">
             <CardHeader className="flex items-center gap-2 bg-card border-b border-border p-6 pb-4">
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <block.icon className="h-4 w-4" />

@@ -24,7 +24,7 @@ export function HomePage({ favorites, onFavoriteAdd, onRemoveFavorite }) {
   const { navigateTo } = useRouter();
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-page-fade">
       
       {/* Workspace Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-border">

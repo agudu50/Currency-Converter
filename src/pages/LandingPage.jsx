@@ -285,7 +285,7 @@ export function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background selection:bg-indigo-500/30 overflow-hidden relative">
+    <div className="min-h-screen bg-background selection:bg-indigo-500/30 overflow-hidden relative animate-page-fade">
       
       <div className="relative z-10 space-y-16 pb-24">
         

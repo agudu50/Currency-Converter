@@ -40,7 +40,7 @@ export function AlertsPage() {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8 space-y-8">
+    <div className="container mx-auto px-4 py-8 space-y-8 animate-page-fade">
       {/* Header Section */}
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center gap-3">
@@ -69,7 +69,7 @@ export function AlertsPage() {
             const isPrice = alert.type === "price";
             const isVolatility = alert.type === "volatility";
             return (
-              <Card key={alert.id} className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
+              <Card key={alert.id} className="overflow-hidden border border-border bg-card shadow-sm text-foreground hover-lift">
                 <div className="p-3 sm:p-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
                   <div className="flex items-start gap-3 sm:gap-4 flex-1">
                     <div className="p-2 sm:p-3 rounded-lg bg-primary/10 text-primary flex-shrink-0">
