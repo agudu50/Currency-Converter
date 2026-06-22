@@ -91,39 +91,39 @@ export function SettingsPage() {
 
       <Tabs defaultValue="profile" className="space-y-6">
         <TabsList
-          className="w-full flex gap-2 md:gap-3 overflow-x-auto md:overflow-visible rounded-xl bg-card/80 border border-border/60 p-2 shadow-sm [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:justify-center"
+          className="w-full flex gap-2 md:gap-3 overflow-x-auto md:overflow-visible rounded-xl bg-card border border-border p-2 shadow-sm [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:justify-center"
         >
           <TabsTrigger
             value="profile"
-            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm md:text-base whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500/15 data-[state=active]:via-sky-500/10 data-[state=active]:to-cyan-400/10 data-[state=active]:text-foreground data-[state=active]:border data-[state=active]:border-primary/50"
+            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm md:text-base whitespace-nowrap data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border data-[state=active]:border-primary/50"
           >
             <User className="h-4 w-4" />
             Profile
           </TabsTrigger>
           <TabsTrigger
             value="preferences"
-            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm md:text-base whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500/15 data-[state=active]:via-sky-500/10 data-[state=active]:to-cyan-400/10 data-[state=active]:text-foreground data-[state=active]:border data-[state=active]:border-primary/50"
+            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm md:text-base whitespace-nowrap data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border data-[state=active]:border-primary/50"
           >
             <Palette className="h-4 w-4" />
             Preferences
           </TabsTrigger>
           <TabsTrigger
             value="notifications"
-            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm md:text-base whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500/15 data-[state=active]:via-sky-500/10 data-[state=active]:to-cyan-400/10 data-[state=active]:text-foreground data-[state=active]:border data-[state=active]:border-primary/50"
+            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm md:text-base whitespace-nowrap data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border data-[state=active]:border-primary/50"
           >
             <Bell className="h-4 w-4" />
             Notifications
           </TabsTrigger>
           <TabsTrigger
             value="privacy"
-            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm md:text-base whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500/15 data-[state=active]:via-sky-500/10 data-[state=active]:to-cyan-400/10 data-[state=active]:text-foreground data-[state=active]:border data-[state=active]:border-primary/50"
+            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm md:text-base whitespace-nowrap data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border data-[state=active]:border-primary/50"
           >
             <Shield className="h-4 w-4" />
             Privacy
           </TabsTrigger>
           <TabsTrigger
             value="account"
-            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm md:text-base whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500/15 data-[state=active]:via-sky-500/10 data-[state=active]:to-cyan-400/10 data-[state=active]:text-foreground data-[state=active]:border data-[state=active]:border-primary/50"
+            className="w-full flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm md:text-base whitespace-nowrap data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:border data-[state=active]:border-primary/50"
           >
             <Globe className="h-4 w-4" />
             Account
@@ -132,16 +132,14 @@ export function SettingsPage() {
 
         {/* Profile Settings */}
         <TabsContent value="profile">
-          <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background shadow-lg backdrop-blur-sm text-foreground">
-            <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
-            
-            <CardHeader className="flex items-center gap-2 bg-card/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+          <Card className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
+            <CardHeader className="flex items-center gap-2 bg-card border-b border-border p-6 pb-4">
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <User className="h-4 w-4" />
               </span>
               <CardTitle className="text-lg font-semibold text-foreground">Profile Information</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6 p-6 bg-card/70 backdrop-blur-sm">
+            <CardContent className="space-y-6 p-6 bg-card">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="firstName" className="text-foreground">First Name</Label>
@@ -198,16 +196,14 @@ export function SettingsPage() {
         {/* Preferences */}
         <TabsContent value="preferences">
           <div className="space-y-6">
-            <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background shadow-lg backdrop-blur-sm text-foreground">
-              <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
-              
-              <CardHeader className="flex items-center gap-2 bg-card/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+            <Card className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
+              <CardHeader className="flex items-center gap-2 bg-card border-b border-border p-6 pb-4">
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <Globe className="h-4 w-4" />
                 </span>
                 <CardTitle className="text-lg font-semibold text-foreground">Currency & Display</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-6 p-6 bg-card/70 backdrop-blur-sm">
+              <CardContent className="space-y-6 p-6 bg-card">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label className="text-foreground">Base Currency</Label>
@@ -242,16 +238,14 @@ export function SettingsPage() {
               </CardContent>
             </Card>
 
-            <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background shadow-lg backdrop-blur-sm text-foreground">
-              <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
-              
-              <CardHeader className="flex items-center gap-2 bg-card/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+            <Card className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
+              <CardHeader className="flex items-center gap-2 bg-card border-b border-border p-6 pb-4">
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <Palette className="h-4 w-4" />
                 </span>
                 <CardTitle className="text-lg font-semibold text-foreground">Appearance</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-6 p-6 bg-card/70 backdrop-blur-sm">
+              <CardContent className="space-y-6 p-6 bg-card">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label className="text-foreground">Theme</Label>
@@ -290,16 +284,14 @@ export function SettingsPage() {
 
         {/* Notifications */}
         <TabsContent value="notifications">
-          <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background shadow-lg backdrop-blur-sm text-foreground">
-            <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
-            
-            <CardHeader className="flex items-center gap-2 bg-card/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+          <Card className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
+            <CardHeader className="flex items-center gap-2 bg-card border-b border-border p-6 pb-4">
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <Bell className="h-4 w-4" />
               </span>
               <CardTitle className="text-lg font-semibold text-foreground">Notification Preferences</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6 p-6 bg-card/70 backdrop-blur-sm">
+            <CardContent className="space-y-6 p-6 bg-card">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -360,16 +352,14 @@ export function SettingsPage() {
 
         {/* Privacy */}
         <TabsContent value="privacy">
-          <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background shadow-lg backdrop-blur-sm text-foreground">
-            <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
-            
-            <CardHeader className="flex items-center gap-2 bg-card/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+          <Card className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
+            <CardHeader className="flex items-center gap-2 bg-card border-b border-border p-6 pb-4">
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <Shield className="h-4 w-4" />
               </span>
               <CardTitle className="text-lg font-semibold text-foreground">Privacy & Data</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6 p-6 bg-card/70 backdrop-blur-sm">
+            <CardContent className="space-y-6 p-6 bg-card">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -415,16 +405,14 @@ export function SettingsPage() {
         {/* Account */}
         <TabsContent value="account">
           <div className="space-y-6">
-            <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
-              <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
-
-              <CardHeader className="flex items-center gap-2 bg-card/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+            <Card className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
+              <CardHeader className="flex items-center gap-2 bg-card border-b border-border p-6 pb-4">
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <Download className="h-4 w-4" />
                 </span>
                 <CardTitle className="text-lg font-semibold text-foreground">Data Management</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4 p-6 bg-card/70 backdrop-blur-sm">
+              <CardContent className="space-y-4 p-6 bg-card">
                 <div className="flex items-start justify-between gap-4 p-4 bg-card border border-border/60 rounded-xl hover:border-primary/60 hover:shadow-sm transition-colors">
                   <div className="space-y-1">
                     <h3 className="font-medium text-foreground">Export Data</h3>
@@ -448,16 +436,14 @@ export function SettingsPage() {
               </CardContent>
             </Card>
 
-            <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-rose-100/20 via-rose-50/10 to-background shadow-lg backdrop-blur-sm text-foreground">
-              <div className="h-1 w-full bg-gradient-to-r from-rose-500/80 via-red-500/70 to-orange-400/70" />
-
-              <CardHeader className="flex items-center gap-2 bg-card/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+            <Card className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
+              <CardHeader className="flex items-center gap-2 bg-card border-b border-border p-6 pb-4">
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-rose-100 text-rose-700">
                   <Trash2 className="h-4 w-4" />
                 </span>
                 <CardTitle className="text-lg font-semibold text-foreground">Danger Zone</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4 p-6 bg-card/70 backdrop-blur-sm">
+              <CardContent className="space-y-4 p-6 bg-card">
                 <div className="flex items-start justify-between gap-4 p-4 bg-card border border-border/60 rounded-xl hover:border-rose-300/50 hover:shadow-sm transition-colors">
                   <div className="space-y-1">
                     <h3 className="font-medium text-foreground">Delete Account</h3>
