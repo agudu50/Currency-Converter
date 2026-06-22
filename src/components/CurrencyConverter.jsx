@@ -142,7 +142,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
               <SelectTrigger className="text-sm sm:text-base h-11 border border-border bg-input-background text-foreground">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="max-h-80">
+              <SelectContent className="max-h-48" side="bottom">
                 {(() => {
                   const live = new Set(getAvailableCurrencyCodes());
                   return currencies.filter(c => live.has(c.code)).map((currency) => (
@@ -176,7 +176,7 @@ export default function CurrencyConverter({ onFavoriteAdd }) {
               <SelectTrigger className="text-sm sm:text-base h-11 border border-border bg-input-background text-foreground">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="max-h-80">
+              <SelectContent className="max-h-48" side="bottom">
                 {(() => {
                   const live = new Set(getAvailableCurrencyCodes());
                   return currencies.filter(c => live.has(c.code)).map((currency) => (

@@ -394,7 +394,7 @@ export function LandingPage() {
                           className="w-full h-11 px-2.5 rounded-xl border border-border bg-input-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-foreground font-semibold text-sm appearance-none cursor-pointer"
                           style={{ backgroundImage: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23717182\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>')", backgroundPosition: "right 10px center", backgroundSize: "16px", backgroundRepeat: "no-repeat" }}
                         >
-                          {POPULAR_CURRENCIES.map(c => (
+                          {currencies.map(c => (
                             <option key={c.code} value={c.code} className="bg-card text-foreground">
                               {c.flag} {c.code}
                             </option>
@@ -423,7 +423,7 @@ export function LandingPage() {
                           className="w-full h-11 px-2.5 rounded-xl border border-border bg-input-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-foreground font-semibold text-sm appearance-none cursor-pointer"
                           style={{ backgroundImage: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23717182\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>')", backgroundPosition: "right 10px center", backgroundSize: "16px", backgroundRepeat: "no-repeat" }}
                         >
-                          {POPULAR_CURRENCIES.map(c => (
+                          {currencies.map(c => (
                             <option key={c.code} value={c.code} className="bg-card text-foreground">
                               {c.flag} {c.code}
                             </option>

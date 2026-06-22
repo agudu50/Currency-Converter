@@ -73,7 +73,7 @@ export default function CurrencyChart() {
                 <SelectTrigger className="w-32 bg-input-background border border-border/60 text-foreground">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="max-h-48" side="bottom">
                     {(() => {
                       const live = new Set(getAvailableCurrencyCodes());
                       return currencies.filter(c => live.has(c.code)).slice(0, 20).map((currency) => (
@@ -96,7 +96,7 @@ export default function CurrencyChart() {
                 <SelectTrigger className="w-32 bg-input-background border border-border/60 text-foreground">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="max-h-48" side="bottom">
                   {(() => {
                     const live = new Set(getAvailableCurrencyCodes());
                     return currencies.filter(c => live.has(c.code)).slice(0, 20).map((currency) => (
