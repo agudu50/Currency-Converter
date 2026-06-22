@@ -142,31 +142,24 @@ export function NewsPage() {
             title: "Price Alerts",
             desc: "Get notified when a currency reaches your target price.",
             icon: Bell,
-            accent: "from-indigo-500/70 via-blue-500/60 to-cyan-400/60",
-            bg: "from-indigo-500/10 via-blue-500/5 to-white",
           },
           {
             title: "Trend Alerts",
             desc: "Track significant price movements and trend changes.",
             icon: TrendingUp,
-            accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60",
-            bg: "from-emerald-500/10 via-teal-500/5 to-white",
           },
           {
             title: "Volatility Alerts",
             desc: "Monitor unusual market volatility and rapid price changes.",
             icon: AlertTriangle,
-            accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60",
-            bg: "from-purple-500/10 via-pink-500/5 to-background",
           },
         ].map((item, idx) => (
           <Card
             key={idx}
-            className={`border border-border/60 bg-gradient-to-br ${item.bg} shadow-lg shadow-slate-900/10 overflow-hidden`}
+            className="border border-border bg-card shadow-sm overflow-hidden"
           >
-            <div className={`h-1 w-full bg-gradient-to-r ${item.accent}`} />
             <CardContent className="p-5 sm:p-6 space-y-3">
-              <div className="h-11 w-11 rounded-xl bg-card/80 text-foreground flex items-center justify-center shadow-sm">
+              <div className="h-11 w-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center shadow-sm">
                 <item.icon className="h-5 w-5" />
               </div>
               <div className="text-xl font-semibold text-foreground">{item.title}</div>
@@ -177,17 +170,15 @@ export function NewsPage() {
       </section>
 
       {/* Market Alerts */}
-      <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background shadow-lg backdrop-blur-sm text-foreground">
-        <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
-
-        <CardHeader className="flex items-center gap-2 bg-card/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+      <Card className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
+        <CardHeader className="flex items-center gap-2 bg-card border-b border-border p-6 pb-4">
           <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
             <TrendingUp className="h-4 w-4" />
           </span>
           <CardTitle className="text-xl font-semibold text-foreground">Live Market Alerts</CardTitle>
         </CardHeader>
 
-        <CardContent className="p-6 bg-card/70 backdrop-blur-sm space-y-3">
+        <CardContent className="p-6 bg-card space-y-3">
           {marketAlerts.map((alert, index) => {
             const getBadgeColor = (type) => {
               switch (type) {
@@ -232,9 +223,8 @@ export function NewsPage() {
         <TabsContent value={selectedCategory} className="mt-6 sm:mt-8">
           <div className="grid gap-4 sm:gap-6">
             {filteredNews.map((article) => (
-              <Card key={article.id} className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background shadow-lg backdrop-blur-sm text-foreground hover:shadow-xl transition-all duration-200">
-                <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
-                <CardContent className="p-4 sm:p-6 bg-card/80 backdrop-blur-sm">
+              <Card key={article.id} className="overflow-hidden border border-border bg-card shadow-sm text-foreground hover:shadow-md transition-all duration-200">
+                <CardContent className="p-4 sm:p-6 bg-card">
                   <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                     <div className="flex-shrink-0 self-start">
                       <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 text-primary rounded-lg flex items-center justify-center text-xl sm:text-2xl">
@@ -296,17 +286,15 @@ export function NewsPage() {
       </Tabs>
 
       {/* Economic Calendar Preview */}
-      <Card className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-background shadow-lg backdrop-blur-sm text-foreground">
-        <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
-
-        <CardHeader className="flex items-center gap-2 bg-card/70 backdrop-blur-sm border-b border-border/60 p-6 pb-4">
+      <Card className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
+        <CardHeader className="flex items-center gap-2 bg-card border-b border-border p-6 pb-4">
           <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
             <Calendar className="h-4 w-4" />
           </span>
           <CardTitle className="text-xl font-semibold text-foreground">Upcoming Economic Events</CardTitle>
         </CardHeader>
 
-        <CardContent className="p-6 bg-card/70 backdrop-blur-sm">
+        <CardContent className="p-6 bg-card">
           <div className="space-y-3 sm:space-y-4">
             {[
               { time: "09:30 GMT", event: "US CPI", currency: "USD", impact: "high", forecast: "3.2%", previous: "3.1%" },
