@@ -290,20 +290,20 @@ export function LandingPage() {
       <div className="relative z-10 space-y-16 pb-24">
         
         {/* HERO SECTION */}
-        <section className="pt-16 pb-12 px-4 max-w-7xl mx-auto">
+        <section className="pt-16 pb-12 px-4 max-w-7xl mx-auto space-y-10">
+          <div className="flex justify-center">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-sm font-semibold tracking-wide">
+              <span className="relative flex h-2 w-2">
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-600 dark:bg-indigo-400"></span>
+              </span>
+              Global FX Exchange
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             {/* Left Column: Hero Text */}
             <div className="lg:col-span-7 space-y-8 text-left">
-              <div className="flex justify-center lg:justify-start">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-sm font-semibold tracking-wide">
-                  <span className="relative flex h-2 w-2">
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-600 dark:bg-indigo-400"></span>
-                  </span>
-                  Global FX Exchange
-                </div>
-              </div>
-
               <h1 className="text-3xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground leading-[1.15] sm:leading-[1.1]">
                 Currency Exchange{" "}
                 <br className="hidden sm:inline" />
