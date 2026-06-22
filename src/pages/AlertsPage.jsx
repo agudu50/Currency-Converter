@@ -69,9 +69,7 @@ export function AlertsPage() {
             const isPrice = alert.type === "price";
             const isVolatility = alert.type === "volatility";
             return (
-              <Card key={alert.id} className="overflow-hidden border border-border/70 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-white shadow-lg backdrop-blur-sm text-foreground">
-                <div className="h-1 w-full bg-gradient-to-r from-indigo-500/80 via-sky-500/70 to-cyan-400/70" />
-
+              <Card key={alert.id} className="overflow-hidden border border-border bg-card shadow-sm text-foreground">
                 <div className="p-3 sm:p-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
                   <div className="flex items-start gap-3 sm:gap-4 flex-1">
                     <div className="p-2 sm:p-3 rounded-lg bg-primary/10 text-primary flex-shrink-0">
@@ -98,7 +96,7 @@ export function AlertsPage() {
                     </div>
                   </div>
                   <div className="flex gap-2 flex-shrink-0">
-                    <Button variant="outline" size="sm" className="border-border/70 text-foreground hover:border-primary hover:text-primary text-xs sm:text-sm">Edit</Button>
+                    <Button variant="outline" size="sm" className="border-border text-foreground hover:border-primary hover:text-primary text-xs sm:text-sm">Edit</Button>
                     <Button variant="destructive" size="sm" className="text-xs sm:text-sm">Delete</Button>
                   </div>
                 </div>
@@ -115,31 +113,24 @@ export function AlertsPage() {
             title: "Price Alerts",
             desc: "Get notified when a currency reaches your target price",
             icon: TrendingUp,
-            accent: "from-indigo-500/70 via-blue-500/60 to-cyan-400/60",
-            bg: "from-indigo-500/10 via-blue-500/5 to-white",
           },
           {
             title: "Trend Alerts",
             desc: "Track significant price movements and trend changes",
             icon: TrendingDown,
-            accent: "from-emerald-500/70 via-teal-400/60 to-lime-300/60",
-            bg: "from-emerald-500/10 via-teal-500/5 to-background",
           },
           {
             title: "Volatility Alerts",
             desc: "Monitor unusual market volatility and rapid price changes",
             icon: AlertTriangle,
-            accent: "from-purple-500/70 via-pink-500/60 to-rose-400/60",
-            bg: "from-purple-500/10 via-pink-500/5 to-background",
           },
         ].map((item, idx) => (
           <Card
             key={idx}
-            className={`overflow-hidden border border-border/60 bg-gradient-to-br ${item.bg} shadow-lg shadow-slate-900/10`}
+            className="overflow-hidden border border-border bg-card shadow-sm"
           >
-            <div className={`h-1 w-full bg-gradient-to-r ${item.accent}`} />
             <div className="p-6 text-center space-y-3">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-card/80 text-foreground shadow-sm">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary shadow-sm">
                 <item.icon className="h-6 w-6" />
               </div>
               <h3 className="text-xl font-semibold text-foreground">{item.title}</h3>
