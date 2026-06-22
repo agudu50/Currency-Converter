@@ -346,8 +346,8 @@ export function LandingPage() {
               </div>
             </div>
 
-            {/* Right Column: Mini-Converter + Mock Chart Mockup */}
-            <div className="lg:col-span-5 space-y-6">
+            {/* Right Column: Mini-Converter */}
+            <div className="lg:col-span-5">
               
               {/* Mini-Converter Card */}
               <Card className="border border-border bg-card shadow-sm rounded-2xl overflow-hidden relative">
@@ -460,131 +460,6 @@ export function LandingPage() {
                 </div>
               </Card>
 
-              {/* Animated Mock Chart Card */}
-              <Card className="border border-border bg-card shadow-sm rounded-2xl overflow-hidden">
-                <div className="p-5 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-sm tracking-wide text-foreground">Trending Rates</span>
-                    <div className="flex gap-1.5 bg-muted p-0.5 rounded-lg">
-                      {Object.keys(MOCK_CHARTS).map(key => (
-                        <button
-                          key={key}
-                          onClick={() => {
-                            setActiveChartKey(key);
-                            setHoveredPointIndex(null);
-                          }}
-                          className={`text-xs px-2 py-1 font-bold rounded-md transition-all ${
-                            activeChartKey === key 
-                              ? "bg-card text-foreground shadow-sm" 
-                              : "text-muted-foreground hover:text-foreground"
-                          }`}
-                        >
-                          {key.split("/")[1]}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Chart Rate Metric Header */}
-                  <div className="flex items-baseline justify-between">
-                    <div>
-                      <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{activeChartKey} Pair</div>
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-extrabold text-foreground tracking-tight tabular-nums">
-                          {activeChart.rate}
-                        </span>
-                        <span className={`inline-flex items-center gap-0.5 text-xs font-bold ${
-                          activeChart.trend === 'up' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600'
-                        }`}>
-                          {activeChart.trend === 'up' ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
-                          {activeChart.change}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Hover tooltip stats */}
-                    {hoveredPointIndex !== null && (
-                      <div className="text-right">
-                        <div className="text-[10px] text-muted-foreground font-bold uppercase">{activeChart.points[hoveredPointIndex].day}</div>
-                        <div className="text-sm font-extrabold text-indigo-600 dark:text-indigo-400 tabular-nums">
-                          {activeChart.points[hoveredPointIndex].val.toFixed(4)}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* SVG Chart Drawing */}
-                  <div className="relative pt-1">
-                    <svg
-                      ref={svgRef}
-                      viewBox="0 0 320 150"
-                      className="w-full h-auto cursor-crosshair overflow-visible"
-                      onMouseMove={handleSvgMouseMove}
-                      onMouseLeave={handleSvgMouseLeave}
-                    >
-                      <defs>
-                        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
-                          <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#4f46e5" floodOpacity="0.1" />
-                        </filter>
-                      </defs>
-
-                      {/* Y Grid Lines */}
-                      <line x1="20" y1="20" x2="300" y2="20" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.6" />
-                      <line x1="20" y1="60" x2="300" y2="60" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.6" />
-                      <line x1="20" y1="100" x2="300" y2="100" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.6" />
-                      <line x1="20" y1="130" x2="300" y2="130" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.6" />
-
-                      {/* Area Under Curve */}
-                      <path
-                        d={areaPath}
-                        fill="#4f46e5"
-                        fillOpacity="0.05"
-                        className="transition-all duration-500 ease-out"
-                      />
-
-                      {/* Trend Curve Path */}
-                      <path
-                        d={linePath}
-                        fill="none"
-                        stroke="#4f46e5"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        filter="url(#shadow)"
-                        className="transition-all duration-500 ease-out"
-                      />
-
-                      {/* Hover Indicator Vertical Line */}
-                      {hoveredPointIndex !== null && (
-                        <line
-                          x1={chartCoordinates[hoveredPointIndex].x}
-                          y1="10"
-                          x2={chartCoordinates[hoveredPointIndex].x}
-                          y2="140"
-                          stroke="#4f46e5"
-                          strokeWidth="1"
-                          strokeDasharray="4,4"
-                        />
-                      )}
-
-                      {/* Anchor dots */}
-                      {chartCoordinates.map((c, i) => (
-                        <circle
-                          key={i}
-                          cx={c.x}
-                          cy={c.y}
-                          r={hoveredPointIndex === i ? 5.5 : 3}
-                          fill={hoveredPointIndex === i ? "#4f46e5" : "#ffffff"}
-                          stroke="#4f46e5"
-                          strokeWidth={hoveredPointIndex === i ? 2 : 1.5}
-                          className="transition-all duration-150 cursor-pointer"
-                        />
-                      ))}
-                    </svg>
-                  </div>
-                </div>
-              </Card>
-
             </div>
 
           </div>
@@ -635,6 +510,133 @@ export function LandingPage() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* TRENDING RATES CHART SECTION */}
+        <section id="ticker-target" className="max-w-3xl mx-auto px-4 scroll-mt-24">
+          <Card className="border border-border bg-card shadow-sm rounded-2xl overflow-hidden">
+            <div className="p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-sm tracking-wide text-foreground">Trending Rates</span>
+                <div className="flex gap-1.5 bg-muted p-0.5 rounded-lg">
+                  {Object.keys(MOCK_CHARTS).map(key => (
+                    <button
+                      key={key}
+                      onClick={() => {
+                        setActiveChartKey(key);
+                        setHoveredPointIndex(null);
+                      }}
+                      className={`text-xs px-2 py-1 font-bold rounded-md transition-all ${
+                        activeChartKey === key 
+                          ? "bg-card text-foreground shadow-sm" 
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {key.split("/")[1]}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Chart Rate Metric Header */}
+              <div className="flex items-baseline justify-between">
+                <div>
+                  <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{activeChartKey} Pair</div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-extrabold text-foreground tracking-tight tabular-nums">
+                      {activeChart.rate}
+                    </span>
+                    <span className={`inline-flex items-center gap-0.5 text-xs font-bold ${
+                      activeChart.trend === 'up' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600'
+                    }`}>
+                      {activeChart.trend === 'up' ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
+                      {activeChart.change}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Hover tooltip stats */}
+                {hoveredPointIndex !== null && (
+                  <div className="text-right">
+                    <div className="text-[10px] text-muted-foreground font-bold uppercase">{activeChart.points[hoveredPointIndex].day}</div>
+                    <div className="text-sm font-extrabold text-indigo-600 dark:text-indigo-400 tabular-nums">
+                      {activeChart.points[hoveredPointIndex].val.toFixed(4)}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* SVG Chart Drawing */}
+              <div className="relative pt-1">
+                <svg
+                  ref={svgRef}
+                  viewBox="0 0 320 150"
+                  className="w-full h-auto cursor-crosshair overflow-visible"
+                  onMouseMove={handleSvgMouseMove}
+                  onMouseLeave={handleSvgMouseLeave}
+                >
+                  <defs>
+                    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+                      <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#4f46e5" floodOpacity="0.1" />
+                    </filter>
+                  </defs>
+
+                  {/* Y Grid Lines */}
+                  <line x1="20" y1="20" x2="300" y2="20" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.6" />
+                  <line x1="20" y1="60" x2="300" y2="60" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.6" />
+                  <line x1="20" y1="100" x2="300" y2="100" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.6" />
+                  <line x1="20" y1="130" x2="300" y2="130" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.6" />
+
+                  {/* Area Under Curve */}
+                  <path
+                    d={areaPath}
+                    fill="#4f46e5"
+                    fillOpacity="0.05"
+                    className="transition-all duration-500 ease-out"
+                  />
+
+                  {/* Trend Curve Path */}
+                  <path
+                    d={linePath}
+                    fill="none"
+                    stroke="#4f46e5"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    filter="url(#shadow)"
+                    className="transition-all duration-500 ease-out"
+                  />
+
+                  {/* Hover Indicator Vertical Line */}
+                  {hoveredPointIndex !== null && (
+                    <line
+                      x1={chartCoordinates[hoveredPointIndex].x}
+                      y1="10"
+                      x2={chartCoordinates[hoveredPointIndex].x}
+                      y2="140"
+                      stroke="#4f46e5"
+                      strokeWidth="1"
+                      strokeDasharray="4,4"
+                    />
+                  )}
+
+                  {/* Anchor dots */}
+                  {chartCoordinates.map((c, i) => (
+                    <circle
+                      key={i}
+                      cx={c.x}
+                      cy={c.y}
+                      r={hoveredPointIndex === i ? 5.5 : 3}
+                      fill={hoveredPointIndex === i ? "#4f46e5" : "#ffffff"}
+                      stroke="#4f46e5"
+                      strokeWidth={hoveredPointIndex === i ? 2 : 1.5}
+                      className="transition-all duration-150 cursor-pointer"
+                    />
+                  ))}
+                </svg>
+              </div>
+            </div>
+          </Card>
         </section>
 
         {/* QUICK STATS - MODERN SOLID CARDS */}
