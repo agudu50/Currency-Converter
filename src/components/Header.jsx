@@ -58,9 +58,27 @@ export default function Header() {
             variant="ghost"
             size="icon"
             onClick={toggleTheme}
-            className="rounded-full h-9 w-9 sm:h-10 sm:w-10"
+            className="rounded-full h-9 w-9 sm:h-10 sm:w-10 relative overflow-hidden"
+            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
           >
-            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            <span
+              className="absolute inset-0 flex items-center justify-center transition-all duration-300"
+              style={{
+                opacity: isDark ? 1 : 0,
+                transform: isDark ? "rotate(0deg) scale(1)" : "rotate(-90deg) scale(0.5)",
+              }}
+            >
+              <Sun className="h-4 w-4 text-amber-500" />
+            </span>
+            <span
+              className="absolute inset-0 flex items-center justify-center transition-all duration-300"
+              style={{
+                opacity: isDark ? 0 : 1,
+                transform: isDark ? "rotate(90deg) scale(0.5)" : "rotate(0deg) scale(1)",
+              }}
+            >
+              <Moon className="h-4 w-4" />
+            </span>
           </Button>
 
           {/* Mobile Menu Button */}

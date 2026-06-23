@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Card } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { useRouter } from "../components/Router";
@@ -9,127 +9,237 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select";
-import { 
-  currencies, 
-  fetchExchangeRates, 
+import {
+  currencies,
+  fetchExchangeRates,
   convertCurrencyAsync,
   formatCurrency
 } from "../utils/currencyData";
-import { 
-  ArrowRight, 
-  Zap, 
-  BarChart3, 
-  Globe, 
-  Shield, 
-  Star, 
-  Clock, 
+import {
+  ArrowRight,
+  Zap,
+  BarChart3,
+  Globe,
+  Shield,
+  Star,
+  Clock,
   ArrowUpRight,
   ArrowDownRight,
   TrendingUp,
   RefreshCw,
   ChevronDown,
-  HelpCircle,
-  TrendingDown,
   ArrowLeftRight,
-  Percent
+  Sparkles,
+  Activity,
+  Lock,
+  Layers,
 } from "lucide-react";
 
-// Curated list of currencies for the mini-converter to keep the UI clean
-const POPULAR_CURRENCIES = [
-  { code: 'USD', name: 'US Dollar', symbol: '$', flag: '🇺🇸' },
-  { code: 'EUR', name: 'Euro', symbol: '€', flag: '🇪🇺' },
-  { code: 'GBP', name: 'British Pound', symbol: '£', flag: '🇬🇧' },
-  { code: 'JPY', name: 'Japanese Yen', symbol: '¥', flag: '🇯🇵' },
-  { code: 'CAD', name: 'Canadian Dollar', symbol: 'C$', flag: '🇨🇦' },
-  { code: 'AUD', name: 'Australian Dollar', symbol: 'A$', flag: '🇦🇺' },
-  { code: 'CHF', name: 'Swiss Franc', symbol: 'CHF', flag: '🇨🇭' },
-  { code: 'CNY', name: 'Chinese Yuan', symbol: '¥', flag: '🇨🇳' },
-  { code: 'INR', name: 'Indian Rupee', symbol: '₹', flag: '🇮🇳' },
-  { code: 'SGD', name: 'Singapore Dollar', symbol: 'S$', flag: '🇸🇬' },
-];
+// ─── Data ────────────────────────────────────────────────────────────────────
 
 const MOCK_CHARTS = {
   "USD/EUR": {
-    pair: "USD/EUR",
-    rate: "0.9184",
-    change: "+1.25%",
-    trend: "up",
+    pair: "USD/EUR", rate: "0.9184", change: "+1.25%", trend: "up",
     points: [
-      { day: "Mon", val: 0.9080 },
-      { day: "Tue", val: 0.9110 },
-      { day: "Wed", val: 0.9095 },
-      { day: "Thu", val: 0.9130 },
-      { day: "Fri", val: 0.9120 },
-      { day: "Sat", val: 0.9150 },
-      { day: "Sun", val: 0.9145 },
-      { day: "Today", val: 0.9184 }
+      { day: "Mon", val: 0.9080 }, { day: "Tue", val: 0.9110 },
+      { day: "Wed", val: 0.9095 }, { day: "Thu", val: 0.9130 },
+      { day: "Fri", val: 0.9120 }, { day: "Sat", val: 0.9150 },
+      { day: "Sun", val: 0.9145 }, { day: "Today", val: 0.9184 }
     ]
   },
   "USD/GBP": {
-    pair: "USD/GBP",
-    rate: "0.7842",
-    change: "+0.85%",
-    trend: "up",
+    pair: "USD/GBP", rate: "0.7842", change: "+0.85%", trend: "up",
     points: [
-      { day: "Mon", val: 0.7760 },
-      { day: "Tue", val: 0.7790 },
-      { day: "Wed", val: 0.7780 },
-      { day: "Thu", val: 0.7810 },
-      { day: "Fri", val: 0.7800 },
-      { day: "Sat", val: 0.7825 },
-      { day: "Sun", val: 0.7820 },
-      { day: "Today", val: 0.7842 }
+      { day: "Mon", val: 0.7760 }, { day: "Tue", val: 0.7790 },
+      { day: "Wed", val: 0.7780 }, { day: "Thu", val: 0.7810 },
+      { day: "Fri", val: 0.7800 }, { day: "Sat", val: 0.7825 },
+      { day: "Sun", val: 0.7820 }, { day: "Today", val: 0.7842 }
     ]
   },
   "USD/JPY": {
-    pair: "USD/JPY",
-    rate: "155.62",
-    change: "-1.45%",
-    trend: "down",
+    pair: "USD/JPY", rate: "155.62", change: "-1.45%", trend: "down",
     points: [
-      { day: "Mon", val: 157.90 },
-      { day: "Tue", val: 157.50 },
-      { day: "Wed", val: 157.10 },
-      { day: "Thu", val: 156.40 },
-      { day: "Fri", val: 156.80 },
-      { day: "Sat", val: 156.10 },
-      { day: "Sun", val: 155.95 },
-      { day: "Today", val: 155.62 }
+      { day: "Mon", val: 157.90 }, { day: "Tue", val: 157.50 },
+      { day: "Wed", val: 157.10 }, { day: "Thu", val: 156.40 },
+      { day: "Fri", val: 156.80 }, { day: "Sat", val: 156.10 },
+      { day: "Sun", val: 155.95 }, { day: "Today", val: 155.62 }
     ]
   },
   "USD/INR": {
-    pair: "USD/INR",
-    rate: "83.45",
-    change: "+0.32%",
-    trend: "up",
+    pair: "USD/INR", rate: "83.45", change: "+0.32%", trend: "up",
     points: [
-      { day: "Mon", val: 83.15 },
-      { day: "Tue", val: 83.22 },
-      { day: "Wed", val: 83.20 },
-      { day: "Thu", val: 83.35 },
-      { day: "Fri", val: 83.30 },
-      { day: "Sat", val: 83.42 },
-      { day: "Sun", val: 83.40 },
-      { day: "Today", val: 83.45 }
+      { day: "Mon", val: 83.15 }, { day: "Tue", val: 83.22 },
+      { day: "Wed", val: 83.20 }, { day: "Thu", val: 83.35 },
+      { day: "Fri", val: 83.30 }, { day: "Sat", val: 83.42 },
+      { day: "Sun", val: 83.40 }, { day: "Today", val: 83.45 }
     ]
   }
 };
 
+const TICKER_PAIRS = [
+  { pair: "USD/EUR", base: "USD", quote: "EUR" },
+  { pair: "USD/GBP", base: "USD", quote: "GBP" },
+  { pair: "USD/JPY", base: "USD", quote: "JPY" },
+  { pair: "USD/AUD", base: "USD", quote: "AUD" },
+  { pair: "USD/CAD", base: "USD", quote: "CAD" },
+  { pair: "USD/INR", base: "USD", quote: "INR" },
+];
+
+const STATS = [
+  { label: "Active Traders", value: "25M+", icon: Activity },
+  { label: "Currency Pairs", value: "140+", icon: Globe },
+  { label: "Uptime SLA", value: "99.99%", icon: Layers },
+  { label: "Response Time", value: "<120ms", icon: Zap },
+];
+
+const FEATURES = [
+  {
+    title: "Real-Time Exchange Rates",
+    desc: "Live FX values refreshed every minute directly from authorized banking APIs.",
+    icon: Zap,
+    accent: "text-indigo-600 dark:text-indigo-400",
+    bg: "bg-indigo-500/10 dark:bg-indigo-500/15",
+  },
+  {
+    title: "Visual Analytics",
+    desc: "Interactive time-series graphs with 7D, 30D, 1Y range granularity for any pair.",
+    icon: BarChart3,
+    accent: "text-violet-600 dark:text-violet-400",
+    bg: "bg-violet-500/10 dark:bg-violet-500/15",
+  },
+  {
+    title: "Global FX Coverage",
+    desc: "140+ world currencies including major standards and exotic regional pairs.",
+    icon: Globe,
+    accent: "text-sky-600 dark:text-sky-400",
+    bg: "bg-sky-500/10 dark:bg-sky-500/15",
+  },
+  {
+    title: "Bank-Grade Security",
+    desc: "SSL-encrypted connections protect all your conversion queries and data.",
+    icon: Shield,
+    accent: "text-emerald-600 dark:text-emerald-400",
+    bg: "bg-emerald-500/10 dark:bg-emerald-500/15",
+  },
+];
+
+const WHY_US = [
+  { icon: Zap,      title: "Aggregated Live Feed",    desc: "Minute-by-minute rates from top central reserve banks worldwide." },
+  { icon: BarChart3,title: "Deep Market History",     desc: "Historical data for accurate trend comparison on any active pair." },
+  { icon: Star,     title: "Quick-Access Dashboard",  desc: "Save favorite pairs to watch real-time rate differences at a glance." },
+  { icon: Clock,    title: "Always Active Service",   desc: "Serverless edge architecture with a guaranteed 99.99% uptime SLA." },
+];
+
+const FAQS = [
+  {
+    q: "Is the currency exchange data live?",
+    a: "Yes! We fetch live market exchange rates every minute from authorized banking APIs and reliable financial data providers."
+  },
+  {
+    q: "Which currencies are supported?",
+    a: "Our app supports over 140+ world currencies, including major global standards (USD, EUR, GBP, JPY, CHF, CAD, AUD) and a wide array of local currencies."
+  },
+  {
+    q: "Can I track historical trends and charts?",
+    a: "Absolutely! Head over to our 'Market' tab to access full interactive charts, select range granularities (7D, 30D, 1Y), and explore detailed historical rate changes."
+  },
+  {
+    q: "Is this platform free to use?",
+    a: "Yes — our currency calculator, real-time dashboard, market graphs, and rate alert systems are entirely free of charge."
+  }
+];
+
+// ─── Hook: Intersection Observer for scroll-reveal ────────────────────────────
+
+function useReveal(threshold = 0.15) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      { threshold }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, visible };
+}
+
+// ─── Animated number counter on reveal ───────────────────────────────────────
+
+function AnimatedStat({ value, label, icon: Icon, delay = 0 }) {
+  const { ref, visible } = useReveal(0.2);
+  return (
+    <div
+      ref={ref}
+      className={`reveal-scale card-glow border border-border bg-card rounded-2xl p-6 flex flex-col items-center sm:items-start gap-2 ${visible ? "visible" : ""}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      <div className="h-10 w-10 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-1">
+        <Icon className="h-5 w-5" />
+      </div>
+      <div className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight tabular-nums">
+        {value}
+      </div>
+      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+        {label}
+      </div>
+    </div>
+  );
+}
+
+// ─── Feature Card ─────────────────────────────────────────────────────────────
+
+function FeatureCard({ title, desc, icon: Icon, accent, bg, delay = 0 }) {
+  const { ref, visible } = useReveal(0.15);
+  return (
+    <div
+      ref={ref}
+      className={`reveal card-glow border border-border bg-card rounded-2xl p-6 flex flex-col gap-4 ${visible ? "visible" : ""}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      <div className={`h-12 w-12 rounded-2xl ${bg} ${accent} flex items-center justify-center transition-transform duration-300 group-hover:scale-110`}>
+        <Icon className="h-6 w-6" />
+      </div>
+      <div>
+        <h3 className="font-bold text-lg text-foreground mb-1">{title}</h3>
+        <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Decorative Orb ───────────────────────────────────────────────────────────
+
+function Orb({ size, color, top, left, right, bottom, animClass }) {
+  return (
+    <div
+      className={`absolute pointer-events-none rounded-full ${animClass}`}
+      style={{
+        width: size,
+        height: size,
+        background: color,
+        top, left, right, bottom,
+        filter: "blur(60px)",
+        opacity: 0.06,
+      }}
+    />
+  );
+}
+
+// ─── Main Component ───────────────────────────────────────────────────────────
+
 export function LandingPage() {
   const { navigateTo } = useRouter();
 
-  // --- Live Ticker State ---
-  const tickerPairs = [
-    { pair: "USD/EUR", base: "USD", quote: "EUR" },
-    { pair: "USD/GBP", base: "USD", quote: "GBP" },
-    { pair: "USD/JPY", base: "USD", quote: "JPY" },
-    { pair: "USD/AUD", base: "USD", quote: "AUD" },
-    { pair: "USD/CAD", base: "USD", quote: "CAD" },
-    { pair: "USD/INR", base: "USD", quote: "INR" },
-  ];
-  const [rates, setRates] = useState(tickerPairs.map(p => ({ ...p, rate: 0, trend: 'up' })));
+  // Ticker rates
+  const [rates, setRates] = useState(TICKER_PAIRS.map(p => ({ ...p, rate: 0, trend: "up" })));
 
-  // --- Mini-Converter State ---
+  // Mini-converter
   const [amount, setAmount] = useState("1000");
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("EUR");
@@ -138,180 +248,144 @@ export function LandingPage() {
   const [convertError, setConvertError] = useState(null);
   const [swapSpin, setSwapSpin] = useState(false);
 
-  // --- Mock Chart State ---
+  // Chart
   const [activeChartKey, setActiveChartKey] = useState("USD/EUR");
   const [hoveredPointIndex, setHoveredPointIndex] = useState(null);
   const svgRef = useRef(null);
 
-  // --- FAQ State ---
+  // FAQ
   const [expandedFAQ, setExpandedFAQ] = useState(null);
+
+  // Hero reveal (immediate)
+  const [heroVisible, setHeroVisible] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setHeroVisible(true), 80); return () => clearTimeout(t); }, []);
+
+  // Section refs
+  const { ref: statsRef, visible: statsVisible } = useReveal(0.1);
+  const { ref: featRef, visible: featVisible } = useReveal(0.1);
+  const { ref: whyRef, visible: whyVisible } = useReveal(0.1);
+  const { ref: faqRef, visible: faqVisible } = useReveal(0.1);
+  const { ref: ctaRef, visible: ctaVisible } = useReveal(0.1);
 
   // Load ticker rates
   useEffect(() => {
     let active = true;
     const load = async () => {
       try {
-        await fetchExchangeRates('USD', { requireLive: true });
+        await fetchExchangeRates("USD", { requireLive: true });
         const updated = await Promise.all(
-          tickerPairs.map(async (r) => {
+          TICKER_PAIRS.map(async (r) => {
             const rate = await convertCurrencyAsync(1, r.base, r.quote, { requireLive: true });
             const prev = rates.find(x => x.pair === r.pair)?.rate || 0;
-            const trend = rate >= prev ? 'up' : 'down';
-            return { ...r, rate: Number(rate.toFixed(4)), trend };
+            return { ...r, rate: Number(rate.toFixed(4)), trend: rate >= prev ? "up" : "down" };
           })
         );
         if (active) setRates(updated);
       } catch (err) {
-        console.error('Ticker fetch failed:', err);
+        console.error("Ticker fetch failed:", err);
       }
     };
-
     load();
     const interval = setInterval(load, 60_000);
     return () => { active = false; clearInterval(interval); };
   }, []);
 
-  // Run Mini-Converter Async Calculation
+  // Mini-converter calculation
   useEffect(() => {
     let active = true;
     const convert = async () => {
-      const numAmount = parseFloat(amount);
-      if (isNaN(numAmount) || numAmount <= 0) {
-        setConvertedResult(null);
-        return;
-      }
-
+      const num = parseFloat(amount);
+      if (isNaN(num) || num <= 0) { setConvertedResult(null); return; }
       setIsConverting(true);
       setConvertError(null);
       try {
-        const result = await convertCurrencyAsync(numAmount, fromCurrency, toCurrency);
-        if (active) {
-          setConvertedResult(result);
-        }
+        const result = await convertCurrencyAsync(num, fromCurrency, toCurrency);
+        if (active) setConvertedResult(result);
       } catch (err) {
-        if (active) {
-          setConvertError("Conversion failed. Try again.");
-          console.error(err);
-        }
+        if (active) { setConvertError("Conversion failed. Try again."); console.error(err); }
       } finally {
         if (active) setIsConverting(false);
       }
     };
-
-    const debounce = setTimeout(convert, 350);
-    return () => {
-      active = false;
-      clearTimeout(debounce);
-    };
+    const t = setTimeout(convert, 350);
+    return () => { active = false; clearTimeout(t); };
   }, [amount, fromCurrency, toCurrency]);
 
-  // Swap function for mini-converter
   const handleSwap = () => {
     setSwapSpin(true);
     setTimeout(() => setSwapSpin(false), 500);
-    const temp = fromCurrency;
     setFromCurrency(toCurrency);
-    setToCurrency(temp);
+    setToCurrency(fromCurrency);
   };
 
-  // Render SVG Chart Paths
-  const getSvgCoordinates = (points) => {
-    const width = 320;
-    const height = 150;
-    const padding = 20;
-
-    const minVal = Math.min(...points.map(p => p.val));
-    const maxVal = Math.max(...points.map(p => p.val));
-    const valRange = maxVal - minVal || 1;
-
-    return points.map((p, idx) => {
-      const x = padding + (idx * (width - 2 * padding)) / (points.length - 1);
-      // Invert Y because SVG coordinates start from top-left (0,0)
-      const y = height - padding - ((p.val - minVal) * (height - 2 * padding)) / valRange;
-      return { x, y, ...p };
-    });
+  // Chart helpers
+  const getSvgCoords = (points) => {
+    const W = 320, H = 150, P = 20;
+    const minV = Math.min(...points.map(p => p.val));
+    const maxV = Math.max(...points.map(p => p.val));
+    const range = maxV - minV || 1;
+    return points.map((p, i) => ({
+      x: P + (i * (W - 2 * P)) / (points.length - 1),
+      y: H - P - ((p.val - minV) * (H - 2 * P)) / range,
+      ...p,
+    }));
   };
 
   const activeChart = MOCK_CHARTS[activeChartKey];
-  const chartCoordinates = getSvgCoordinates(activeChart.points);
+  const coords = getSvgCoords(activeChart.points);
+  const linePath = coords.map((c, i) => `${i === 0 ? "M" : "L"} ${c.x.toFixed(1)} ${c.y.toFixed(1)}`).join(" ");
+  const areaPath = `${linePath} L ${coords[coords.length - 1].x.toFixed(1)} 145 L ${coords[0].x.toFixed(1)} 145 Z`;
 
-  // SVG Line path
-  const linePath = chartCoordinates
-    .map((c, i) => `${i === 0 ? "M" : "L"} ${c.x.toFixed(1)} ${c.y.toFixed(1)}`)
-    .join(" ");
-
-  // SVG Filled area path
-  const areaPath = `${linePath} L ${chartCoordinates[chartCoordinates.length - 1].x.toFixed(1)} 145 L ${chartCoordinates[0].x.toFixed(1)} 145 Z`;
-
-  // Handle Chart Hover / Mousemove
-  const handleSvgMouseMove = (e) => {
+  const handleSvgMouseMove = useCallback((e) => {
     if (!svgRef.current) return;
     const rect = svgRef.current.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-
-    // Find the closest point index based on X coordinate
-    let closestIdx = 0;
-    let minDiff = Infinity;
-    chartCoordinates.forEach((c, idx) => {
-      const diff = Math.abs(c.x - (mouseX * 320 / rect.width));
-      if (diff < minDiff) {
-        minDiff = diff;
-        closestIdx = idx;
-      }
+    const mx = e.clientX - rect.left;
+    let closest = 0, minD = Infinity;
+    coords.forEach((c, i) => {
+      const d = Math.abs(c.x - (mx * 320 / rect.width));
+      if (d < minD) { minD = d; closest = i; }
     });
+    setHoveredPointIndex(closest);
+  }, [coords]);
 
-    setHoveredPointIndex(closestIdx);
-  };
+  const toggleFAQ = (i) => setExpandedFAQ(expandedFAQ === i ? null : i);
 
-  const handleSvgMouseLeave = () => {
-    setHoveredPointIndex(null);
-  };
-
-  // FAQ helper toggler
-  const toggleFAQ = (index) => {
-    setExpandedFAQ(expandedFAQ === index ? null : index);
-  };
-
-  const faqs = [
-    {
-      q: "Is the currency exchange data live?",
-      a: "Yes! We fetch live market exchange rates every minute from authorized banking APIs and reliable financial data providers."
-    },
-    {
-      q: "Which currencies are supported?",
-      a: "Our app supports over 140+ world currencies, including major global standards (USD, EUR, GBP, JPY, CHF, CAD, AUD) and a wide array of local currencies."
-    },
-    {
-      q: "Can I track historical trends and charts?",
-      a: "Absolutely! You can head over to our 'Market' tab to access full interactive charts, select range granularities (7D, 30D, 1Y), and look up detailed historical rate changes."
-    },
-    {
-      q: "Is this platform free to use?",
-      a: "Yes, our currency calculator, real-time rates dashboard, market graphs, and custom email rate alert systems are entirely free of cost."
-    }
-  ];
+  // ─── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-background selection:bg-indigo-500/30 overflow-hidden relative animate-page-fade">
-      
-      <div className="relative z-10 space-y-16 pb-24">
-        
-        {/* HERO SECTION */}
-        <section className="pt-16 pb-12 px-4 max-w-7xl mx-auto space-y-10">
-          <div className="flex justify-center">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-sm font-semibold tracking-wide">
+    <div className="min-h-screen bg-background overflow-hidden relative">
+
+      {/* ── Decorative background orbs ── */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <Orb size="500px" color="#4f46e5" top="0"    left="-10%" animClass="float-anim-slow" />
+        <Orb size="350px" color="#7c3aed" top="30%"  right="-8%" animClass="float-anim-delay" />
+        <Orb size="300px" color="#0ea5e9" bottom="5%" left="20%" animClass="float-anim" />
+      </div>
+
+      <div className="relative z-10 space-y-20 pb-28">
+
+        {/* ── HERO ─────────────────────────────────────────────────────────── */}
+        <section className="pt-16 pb-4 px-4 max-w-7xl mx-auto">
+
+          {/* Badge */}
+          <div className={`flex justify-center mb-10 reveal ${heroVisible ? "visible" : ""}`}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 dark:bg-indigo-500/15 border border-indigo-500/20 dark:border-indigo-500/25 text-indigo-600 dark:text-indigo-400 text-sm font-semibold tracking-wide">
               <span className="relative flex h-2 w-2">
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-600 dark:bg-indigo-400"></span>
+                <span className="badge-pulse-dot absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
               </span>
-              Global FX Exchange
+              Live Market · Global FX Exchange
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Left Column: Hero Text */}
-            <div className="lg:col-span-7 space-y-8 text-left">
-              <h1 className="text-3xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground leading-[1.15] sm:leading-[1.1]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+
+            {/* Left: Hero Text */}
+            <div className="lg:col-span-7 space-y-8">
+              <h1
+                className={`reveal text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-foreground leading-[1.12] ${heroVisible ? "visible" : ""}`}
+                style={{ transitionDelay: "80ms" }}
+              >
                 Currency Exchange{" "}
                 <br className="hidden sm:inline" />
                 <span className="text-indigo-600 dark:text-indigo-400">
@@ -319,139 +393,141 @@ export function LandingPage() {
                 </span>
               </h1>
 
-              <p className="text-lg sm:text-xl text-muted-foreground max-w-xl leading-relaxed">
-                Experience lightning-fast currency conversions, interactive trend analytics, and real-time market data wrapped in a clean, bank-grade secure environment.
+              <p
+                className={`reveal text-lg sm:text-xl text-muted-foreground max-w-xl leading-relaxed ${heroVisible ? "visible" : ""}`}
+                style={{ transitionDelay: "160ms" }}
+              >
+                Experience lightning-fast currency conversions, interactive trend analytics, and real-time market data — all in a clean, bank-grade secure environment.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                <Button 
-                  onClick={() => navigateTo('home')} 
-                  className="h-13 px-8 text-base font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-md rounded-xl transition-all hover:scale-105"
+              <div
+                className={`reveal flex flex-col sm:flex-row gap-4 pt-2 ${heroVisible ? "visible" : ""}`}
+                style={{ transitionDelay: "240ms" }}
+              >
+                <Button
+                  onClick={() => navigateTo("home")}
+                  className="h-12 px-8 text-base font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-md transition-all duration-200 hover:scale-105 hover:shadow-indigo-500/20 hover:shadow-lg"
                 >
                   Open Full Converter <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button 
-                  onClick={() => navigateTo('market')} 
+                <Button
+                  onClick={() => navigateTo("market")}
                   variant="outline"
-                  className="h-13 px-8 text-base font-semibold border border-border hover:bg-muted rounded-xl bg-card shadow-sm transition-all"
+                  className="h-12 px-8 text-base font-semibold border border-border hover:bg-muted rounded-xl bg-card shadow-sm transition-all duration-200 hover:scale-105"
                 >
-                  Explore Interactive Charts
+                  Explore Charts
                 </Button>
               </div>
 
-              {/* Minimal inline stats */}
-              <div className="grid grid-cols-3 gap-6 pt-6 border-t border-border max-w-lg">
-                <div>
-                  <div className="text-2xl font-bold text-foreground">140+</div>
-                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Supported Currencies</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-foreground">1 min</div>
-                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Rate Refresh Period</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-foreground">Free</div>
-                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Unlimited Conversions</div>
-                </div>
+              {/* Inline stats strip */}
+              <div
+                className={`reveal grid grid-cols-3 gap-6 pt-6 border-t border-border max-w-lg ${heroVisible ? "visible" : ""}`}
+                style={{ transitionDelay: "320ms" }}
+              >
+                {[
+                  { value: "140+", label: "Currencies" },
+                  { value: "1 min", label: "Rate Refresh" },
+                  { value: "Free", label: "Conversions" },
+                ].map((s, i) => (
+                  <div key={i}>
+                    <div className="text-2xl font-extrabold text-foreground">{s.value}</div>
+                    <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">{s.label}</div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Right Column: Mini-Converter */}
-            <div className="lg:col-span-5">
-              
-              {/* Mini-Converter Card */}
-              <Card className="border border-border bg-card shadow-sm rounded-2xl overflow-hidden relative">
+            {/* Right: Mini-Converter */}
+            <div
+              className={`lg:col-span-5 reveal-right ${heroVisible ? "visible" : ""}`}
+              style={{ transitionDelay: "200ms" }}
+            >
+              <Card className="card-glow border border-border bg-card shadow-sm rounded-2xl overflow-hidden">
                 <div className="p-6 space-y-5">
+                  {/* Header */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="h-8 w-8 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                      <div className="h-8 w-8 rounded-lg bg-indigo-500/10 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
                         <ArrowLeftRight className="h-4 w-4" />
                       </div>
                       <span className="font-bold text-sm tracking-wide text-foreground">Quick Converter</span>
                     </div>
                     <span className="text-xs font-medium text-muted-foreground bg-muted px-2.5 py-1 rounded-full flex items-center gap-1.5">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Live Rates
+                      <span className="badge-pulse-dot h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      Live Rates
                     </span>
                   </div>
 
-                  <div className="space-y-4">
-                    {/* Amount Input */}
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Amount</label>
-                      <div className="relative">
-                        <input
-                          type="number"
-                          value={amount}
-                          onChange={(e) => setAmount(e.target.value)}
-                          placeholder="Enter amount..."
-                          className="w-full h-11 px-4 rounded-xl border border-border bg-input-background focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-foreground font-bold"
-                        />
-                      </div>
+                  {/* Amount */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Amount</label>
+                    <input
+                      type="number"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      placeholder="Enter amount..."
+                      className="w-full h-11 px-4 rounded-xl border border-border bg-[var(--input-background)] focus:outline-none focus:ring-2 focus:ring-indigo-500/40 text-foreground font-bold transition-shadow"
+                    />
+                  </div>
+
+                  {/* From / Swap / To */}
+                  <div className="grid grid-cols-9 items-center gap-2">
+                    <div className="col-span-4 space-y-1.5">
+                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">From</label>
+                      <Select value={fromCurrency} onValueChange={setFromCurrency}>
+                        <SelectTrigger className="w-full h-11 border border-border bg-[var(--input-background)] text-foreground font-semibold text-sm">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="max-h-48" side="bottom">
+                          {currencies.map(c => (
+                            <SelectItem key={c.code} value={c.code}>
+                              <div className="flex items-center gap-2">
+                                <span>{c.flag}</span>
+                                <span>{c.code}</span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
 
-                    {/* From / To Controls */}
-                    <div className="grid grid-cols-9 items-center gap-2">
-                      
-                      {/* From Currency */}
-                      <div className="col-span-4 space-y-1.5">
-                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">From</label>
-                        <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                          <SelectTrigger className="w-full h-11 border border-border bg-input-background text-foreground font-semibold text-sm">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="max-h-48" side="bottom">
-                            {currencies.map(c => (
-                              <SelectItem key={c.code} value={c.code}>
-                                <div className="flex items-center gap-2">
-                                  <span>{c.flag}</span>
-                                  <span>{c.code}</span>
-                                </div>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
+                    <div className="col-span-1 flex justify-center pt-5">
+                      <button
+                        onClick={handleSwap}
+                        type="button"
+                        className="h-9 w-9 rounded-xl border border-border bg-card hover:bg-muted shadow-sm flex items-center justify-center text-foreground transition-all hover:scale-110 active:scale-95"
+                        title="Swap currencies"
+                      >
+                        <RefreshCw className={`h-4 w-4 text-indigo-500 transition-transform ${swapSpin ? "animate-spin" : ""}`} />
+                      </button>
+                    </div>
 
-                      {/* Swap Button */}
-                      <div className="col-span-1 flex justify-center pt-5">
-                        <button
-                          onClick={handleSwap}
-                          type="button"
-                          className="h-9 w-9 rounded-xl border border-border bg-card hover:bg-muted shadow-sm flex items-center justify-center text-foreground transition-all hover:scale-105"
-                          title="Swap currencies"
-                        >
-                          <RefreshCw className={`h-4 w-4 text-indigo-500 ${swapSpin ? "animate-spin" : ""}`} />
-                        </button>
-                      </div>
-
-                      {/* To Currency */}
-                      <div className="col-span-4 space-y-1.5">
-                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">To</label>
-                        <Select value={toCurrency} onValueChange={setToCurrency}>
-                          <SelectTrigger className="w-full h-11 border border-border bg-input-background text-foreground font-semibold text-sm">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="max-h-48" side="bottom">
-                            {currencies.map(c => (
-                              <SelectItem key={c.code} value={c.code}>
-                                <div className="flex items-center gap-2">
-                                  <span>{c.flag}</span>
-                                  <span>{c.code}</span>
-                                </div>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
+                    <div className="col-span-4 space-y-1.5">
+                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">To</label>
+                      <Select value={toCurrency} onValueChange={setToCurrency}>
+                        <SelectTrigger className="w-full h-11 border border-border bg-[var(--input-background)] text-foreground font-semibold text-sm">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="max-h-48" side="bottom">
+                          {currencies.map(c => (
+                            <SelectItem key={c.code} value={c.code}>
+                              <div className="flex items-center gap-2">
+                                <span>{c.flag}</span>
+                                <span>{c.code}</span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
 
-                  {/* Result Panel */}
+                  {/* Result */}
                   <div className="p-4 rounded-xl bg-muted/60 border border-border flex flex-col justify-center min-h-20 transition-all">
                     {isConverting ? (
-                      <div className="flex flex-col items-center justify-center space-y-2">
+                      <div className="flex flex-col items-center justify-center gap-2">
                         <div className="h-5 w-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-                        <span className="text-xs font-medium text-indigo-500">Calculating Rate...</span>
+                        <span className="text-xs font-medium text-indigo-500">Calculating...</span>
                       </div>
                     ) : convertError ? (
                       <div className="text-center text-xs text-destructive font-medium">{convertError}</div>
@@ -469,56 +545,40 @@ export function LandingPage() {
                       </div>
                     ) : (
                       <div className="text-center text-xs text-muted-foreground font-medium">
-                        Enter amount to see quick conversion.
+                        Enter amount to see conversion.
                       </div>
                     )}
                   </div>
                 </div>
               </Card>
-
             </div>
 
           </div>
         </section>
 
-        {/* LIVE TICKER RATES BAR */}
+        {/* ── LIVE TICKER ─────────────────────────────────────────────────── */}
         <section className="max-w-7xl mx-auto px-4">
-          <style>{`
-            @keyframes ticker-scroll {
-              0% { transform: translateX(0); }
-              100% { transform: translateX(-50%); }
-            }
-            .ticker-animate {
-              animation: ticker-scroll 35s linear infinite;
-            }
-            .ticker-animate:hover {
-              animation-play-state: paused;
-            }
-          `}</style>
-          <div className="bg-card border border-border shadow-sm rounded-2xl overflow-hidden py-3 relative">
+          <div className="bg-card border border-border shadow-sm rounded-2xl overflow-hidden py-3">
             <div className="overflow-hidden">
               <div className="ticker-animate flex w-max gap-4">
                 {[...rates, ...rates].map((r, i) => (
-                  <div 
-                    key={i} 
+                  <div
+                    key={i}
                     className="flex-shrink-0 px-6 py-2.5 flex items-center gap-3 border-r border-border hover:bg-muted transition-colors cursor-pointer rounded-lg"
                     onClick={() => {
                       if (MOCK_CHARTS[r.pair]) {
                         setActiveChartKey(r.pair);
-                        const el = document.getElementById("ticker-target");
-                        if (el) el.scrollIntoView({ behavior: "smooth" });
+                        document.getElementById("chart-section")?.scrollIntoView({ behavior: "smooth" });
                       }
                     }}
                   >
                     <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{r.pair}</span>
                     <span className="text-sm font-extrabold text-foreground tabular-nums">
-                      {r.rate > 0 ? r.rate.toFixed(4) : "..."}
+                      {r.rate > 0 ? r.rate.toFixed(4) : "···"}
                     </span>
                     {r.rate > 0 && (
-                      <span className={`flex items-center text-[10px] font-bold ${
-                        r.trend === 'up' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600'
-                      }`}>
-                        {r.trend === 'up' ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
+                      <span className={`flex items-center text-[10px] font-bold ${r.trend === "up" ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600"}`}>
+                        {r.trend === "up" ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
                       </span>
                     )}
                   </div>
@@ -528,25 +588,22 @@ export function LandingPage() {
           </div>
         </section>
 
-        {/* TRENDING RATES CHART SECTION */}
-        <section id="ticker-target" className="max-w-3xl mx-auto px-4 scroll-mt-24">
+        {/* ── CHART ────────────────────────────────────────────────────────── */}
+        <section id="chart-section" className="max-w-3xl mx-auto px-4 scroll-mt-24">
           <Card className="border border-border bg-card shadow-sm rounded-2xl overflow-hidden">
             <div className="p-5 space-y-4">
+              {/* Header */}
               <div className="flex items-center justify-between">
-                <span className="font-bold text-sm tracking-wide text-foreground">Trending Rates</span>
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                  <span className="font-bold text-sm tracking-wide text-foreground">Live Rate Trends</span>
+                </div>
                 <div className="flex gap-1.5 bg-muted p-0.5 rounded-lg">
                   {Object.keys(MOCK_CHARTS).map(key => (
                     <button
                       key={key}
-                      onClick={() => {
-                        setActiveChartKey(key);
-                        setHoveredPointIndex(null);
-                      }}
-                      className={`text-xs px-2 py-1 font-bold rounded-md transition-all ${
-                        activeChartKey === key 
-                          ? "bg-card text-foreground shadow-sm" 
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
+                      onClick={() => { setActiveChartKey(key); setHoveredPointIndex(null); }}
+                      className={`text-xs px-2.5 py-1 font-bold rounded-md transition-all duration-200 ${activeChartKey === key ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
                     >
                       {key.split("/")[1]}
                     </button>
@@ -554,26 +611,20 @@ export function LandingPage() {
                 </div>
               </div>
 
-              {/* Chart Rate Metric Header */}
+              {/* Rate header */}
               <div className="flex items-baseline justify-between">
                 <div>
                   <div className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{activeChartKey} Pair</div>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-2xl font-extrabold text-foreground tracking-tight tabular-nums">
-                      {activeChart.rate}
-                    </span>
-                    <span className={`inline-flex items-center gap-0.5 text-xs font-bold ${
-                      activeChart.trend === 'up' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600'
-                    }`}>
-                      {activeChart.trend === 'up' ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
+                    <span className="text-2xl font-extrabold text-foreground tabular-nums">{activeChart.rate}</span>
+                    <span className={`inline-flex items-center gap-0.5 text-xs font-bold ${activeChart.trend === "up" ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600"}`}>
+                      {activeChart.trend === "up" ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
                       {activeChart.change}
                     </span>
                   </div>
                 </div>
-
-                {/* Hover tooltip stats */}
                 {hoveredPointIndex !== null && (
-                  <div className="text-right">
+                  <div className="text-right animate-fade-in">
                     <div className="text-[10px] text-muted-foreground font-bold uppercase">{activeChart.points[hoveredPointIndex].day}</div>
                     <div className="text-sm font-extrabold text-indigo-600 dark:text-indigo-400 tabular-nums">
                       {activeChart.points[hoveredPointIndex].val.toFixed(4)}
@@ -582,36 +633,30 @@ export function LandingPage() {
                 )}
               </div>
 
-              {/* SVG Chart Drawing */}
+              {/* SVG Chart */}
               <div className="relative pt-1">
                 <svg
                   ref={svgRef}
                   viewBox="0 0 320 150"
                   className="w-full h-auto cursor-crosshair overflow-visible"
                   onMouseMove={handleSvgMouseMove}
-                  onMouseLeave={handleSvgMouseLeave}
+                  onMouseLeave={() => setHoveredPointIndex(null)}
                 >
                   <defs>
-                    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
-                      <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#4f46e5" floodOpacity="0.1" />
+                    <filter id="line-shadow">
+                      <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#4f46e5" floodOpacity="0.15" />
                     </filter>
                   </defs>
 
-                  {/* Y Grid Lines */}
-                  <line x1="20" y1="20" x2="300" y2="20" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.6" />
-                  <line x1="20" y1="60" x2="300" y2="60" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.6" />
-                  <line x1="20" y1="100" x2="300" y2="100" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.6" />
-                  <line x1="20" y1="130" x2="300" y2="130" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.6" />
+                  {/* Grid lines */}
+                  {[20, 60, 100, 130].map(y => (
+                    <line key={y} x1="20" y1={y} x2="300" y2={y} stroke="currentColor" className="text-border" strokeWidth="0.5" strokeDasharray="4,4" opacity="0.5" />
+                  ))}
 
-                  {/* Area Under Curve */}
-                  <path
-                    d={areaPath}
-                    fill="#4f46e5"
-                    fillOpacity="0.05"
-                    className="transition-all duration-500 ease-out"
-                  />
+                  {/* Area fill */}
+                  <path d={areaPath} fill="#4f46e5" fillOpacity="0.06" className="transition-all duration-500" />
 
-                  {/* Trend Curve Path */}
+                  {/* Line */}
                   <path
                     d={linePath}
                     fill="none"
@@ -619,31 +664,26 @@ export function LandingPage() {
                     strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    filter="url(#shadow)"
-                    className="transition-all duration-500 ease-out"
+                    filter="url(#line-shadow)"
+                    className="transition-all duration-500"
                   />
 
-                  {/* Hover Indicator Vertical Line */}
+                  {/* Hover line */}
                   {hoveredPointIndex !== null && (
                     <line
-                      x1={chartCoordinates[hoveredPointIndex].x}
-                      y1="10"
-                      x2={chartCoordinates[hoveredPointIndex].x}
-                      y2="140"
-                      stroke="#4f46e5"
-                      strokeWidth="1"
-                      strokeDasharray="4,4"
+                      x1={coords[hoveredPointIndex].x} y1="10"
+                      x2={coords[hoveredPointIndex].x} y2="140"
+                      stroke="#4f46e5" strokeWidth="1" strokeDasharray="4,4"
                     />
                   )}
 
-                  {/* Anchor dots */}
-                  {chartCoordinates.map((c, i) => (
+                  {/* Dots */}
+                  {coords.map((c, i) => (
                     <circle
                       key={i}
-                      cx={c.x}
-                      cy={c.y}
+                      cx={c.x} cy={c.y}
                       r={hoveredPointIndex === i ? 5.5 : 3}
-                      fill={hoveredPointIndex === i ? "#4f46e5" : "#ffffff"}
+                      fill={hoveredPointIndex === i ? "#4f46e5" : "var(--card)"}
                       stroke="#4f46e5"
                       strokeWidth={hoveredPointIndex === i ? 2 : 1.5}
                       className="transition-all duration-150 cursor-pointer"
@@ -651,36 +691,27 @@ export function LandingPage() {
                   ))}
                 </svg>
               </div>
+
+              <p className="text-xs text-muted-foreground text-center">Historical performance data · Click ticker above to switch pair</p>
             </div>
           </Card>
         </section>
 
-        {/* QUICK STATS - MODERN SOLID CARDS */}
-        <section className="max-w-7xl mx-auto px-4 grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            { label: "Active Traders", value: "25M+" },
-            { label: "Currency Pairs", value: "140+" },
-            { label: "Uptime SLA", value: "99.99%" },
-            { label: "Response Time", value: "< 120ms" }
-          ].map((stat, idx) => (
-            <Card key={idx} className="border border-border bg-card shadow-sm overflow-hidden group hover:border-indigo-500/50 transition-all duration-300">
-              <div className="p-6">
-                <div className="flex flex-col items-center sm:items-start space-y-1">
-                  <div className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight tabular-nums group-hover:scale-105 transition-transform duration-300">
-                    {stat.value}
-                  </div>
-                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    {stat.label}
-                  </div>
-                </div>
-              </div>
-            </Card>
-          ))}
+        {/* ── STATS ────────────────────────────────────────────────────────── */}
+        <section className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+            {STATS.map((s, i) => (
+              <AnimatedStat key={i} value={s.value} label={s.label} icon={s.icon} delay={i * 80} />
+            ))}
+          </div>
         </section>
 
-        {/* DETAILED FEATURES GRID */}
-        <section className="max-w-7xl mx-auto px-4 space-y-12">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
+        {/* ── FEATURES ─────────────────────────────────────────────────────── */}
+        <section ref={featRef} className="max-w-7xl mx-auto px-4 space-y-10">
+          <div className={`text-center max-w-2xl mx-auto space-y-3 reveal ${featVisible ? "visible" : ""}`}>
+            <div className="inline-flex items-center gap-2 text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest bg-indigo-500/10 dark:bg-indigo-500/15 px-3 py-1.5 rounded-full border border-indigo-500/20">
+              <Sparkles className="h-3.5 w-3.5" /> Features
+            </div>
             <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
               Packed with Premium Features
             </h2>
@@ -689,55 +720,43 @@ export function LandingPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { title: "Real-Time Exchange Rates", desc: "Live FX values directly refreshed every minute to ensure absolute transactional accuracy.", icon: <Zap className="h-5 w-5" />, color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-500/10" },
-              { title: "Visual Analytics Charts", desc: "Interactive time-series graphs enabling full overview on currency trends over 7D, 30D, or 1Y.", icon: <BarChart3 className="h-5 w-5" />, color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-500/10" },
-              { title: "Global FX Coverage", desc: "Wide access for over 140+ countries and exotic currency pairs across all financial continents.", icon: <Globe className="h-5 w-5" />, color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-500/10" },
-              { title: "Enterprise-grade Safety", desc: "Encrypted secure socket layer connections protecting all calculated results and local user queries.", icon: <Shield className="h-5 w-5" />, color: "text-indigo-600 dark:text-indigo-400", bg: "bg-indigo-500/10" },
-            ].map((f, i) => (
-              <Card key={i} className="border border-border bg-card shadow-sm overflow-hidden group hover:border-indigo-500/50 hover:bg-muted/30 transition-all duration-300 flex flex-col justify-between">
-                <div className="p-6 space-y-4">
-                  <div className={`h-11 w-11 rounded-xl ${f.bg} ${f.color} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                    {f.icon}
-                  </div>
-                  <h3 className="font-bold text-lg text-foreground">{f.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
-                </div>
-              </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {FEATURES.map((f, i) => (
+              <FeatureCard key={i} {...f} delay={i * 90} />
             ))}
           </div>
         </section>
 
-        {/* WHY CHOOSE US SECTION */}
-        <section className="max-w-6xl mx-auto px-4">
-          <Card className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-sm text-foreground">
-            
-            <div className="relative z-10 p-8 sm:p-12 text-center md:text-left space-y-4 border-b border-border">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-foreground">
+        {/* ── WHY US ───────────────────────────────────────────────────────── */}
+        <section ref={whyRef} className="max-w-6xl mx-auto px-4">
+          <Card className={`reveal-scale border border-border bg-card shadow-sm rounded-3xl overflow-hidden ${whyVisible ? "visible" : ""}`}>
+
+            {/* Header row */}
+            <div className="p-8 sm:p-12 border-b border-border">
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-violet-600 dark:text-violet-400 uppercase tracking-widest bg-violet-500/10 dark:bg-violet-500/15 px-3 py-1.5 rounded-full border border-violet-500/20 mb-4">
+                <Lock className="h-3.5 w-3.5" /> Why Choose Us
+              </div>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-foreground mb-3">
                 Why Professional Traders Choose Us
               </h2>
               <p className="text-base sm:text-lg text-muted-foreground max-w-3xl leading-relaxed">
-                We combine industry-standard exchange calculations with premium analytical speed to offer the fastest currency conversions.
+                Industry-standard calculations combined with premium analytical speed for the most accurate currency conversions.
               </p>
             </div>
 
-            <div className="relative z-10 grid md:grid-cols-2 gap-6 p-8 sm:p-12 bg-muted/20">
-              {[ 
-                { icon: Zap, title: "Aggregated Live Feed", desc: "Direct minute-by-minute rates aggregated from top central reserve banks and financial institutions." },
-                { icon: BarChart3, title: "Deep Market History", desc: "Access standard historical parameters to run accurate comparison charts on active pairs." },
-                { icon: Star, title: "Quick-Access Dashboard", desc: "Save frequently converted pairs as favorites to watch real-time rate differences at a glance." },
-                { icon: Clock, title: "Always Active Service", desc: "Designed with serverless edge architecture, offering a guaranteed 99.99% uptime converter." },
-              ].map((item, idx) => (
+            {/* Feature grid */}
+            <div className="grid md:grid-cols-2 gap-5 p-8 sm:p-12 bg-muted/20">
+              {WHY_US.map((item, i) => (
                 <div
-                  key={idx}
-                  className="group flex gap-4 p-5 rounded-2xl border border-border bg-card shadow-sm hover:border-indigo-500/40 hover:bg-muted/30 transition-all duration-300"
+                  key={i}
+                  className={`card-glow flex gap-4 p-5 rounded-2xl border border-border bg-card shadow-sm reveal ${whyVisible ? "visible" : ""}`}
+                  style={{ transitionDelay: `${i * 80}ms` }}
                 >
-                  <div className="h-12 w-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300">
+                  <div className="h-12 w-12 shrink-0 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
                     <item.icon className="h-5 w-5" />
                   </div>
-                  <div className="space-y-1">
-                    <div className="font-bold text-foreground">{item.title}</div>
+                  <div>
+                    <div className="font-bold text-foreground mb-1">{item.title}</div>
                     <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
@@ -746,40 +765,37 @@ export function LandingPage() {
           </Card>
         </section>
 
-        {/* INTERACTIVE FAQ ACCORDION SECTION */}
-        <section className="max-w-4xl mx-auto px-4 space-y-8">
-          <div className="text-center space-y-2">
+        {/* ── FAQ ──────────────────────────────────────────────────────────── */}
+        <section ref={faqRef} className="max-w-4xl mx-auto px-4 space-y-8">
+          <div className={`text-center space-y-3 reveal ${faqVisible ? "visible" : ""}`}>
+            <div className="inline-flex items-center gap-2 text-xs font-bold text-sky-600 dark:text-sky-400 uppercase tracking-widest bg-sky-500/10 dark:bg-sky-500/15 px-3 py-1.5 rounded-full border border-sky-500/20">
+              FAQ
+            </div>
             <h2 className="text-3xl font-extrabold text-foreground">Frequently Asked Questions</h2>
-            <p className="text-muted-foreground">Got questions? We've got answers.</p>
+            <p className="text-muted-foreground">Got questions? We&apos;ve got answers.</p>
           </div>
 
-          <div className="space-y-3.5">
-            {faqs.map((faq, idx) => {
-              const isExpanded = expandedFAQ === idx;
+          <div className="space-y-3">
+            {FAQS.map((faq, i) => {
+              const open = expandedFAQ === i;
               return (
-                <div 
-                  key={idx}
-                  className="border border-border rounded-2xl bg-card overflow-hidden transition-all duration-300"
+                <div
+                  key={i}
+                  className={`reveal border border-border rounded-2xl bg-card overflow-hidden card-glow ${faqVisible ? "visible" : ""}`}
+                  style={{ transitionDelay: `${i * 60}ms` }}
                 >
                   <button
-                    onClick={() => toggleFAQ(idx)}
-                    className="w-full px-6 py-5 flex items-center justify-between text-left font-bold text-foreground text-base sm:text-lg focus:outline-none hover:bg-muted transition-colors"
+                    onClick={() => toggleFAQ(i)}
+                    className="w-full px-6 py-5 flex items-center justify-between text-left font-bold text-foreground text-base focus:outline-none hover:bg-muted/50 transition-colors"
                   >
                     <span className="pr-4">{faq.q}</span>
-                    <div className={`h-8 w-8 rounded-full border border-border flex items-center justify-center text-foreground transition-transform duration-300 ${
-                      isExpanded ? "rotate-180 bg-indigo-500/10 border-indigo-500/20 text-indigo-500" : ""
-                    }`}>
+                    <div className={`h-8 w-8 shrink-0 rounded-full border border-border flex items-center justify-center transition-all duration-300 ${open ? "rotate-180 bg-indigo-500/10 border-indigo-500/20 text-indigo-600 dark:text-indigo-400" : "text-muted-foreground"}`}>
                       <ChevronDown className="h-4 w-4" />
                     </div>
                   </button>
-
-                  <div 
+                  <div
                     className="transition-all duration-300 ease-in-out"
-                    style={{
-                      maxHeight: isExpanded ? "200px" : "0",
-                      opacity: isExpanded ? "1" : "0",
-                      overflow: "hidden"
-                    }}
+                    style={{ maxHeight: open ? "200px" : "0", opacity: open ? 1 : 0, overflow: "hidden" }}
                   >
                     <div className="px-6 pb-5 pt-1 text-sm sm:text-base text-muted-foreground leading-relaxed border-t border-border">
                       {faq.a}
@@ -791,24 +807,44 @@ export function LandingPage() {
           </div>
         </section>
 
-        {/* CTA BANNER */}
-        <section className="max-w-5xl mx-auto px-4">
-          <Card className="bg-indigo-600 dark:bg-indigo-700 border-none shadow-md rounded-3xl overflow-hidden relative text-white">
-            <div className="relative z-10 p-8 sm:p-12 text-center space-y-6">
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Ready to Convert Currencies?</h2>
+        {/* ── CTA BANNER ───────────────────────────────────────────────────── */}
+        <section ref={ctaRef} className="max-w-5xl mx-auto px-4">
+          <div
+            className={`reveal-scale relative overflow-hidden rounded-3xl border border-indigo-500/20 dark:border-indigo-500/25 bg-indigo-600 dark:bg-indigo-700 text-white ${ctaVisible ? "visible" : ""}`}
+          >
+            {/* Subtle inner texture dots — no gradient */}
+            <div className="absolute inset-0 pointer-events-none" style={{
+              backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)",
+              backgroundSize: "24px 24px",
+            }} />
+
+            <div className="relative z-10 p-8 sm:p-14 text-center space-y-6">
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-indigo-200 uppercase tracking-widest bg-white/10 px-3 py-1.5 rounded-full border border-white/20 mb-2">
+                <Sparkles className="h-3.5 w-3.5" /> Get Started Today
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+                Ready to Convert Currencies?
+              </h2>
               <p className="text-indigo-100 max-w-xl mx-auto text-base sm:text-lg leading-relaxed">
-                Access full-featured converters, add favorites, set local currency alerts, and inspect deep financial analytics.
+                Access full-featured converters, add favorites, set rate alerts, and inspect deep financial analytics — all for free.
               </p>
-              <div>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
                 <Button
-                  onClick={() => navigateTo('home')}
-                  className="h-12 px-8 text-base font-bold bg-white text-indigo-600 hover:bg-slate-100 shadow-md rounded-xl transition-all hover:scale-105"
+                  onClick={() => navigateTo("home")}
+                  className="h-12 px-8 text-base font-bold bg-white text-indigo-700 hover:bg-indigo-50 shadow-md rounded-xl transition-all hover:scale-105 active:scale-95"
                 >
-                  Start Converting Now
+                  Start Converting Now <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+                <Button
+                  onClick={() => navigateTo("market")}
+                  variant="ghost"
+                  className="h-12 px-8 text-base font-semibold text-white border border-white/30 hover:bg-white/10 rounded-xl transition-all"
+                >
+                  View Live Charts
                 </Button>
               </div>
             </div>
-          </Card>
+          </div>
         </section>
 
       </div>
