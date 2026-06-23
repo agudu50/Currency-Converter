@@ -16,11 +16,12 @@ export default function Header() {
 
   const navItems = [
     { id: 'home', label: 'Home', page: 'home' },
+    { id: 'about', label: 'About', page: 'about' },
     { id: 'market', label: 'Market', page: 'market' },
     { id: 'news', label: 'News', page: 'news' },
     { id: 'alerts', label: 'Alerts', page: 'alerts' },
     { id: 'settings', label: 'Settings', page: 'settings' },
-    { id: 'about', label: 'About', page: 'about' },
+
   ];
 
   return (

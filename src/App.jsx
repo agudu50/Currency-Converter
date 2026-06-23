@@ -17,11 +17,12 @@ const LandingPage = lazy(() => {
   });
 });
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })).catch(err => { console.error('HomePage load error:', err); throw err; }));
+const AboutPage = lazy(() => import('./pages/AboutPage').then(m => ({ default: m.AboutPage })));
 const MarketPage = lazy(() => import('./pages/MarketPage').then(m => ({ default: m.MarketPage })));
 const NewsPage = lazy(() => import('./pages/NewsPage').then(m => ({ default: m.NewsPage })));
 const AlertsPage = lazy(() => import('./pages/AlertsPage').then(m => ({ default: m.AlertsPage })));
 const SettingsPage = lazy(() => import('./pages/SettingsPage').then(m => ({ default: m.SettingsPage })));
-const AboutPage = lazy(() => import('./pages/AboutPage').then(m => ({ default: m.AboutPage })));
+
 
 function AppContent() {
   const { currentPage } = useRouter();
